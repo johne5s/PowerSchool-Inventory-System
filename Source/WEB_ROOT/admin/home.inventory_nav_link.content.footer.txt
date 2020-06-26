@@ -1,0 +1,15 @@
+<!-- create new link on left nav menu for the Basic Inventory, John Scatena, jscatena@tbaisd.org -->
+
+
+<script>
+
+/* places the new link at the end of the li group */
+
+$j(document).ready(function(){
+
+    
+$j("ul#left_nav_functions li:eq(-1)").after('<li><a href="/admin/asset/assets.html">Inventory System</a></li>')
+});
+
+
+</script>

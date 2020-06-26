@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+
+	~[wc:commonscripts] 
+
+<script type="text/javascript">
+
+$j(document).ready(function(){
+	$j('#deleteButton').click(function(e){
+		e.preventDefault();
+		$j('#deleteForm').submit();
+	});
+});
+</script>
+
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> >
+	Asset Management
+	~[wc:admin_navigation_css] 
+
+<h1>~[if.~(gpv.assetid)=-1]New[else]Edit[/if] Asset</h1> 
+
+<ul class="tabs">
+	<li class="selected"><a href="assets.html">Asset Management</a></li>
+	<li><a href="return.html?assetid=~(gpv.assetid)">Return</a></li>
+</ul>
+
+<form action="assets.html" method="POST" id="assetform">
+~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
+	<div class="box-round"> 
+		<table class="grid">
+			<tr>
+				<td class="bold">Active</td>
+				<td>
+					<select name="[u_assettable]active">
+						~[if.~(gpv.assetid)=-1]
+							<option value="1">Yes</option>
+						[else]
+							~[tlist_sql;
+								SELECT active
+								FROM u_assettable
+								WHERE id = ~(gpv.assetid)
+							;]
+								<option value="~(active)">~(active)</option>
+							[/tlist_sql]
+						[/if]
+					<option value="1">Yes</option>
+					<option value="0">No</option>
+					</select>
+					1 = Yes, 0 = No
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Assigned To</td>
+				<td>
+					<select name="[u_assettable]assignedTo">
+						~[if.~(gpv.assetid)=-1]
+							<option value="UnAssigned">UnAssigned</option>
+						[else]
+							~[tlist_sql;
+								SELECT assignedto
+								FROM u_assettable
+								WHERE id = ~(gpv.assetid)
+							;]
+								<option value="~(assignedto)">~(assignedto)</option>
+							[/tlist_sql]
+						[/if]
+
+						~[tlist_sql;
+							SELECT 
+							Teachers.LastFirst 
+							FROM Teachers 
+							WHERE (Teachers.Status = 1) and (Teachers.StaffStatus = 1 OR Teachers.StaffStatus = 2) and (Teachers.SchoolID = ~(curschoolid)) order by LastFirst asc
+						;]
+							<option value="~(Teachers.LastFirst;t)">~(Teachers.LastFirst;t)</option>
+						[/tlist_sql]
+					</select>
+
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">School Name</td>
+				<td>
+					<select name="[u_assettable]schoolname">
+					~[if.~(gpv.assetid)=-1]
+						<option value="~[schoolname]">~[schoolname]</option>
+					[else]
+						~[tlist_sql;
+							SELECT schoolname
+							FROM u_assettable
+							WHERE id = ~(gpv.assetid)
+						;]
+							<option value="~(schoolname)">~(schoolname)</option>
+						[/tlist_sql]
+					[/if]
+					~[tlist_sql;
+							SELECT 
+								name
+							FROM schools
+						;]
+							<option value="~(schoolname)">~(schoolname)</option>
+						[/tlist_sql]
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Bar Code</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_id" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Type</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_type" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Manufacture</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_manufacture" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Model</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_model" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Serial</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_serial" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Purchase Date</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_purchasedate" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">CheckOut Date</td>
+				<td>
+					<input type="text" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">CheckIn Date</td>
+				<td>
+					<input type="text" name="[u_assettable]ASSET_CHECKINDATE" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Device Username</td>
+				<td>
+					<input type="text" name="[u_assettable]DEVICE_USERNAME" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Device Password</td>
+				<td>
+					<input type="text" name="[u_assettable]DEVICE_PASSWORD" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Notes</td>
+				<td>
+					<textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="10" cols="35" wrap="soft"></textarea>
+				</td>
+			</tr>
+		</table>
+		
+		
+		<div class="button-row">
+			<input type="hidden" name="[u_assettable]schoolid" value="~(curschoolid)" />
+			<input type="hidden" name="ac" value="prim" />
+			~[if.~(gpv.assetid)>0]
+				<button id="deleteButton">Delete</button>
+			[/if]
+			<a href="assets.html" class="button">Cancel</a>
+			~[submitbutton]
+		</div>
+	</div> 
+</form>
+
+<form id="deleteForm" action="assets.html">
+	<input type="hidden" name="DD-u_assettable.id:~(gpv.assetid)" value="1">
+	<input type="hidden" name="ac" value="prim" />
+</form>
+
+
+	~[wc:admin_footer_css] 
+</body> 
+</html>

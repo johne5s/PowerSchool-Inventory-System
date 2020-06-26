@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
+    <extensionname>U_InventorySystem</extensionname>
+    <extendedTable coreTable="SchoolStaff" dbTableName="U_AssetCheckOut" childName="U_AssetCheckOut" comment="">
+        <field name="CHECKEDOUT_NAME" type="String" length="128"/>
+        <field name="ASSET_ID" type="String" length="128"/>
+        <field name="CHECKOUT_DATE" type="Date"/>
+        <field name="RETURN_DATE" type="Date"/>
+    </extendedTable>
+    <extendedTable coreTable="ATTENDANCE" dbTableName="U_Assets" childName="U_Assets" comment="">
+        <field name="Asset_Serial" type="String" length="128"/>
+        <field name="Asset_Manufacture" type="String" length="128"/>
+        <field name="Asset_Model" type="String" length="128"/>
+        <field name="Asset_Type" type="String" length="128"/>
+        <field name="Asset_ID" type="Integer"/>
+    </extendedTable>
+    <extendedTable type="standalone" dbTableName="U_ASSETTABLE" childName="U_ASSETTABLE" comment="List of all Assets">
+        <field name="Asset_Serial" type="String" length="128"/>
+        <field name="Asset_CheckoutDate" type="Date"/>
+        <field name="Asset_Manufacture" type="String" length="128"/>
+        <field name="Asset_Model" type="String" length="128"/>
+		<field name="active" type="Integer" comment="0 = not active, 1 = active"/>
+        <field name="Asset_ID" type="String" length="128"/>
+        <field name="Asset_CheckInDate" type="Date"/>
+        <field name="AssignedTo" type="String" length="200"/>
+        <field name="Device_Username" type="String" length="200"/>
+        <field name="SchoolName" type="String" length="200"/>
+        <field name="Device_Password" type="String" length="200"/>
+        <field name="Schoolid" type="Integer"/>
+        <field name="Asset_Type" type="String" length="128"/>
+        <field name="Asset_Notes" type="String" length="2000"/>
+        <field name="Asset_PurchaseDate" type="Date"/>
+    </extendedTable>
+</psExtension>
