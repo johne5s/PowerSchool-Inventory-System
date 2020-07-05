@@ -1,0 +1,47 @@
+<queries>
+	<query name="com.basicinventorysystem.inventory.database.export" coreTable="students" flattened="true">
+		<summary>Basic Inventory System Export</summary>
+		<description>Basic Inventory System Export all the data to a CSV</description>
+		<columns>
+			<column column="U_ASSETTABLE.id">ID</column>
+			<column column="U_ASSETTABLE.asset_ID">Asset_ID</column>
+			<column column="U_ASSETTABLE.Asset_Manufacture">Asset_Manufacture</column>
+			<column column="U_ASSETTABLE.Asset_Model">Asset_Model</column>
+			<column column="U_ASSETTABLE.Asset_Serial">Asset_Serial</column>
+			<column column="U_ASSETTABLE.Asset_Type">Asset_Type</column>
+			<column column="U_ASSETTABLE.Asset_CheckInDate">Asset_CheckInDate</column>
+			<column column="U_ASSETTABLE.Asset_CheckOutDate">Asset_CheckOutDate</column>
+			<column column="U_ASSETTABLE.Asset_Notes">Asset_Notes</column>
+			<column column="U_ASSETTABLE.AssignedTo">AssignedTo</column>
+			<column column="U_ASSETTABLE.Asset_PurchaseDate">Asset_PurchaseDate</column>
+			<column column="U_ASSETTABLE.Device_Password">Device_Password</column>
+			<column column="U_ASSETTABLE.Device_Username">Device_Username</column>
+			<column column="U_ASSETTABLE.SchoolID">SchoolID</column>
+			<column column="U_ASSETTABLE.SchoolName">SchoolName</column>
+			<column column="U_ASSETTABLE.Active">Active</column>
+		</columns>
+		<sql>
+			<![CDATA[
+			Select 
+				ID,
+				Asset_ID,
+				Asset_Manufacture,
+				Asset_Model,
+				Asset_Serial,
+				Asset_Type,
+				Asset_CheckInDate,
+				Asset_CheckOutDate,
+				Asset_Notes,
+				AssignedTo,
+				Asset_PurchaseDate,
+				Device_Password,
+				Device_Username,
+				SchoolID,
+				SchoolName,
+				Active
+			FROM
+			u_assettable
+			]]>
+		</sql>
+	</query>
+</queries>

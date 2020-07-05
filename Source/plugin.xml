@@ -1,5 +1,31 @@
-<?xml version="1.0" encoding="UTF-8"?><plugin xmlns="http://plugin.powerschool.pearson.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" description="Basic Inventory System" name="Basic Inventory System" version="1.8.4" xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
-<publisher name="John Scatena">
-<contact email="pssupport@tbaisd.org"/>
-</publisher>
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin 
+	xmlns="http://plugin.powerschool.pearson.com" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	description="Basic Inventory System" 
+	name="Basic Inventory System" 
+	version="1.8.5" 
+	xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
+	<oauth></oauth>
+	<publisher name="John Scatena">
+		<contact email="pssupport@tbaisd.org"/>
+	</publisher>
+	<access_request>
+		<field table="U_ASSETTABLE" field="ID" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_ID" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_Manufacture" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_Model" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_Serial" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_Type" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_CheckInDate" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_CheckOutDate" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_Notes" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="AssignedTo" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Asset_PurchaseDate" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Device_Password" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Device_Username" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="SchoolID" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="SchoolName" access="ViewOnly" />
+		<field table="U_ASSETTABLE" field="Active" access="ViewOnly" />
+	</access_request>
 </plugin>
