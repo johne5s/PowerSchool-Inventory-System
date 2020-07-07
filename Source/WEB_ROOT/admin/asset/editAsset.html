@@ -80,6 +80,17 @@ $j(document).ready(function(){
 						;]
 							<option value="~(Teachers.LastFirst;t)">~(Teachers.LastFirst;t)</option>
 						[/tlist_sql]
+						
+						<option value="----">----</option>
+						
+						~[tlist_sql;
+							SELECT 
+							LastFirst 
+							FROM Students 
+							WHERE schoolID = ~(curschoolid) order by LastFirst asc
+						;]
+							<option value="~(Students.LastFirst;t)">~(Students.LastFirst;t)</option>
+						[/tlist_sql]
 					</select>
 
 				</td>
