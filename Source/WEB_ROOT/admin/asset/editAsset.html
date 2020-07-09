@@ -82,6 +82,26 @@ $j(document).ready(function(){
 						[/tlist_sql]
 						
 						<option value="----">----</option>
+						~[if#distCheck.district.office]
+							~[tlist_sql;
+							    SELECT 
+							    LastFirst 
+							    FROM Students 
+							    WHERE schoolID != 999999 order by LastFirst asc
+						    ;]
+							    <option value="~(Students.LastFirst;t)">~(Students.LastFirst;t)</option>
+						    [/tlist_sql]
+						[else#distCheck]
+						    ~[tlist_sql;
+							    SELECT 
+							    LastFirst 
+							    FROM Students 
+							    WHERE schoolID = ~(curschoolid) order by LastFirst asc
+						    ;]
+							    <option value="~(Students.LastFirst;t)">~(Students.LastFirst;t)</option>
+						    [/tlist_sql]
+						
+						[/if#distCheck]
 						
 						~[tlist_sql;
 							SELECT 
