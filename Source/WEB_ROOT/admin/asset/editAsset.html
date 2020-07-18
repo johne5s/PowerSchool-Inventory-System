@@ -20,15 +20,16 @@ $j(document).ready(function(){
 </head> 
 <body> 
 	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> >
-	Asset Management
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	Asset
 	~[wc:admin_navigation_css] 
 
 <h1>~[if.~(gpv.assetid)=-1]New[else]Edit[/if] Asset</h1> 
 
 <ul class="tabs">
 	<li class="selected"><a href="assets.html">Asset Management</a></li>
-	<li><a href="return.html?assetid=~(gpv.assetid)">Return</a></li>
+	<li><a href="return.html?assetid=~(gpv.assetid)">Checkin this assest</a></li>
+	<li><a href="repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
 </ul>
 
 <form action="assets.html" method="POST" id="assetform">
@@ -36,7 +37,7 @@ $j(document).ready(function(){
 	<div class="box-round"> 
 		<table class="grid">
 			<tr>
-				<td class="bold">Active</td>
+				<td class="bold" width="10%">Active</td>
 				<td>
 					<select name="[u_assettable]active">
 						~[if.~(gpv.assetid)=-1]
@@ -82,6 +83,7 @@ $j(document).ready(function(){
 						[/tlist_sql]
 						
 						<option value="----">----</option>
+						
 						~[if#distCheck.district.office]
 							~[tlist_sql;
 							    SELECT 
@@ -102,15 +104,6 @@ $j(document).ready(function(){
 						    [/tlist_sql]
 						
 						[/if#distCheck]
-						
-						~[tlist_sql;
-							SELECT 
-							LastFirst 
-							FROM Students 
-							WHERE schoolID = ~(curschoolid) order by LastFirst asc
-						;]
-							<option value="~(Students.LastFirst;t)">~(Students.LastFirst;t)</option>
-						[/tlist_sql]
 					</select>
 
 				</td>
@@ -177,6 +170,12 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
+				<td class="bold">Purchase Price</td>
+				<td>
+					<input type="text" name="[u_assettable]purchaseprice" value="" />
+				</td>
+			</tr>
+			<tr>
 				<td class="bold">CheckOut Date</td>
 				<td>
 					<input type="text" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
@@ -197,7 +196,13 @@ $j(document).ready(function(){
 			<tr>
 				<td class="bold">Device Password</td>
 				<td>
-					<input type="text" name="[u_assettable]DEVICE_PASSWORD" value="" />
+					<input type="text" name="[u_assettable]DEVICE_PASSWORD" value="" /> <font size="1" color=red> NOT Encrypted in database</font>
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Location</td>
+				<td>
+					<input type="text" name="[u_assettable]Asset_Location" value="" />
 				</td>
 			</tr>
 			<tr>

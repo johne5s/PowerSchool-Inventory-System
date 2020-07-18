@@ -39,25 +39,27 @@
 
 		~[TLIST_SQL;
 		   SELECT id,
-				 asset_id,
 				 asset_serial,
 				 assignedto,
 				 asset_notes
 				 FROM u_assettable
 
-				~[if.~(gpv.assetid)=-1]
-				WHERE SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
-				[else]
-				WHERE id = ~(gpv.assetid)
-				[/if]
+				~[if#CheckID.~(gpv.assetid)=-1]
+    				~[if#schoolCheck.is.a.school]
+    				    WHERE SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
+    				[else#schoolCheck]
+    				    WHERE active = '1'
+    				[/if#schoolCheck] 
+				    --SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
+				[else#CheckID]
+				    WHERE id = ~(gpv.assetid)
+				[/if#CheckID]
 
 				; 
 		]
 		
 	<table>
-		<tr>
-			<td align=right><strong>ID : </strong></td><td align=left>~(id)</td>
-		</tr>
+
 		<tr>
 			<td align=right><strong>Bar Code : </strong></td><td align=left>~(asset_id)</td>
 		</tr>

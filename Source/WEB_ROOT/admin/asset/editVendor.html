@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	Vendor Management
+	~[wc:admin_navigation_css] 
+
+	<h1>~[if.~(gpv.vendorid)=-1]New[else]Edit[/if] Vendor</h1> 
+
+	<ul class="tabs">
+		<li><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li class="selected"><a href="vendors.html">Vendors</a></li>
+	</ul>
+	
+	<div class="box-round"> 
+	<form action="vendors.html" method="POST" id="assetform">
+        ~[DirectTable.Select:u_assetvendor;id:~(gpv.vendorid)]
+    	
+    		<table class="grid">
+    		    <tr>
+		            <td width=20%>Company Name</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Name" value="" />
+    				</td>
+    			</tr>
+		            <td>Address</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Address" value="" />
+    				</td>
+    			</tr>
+		            <td>City</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_City" value="" />
+    				</td>
+    			</tr>
+		            <td>State</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_State" value="" />
+    				</td>
+    			</tr>
+		            <td>Zip</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Zip" value="" />
+    				</td>
+    			</tr>
+		            <td>Phone</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Phone" value="" />
+    				</td>
+    			</tr>
+		            <td>Fax</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Fax" value="" />
+    				</td>
+    			</tr>
+		            <td>Email</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Email" value="" />
+    				</td>
+    			</tr>
+		            <td>Contact Name</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_ContactName" value="" />
+    				</td>
+    			</tr>
+		            <td>Notes</td>
+		            <td>
+    					<input type="text" name="[u_assetvendor]Vendor_Notes" value="" />
+    				</td>
+    			</tr>
+		        </tr>
+    		</table>
+    		<div class="button-row">
+			<input type="hidden" name="ac" value="prim" />
+			~[if.~(gpv.vendorid)>0]
+				<button id="deleteButton">Delete</button>
+			[/if]
+			<a href="vendors.html" class="button">Cancel</a>
+			~[submitbutton]
+		</div>
+    		
+    	
+	</form>
+</div>
+	
+	~[wc:admin_footer_css] 
+</body> 
+</html>

@@ -22,6 +22,7 @@
 	<ul class="tabs">
 		<li class="selected"><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
 		<li><a href="assettag.html?assetid=-1">All Tags</a></li>
+		<li><a href="vendors.html">Vendors</a></li>
 	</ul>
 
 	
@@ -36,6 +37,7 @@
 <a class="button" href="assets.html?active=false&sortBy=~(gpv.sortBy)">Show Not Active</a>
 [/if]
 	<tr>
+	    <th>Edit</th>
 		<th>Location<a href="assets.html?active=~(gpv.active)&sortBy=location" class="button">^</a></th>
 		<th>Assigned To<a href="assets.html?active=~(gpv.active)&sortBy=assigned" class="button">^</a></th>
 		<th>Bar Code<a href="assets.html?active=~(gpv.active)&sortBy=assetid" class="button">^</a></th>
@@ -49,8 +51,8 @@
 	</tr>
 	~[tlist_sql;
 		SELECT
+		    id,
 			SchoolName,
-			id,
 			AssignedTo,
 			Asset_ID,
 			Asset_SERIAL,
@@ -61,8 +63,10 @@
 			To_char(ASSET_CHECKINDATE, 'mm/dd/yyyy')
 		FROM u_assettable
 		WHERE ~[if#schoolCheck.is.a.school]SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
-		~[if#notactive.~(gpv.active)=true]
-		AND active = '1' OR active IS NULL
+		~[if#notactive.~(gpv.active)=false]
+		AND active = '1' OR active = '0'
+		[else#notactive]
+		AND active = '1'
 		[/if#notactive]
 		ORDER BY
 		~[if#schoolname.~(gpv.sortBy)=location]
@@ -105,8 +109,9 @@
 
 	;]
 		<tr>
+		    <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
 			<td>~(SchoolName)</td>
-			<td><a href="editAsset.html?assetid=~(id)">~(assignedto)</a></td>
+			<td>~(assignedto)</td>
 			<td>~(Asset_ID)</td>
 			<td>~(Asset_SERIAL)</td>
 			<td>~(Asset_Type)</td>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	Vendor Management
+	~[wc:admin_navigation_css] 
+
+	<h1>Vendors</h1> 
+
+	<ul class="tabs">
+		<li><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li class="selected"><a href="vendors.html">Vendors</a></li>
+	</ul>
+	
+	 <div class="center">
+ 	<a class="button" href="editVendor.html?vendorid=-1">New Vendor</a><br><br>
+ </div>
+ 
+ 	<div class="box-round"> 
+		<table class="grid">
+            <table class="grid" data-pstablefilter="">
+                <tr>
+                    <th></th>
+                    <th>Name</td>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                    <th>Phone</th>
+                    <th>Fax</th>
+                    <th>Email</th>
+                    <th>Contact</th>
+                    <th width="30%">Notes</th>
+                </tr>
+                ~[tlist_sql;
+                        SELECT 
+                            id,
+                            Vendor_Name,
+                            Vendor_Address,
+                            Vendor_City,
+                            Vendor_State,
+                            Vendor_Zip,
+                            Vendor_Phone,
+                            Vendor_Fax,
+                            Vendor_Email,
+                            Vendor_ContactName,
+                            Vendor_Notes
+                        FROM U_AssetVendor
+                        ;
+                    ]
+                    <tr>
+                        <td><a href="editVendor.html?vendorid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
+                        <td>~(Vendor_Name)</td>
+                        <td>~(Vendor_Address)</td>
+                        <td>~(Vendor_City)</td>
+                        <td>~(Vendor_State)</td>
+                        <td>~(Vendor_Zip)</td>
+                        <td>~(Vendor_Phone)</td>
+                        <td>~(Vendor_Fax)</td>
+                        <td>~(Vendor_Email)</td>
+                        <td>~(Vendor_ContactName)</td>
+                        <td>~(Vendor_Notes)</td>
+                    </tr>
+                [/tlist_sql]
+            </table>
+        </div>
+    </div>
+	
+	~[wc:admin_footer_css] 
+</body> 
+</html>
