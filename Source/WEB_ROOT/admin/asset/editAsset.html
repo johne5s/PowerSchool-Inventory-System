@@ -20,7 +20,7 @@ $j(document).ready(function(){
 </head> 
 <body> 
 	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)" target="_top">Asset Management </a> >
 	Asset
 	~[wc:admin_navigation_css] 
 
@@ -37,24 +37,22 @@ $j(document).ready(function(){
 	<div class="box-round"> 
 		<table class="grid">
 			<tr>
-				<td class="bold" width="10%">Active</td>
+				<td class="bold" width="10%">Active Status</td>
 				<td>
 					<select name="[u_assettable]active">
 						~[if.~(gpv.assetid)=-1]
-							<option value="1">Yes</option>
+					        <option value="0">Inactive</option>
+							<option value="1" selected>Active</option>
+							<option value="2">Lost</option>
+							<option value="3">Recycled</option>
 						[else]
-							~[tlist_sql;
-								SELECT active
-								FROM u_assettable
-								WHERE id = ~(gpv.assetid)
-							;]
-								<option value="~(active)">~(active)</option>
-							[/tlist_sql]
+		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
+                            <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
+                            <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
+                            <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
+								
 						[/if]
-					<option value="1">Yes</option>
-					<option value="0">No</option>
 					</select>
-					1 = Yes, 0 = No
 				</td>
 			</tr>
 			<tr>

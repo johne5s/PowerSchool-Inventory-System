@@ -20,17 +20,19 @@
 	<h1>Repair Log</h1> 
 
 	<ul class="tabs">
-		<li class="selected"><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li><a href="assets.html">Asset Management</a></li>
 		<li><a href="editAsset.html?assetid=~(gpv.assetid)">Edit Assest</a></li>
+		<li class="selected"><a href="repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
 		<li><a href="vendors.html">Vendors</a></li>
 	</ul>
 	
 	 <div class="center">
- 	<a class="button" href="editRepairLog.html?assetid=~(gpv.assetid)&repairlogid=-1">New Repair Log Entry</a><br><br>
+     ~[if.~(gpv.assetid)>-1]<a class="button" href="editRepairLog.html?assetid=~(gpv.assetid)&repairlogid=-1">New Repair Log Entry</a><br><br>[/if]
+ 	
  </div>
 
 	<div class="box-round"> 
-
+    ~[if.~(gpv.assetid)>-1]
 		<table class="grid">
             <tr>
                 <th class="bold" width="5%">Log #</th> <th>Repair Date</th> <th>Damaged Part</th> <th>Repair Cost</th> <th>Vendor</th> <th>NOTES</th>
@@ -63,7 +65,7 @@
                 </tr>
             [/tlist_sql]
         </table>
-		
+	[/if]	
 		
 	</div> 
 </form>

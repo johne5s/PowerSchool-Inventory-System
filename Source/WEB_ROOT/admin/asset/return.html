@@ -13,7 +13,7 @@
 </head> 
 <body> 
 	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html" target="_top">Asset Management </a> >
 	Asset
 	~[wc:admin_navigation_css] 
 
@@ -24,33 +24,41 @@
 		<li><a href="editAsset.html?assetid=~(gpv.assetid)">Edit Asset</a></li>
 	</ul>
 	
-~[if.~(gpv.assetid)>0]<h1>Edit Asset Notes</h1>
+~[if.~(gpv.assetid)>0]<h1>Asset Return Notes</h1>
 	<form action="assets.html" method="POST" id="assetform">
 	~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
 		<div class="box-round"> 
-			~[tlist_sql;
-				SELECT asset_id
-				FROM u_assettable
-				WHERE id = ~(gpv.assetid)
-			;]
+
 			<table class="grid">
 				<tr>
 				
-					<td class="bold">Bar Code</td>
+					<td class="bold">Active Status</td>
 					<td class="bold" width="80%">NOTES</td>
 					<td>Check In Date</td>
+					<td></td>
 				</tr>
 				<tr>
-					<td>~(asset_id)</td>
+					<td>
+    					<select name="[u_assettable]active">
+    						
+    		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
+                                <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
+                                <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
+                                <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
+    								
+    					
+    					</select>
+    				</td>
 					<td>
 						<textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="15" cols="100" wrap="soft"></textarea>
 					</td>
 					<td><input type="text" name="[u_assettable]ASSET_CHECKINDATE" value="" /><td>
 				</tr>
 			</table>
-			[/tlist_sql]
-			<input type="hidden" id="CheckOutDate" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
+		
+			
 			<div class="button-row">
+			    <input type="hidden" id="CheckOutDate" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
 				<input type="hidden" name="[u_assettable]schoolid" value="~(curschoolid)" />
 				<input type="hidden" name="ac" value="prim" />
 				<a href="assets.html" class="button">Cancel</a>

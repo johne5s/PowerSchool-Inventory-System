@@ -52,6 +52,10 @@
 	~[tlist_sql;
 		SELECT
 		    id,
+		    CASE
+                WHEN active = '1' THEN '#444'
+                ELSE '#FFADAD'
+            END AS active,
 			SchoolName,
 			AssignedTo,
 			Asset_ID,
@@ -64,7 +68,7 @@
 		FROM u_assettable
 		WHERE ~[if#schoolCheck.is.a.school]SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
 		~[if#notactive.~(gpv.active)=false]
-		AND active = '1' OR active = '0'
+		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
 		[else#notactive]
 		AND active = '1'
 		[/if#notactive]
@@ -110,13 +114,13 @@
 	;]
 		<tr>
 		    <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
-			<td>~(SchoolName)</td>
-			<td>~(assignedto)</td>
-			<td>~(Asset_ID)</td>
-			<td>~(Asset_SERIAL)</td>
-			<td>~(Asset_Type)</td>
-			<td>~(Asset_MANUFACTURE)</td>
-			<td>~(Asset_MODEL)</td>
+			<td><font color="~(active)">~(SchoolName)</font></td>
+			<td><font color="~(active)">~(assignedto)</font></td>
+			<td><font color="~(active)">~(Asset_ID)</font></td>
+			<td><font color="~(active)">~(Asset_SERIAL)</font></td>
+			<td><font color="~(active)">~(Asset_Type)</font></td>
+			<td><font color="~(active)">~(Asset_MANUFACTURE)</font></td>
+			<td><font color="~(active)">~(Asset_MODEL)</font></td>
 			<th>~(ASSET_CHECKOUTDATE;t;if.blank.then=<form action="assets.html" method="POST" class="checkoutBtnForm">
 			    <input type="hidden" class="CheckOutDateBtn" id="CheckOutDate" name="CF-[u_assettable:~(id)]ASSET_CHECKOUTDATE$format=date" value="">
 			    <input type="hidden"  name="CF-[u_assettable:~(id)]ASSET_CHECKINDATE$format=date" value=" ">
