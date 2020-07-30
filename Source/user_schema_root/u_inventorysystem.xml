@@ -52,5 +52,6 @@
         <field name="Asset_Type" type="String" length="128"/>
         <field name="Asset_Notes" type="String" length="2000"/>
         <field name="Asset_PurchaseDate" type="Date"/>
+		<field name="Asset_MacAddress" type="String" length="17"/>
     </extendedTable>
 </psExtension>
