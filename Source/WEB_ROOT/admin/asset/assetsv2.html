@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+		barcode
+        {
+            font-family: 'Libre Barcode 39 Text', cursive;
+            font-size: 30px;
+        }
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+	    
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> >
+	Asset Management
+	~[wc:admin_navigation_css] 
+
+	<h1>Asset Management</h1> 
+
+	<ul class="tabs">
+		<li class="selected"><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li><a href="assettag.html?assetid=-1">All Tags</a></li>
+		<li><a href="vendors.html">Vendors</a></li>
+	</ul>
+
+	
+ <div class="center">
+ 	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
+ </div>
+
+<table id="assetTable" class="grid" data-pstablefilter="">
+    ~[if.~(gpv.showInactive)=true]
+    <a class="button" href="assetsv2.html?showInactive=false&sortBy=~(gpv.sortBy)">Show Only Active</a>
+    [else]
+    <a class="button" href="assetsv2.html?showInactive=true&sortBy=~(gpv.sortBy)">Show Not Active</a>
+    [/if]
+    <a class="button" href="../district/assets/home.html">Settings</a>
+
+</table>
+~[wc:admin_footer_css] 
+</body>
+</html>
+
+
+<script> 
+    $j(document).ready(function() 
+    { 
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var currentDate = month + "/" + day + "/" + year;
+        $j('.CheckOutDateBtn').val(currentDate); 
+    }); 
+    
+    
+//get the POST data
+    var $_GET = {},
+    args = location.search.substr(1).split(/&/);
+    for (var i=0; i<args.length; ++i) {
+        var tmp = args[i].split(/=/);
+        if (tmp[0] != "") {
+            $_GET[decodeURIComponent(tmp[0])] = decodeURIComponent(tmp.slice(1).join("").replace("+", " "));
+        }
+    }
+
+
+$j.ajax(
+	{
+		url: "getAssets.html", 
+		dataType: "json",
+		success: function(result)
+		{
+		    //console.log(result);
+
+			$j.each(result.assets, function(asset_key, asset)
+			{
+				//check for which fields are flagged to view or not to view
+				for(var i = 0; i < 18; i++) 
+				{
+                    var name = Object.keys(result.settings)[i];
+                    //console.log(Object.keys(result.settings)[i] + " : " + result.settings[name] );
+                    //console.log(name + " : " + result.settings[name]);
+                    if(result.settings[name] == "")
+				    {
+				        //console.log("null found" + name);
+				        delete asset[name];
+				    }else
+				    {
+				        //console.log("Add to table : " + name);
+				    }
+                }
+                
+                if(asset.Asset_ACTIVE == "1" || $_GET.showInactive == "true")
+                {
+                    addRow('assetTable', asset);
+                }
+			});
+		}
+	});
+	
+function addRow(tableID, asset) {
+//console.log(asset.ID);
+      // Get a reference to the table
+      let tableRef = document.getElementById(tableID);
+    
+      // Insert a row at the end of the table
+      let newRow = tableRef.insertRow(-1);
+    
+        var cellID = 0;
+      // Insert a cell in the row at index 0
+      $j.each(asset, function(fieldName, value)
+      {
+        if(fieldName == "Asset_ACTIVE")
+        {
+            return;
+        }
+          let newCell = newRow.insertCell(cellID);
+    
+          if(asset.Asset_ACTIVE == "1")
+          {
+              if(cellID == 0)
+              {
+                  newCell.innerHTML = '<a href="editAsset.html?assetid='+ asset.ID + '" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a>';
+              }else
+              {
+                  if(fieldName == "Asset_BARCODE")
+                  {
+                    newCell.innerHTML = "<font color='#444'><barcode>"+value+"</barcode></font>"
+                      
+                  }else
+                  {
+                    newCell.innerHTML = "<font color='#444'>"+ value+"</font>";
+                  }
+              }
+          }
+          else
+          {
+              if(cellID == 0)
+              {
+                  newCell.innerHTML = '<a href="editAsset.html?assetid='+ asset.ID + '" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a>';
+              }else
+              {
+                  if(fieldName == "Asset_BARCODE")
+                  {
+                    newCell.innerHTML = "<font color='#FFADAD'><barcode>"+value+"</barcode></font>"
+                      
+                  }else
+                  {
+                    newCell.innerHTML = "<font color='#FFADAD'>"+value+"</font>";
+                  }
+              }
+          }
+          
+        cellID++;
+      });
+    
+
+}
+
+
+</script>
+
+

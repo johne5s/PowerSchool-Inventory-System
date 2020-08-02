@@ -2,15 +2,22 @@
 <html>
 <head>
 	<title>Asset Management</title>
+	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
 	~[wc:commonscripts] 
 	<style>
 		.grid{
 			margin-top:20px;
 		}
+		barcode
+        {
+            font-family: 'Libre Barcode 39 Text', cursive;
+            font-size: 30px;
+        }
 	</style>
 	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
 	<link href="/images/css/print.css" rel="stylesheet" media="print">
 </head> 
+	    
 <body> 
 	~[wc:admin_header_css] 
 	<a href="/admin/home.html" target="_top">Start Page </a> >
@@ -36,6 +43,9 @@
 [else]
 <a class="button" href="assets.html?active=false&sortBy=~(gpv.sortBy)">Show Not Active</a>
 [/if]
+
+<a class="button" href="assetsv2.html">Experimental</a>
+    <thead>
 	<tr>
 	    <th>Edit</th>
 		<th>Location<a href="assets.html?active=~(gpv.active)&sortBy=location" class="button">^</a></th>
@@ -49,6 +59,10 @@
 		<th>CHECKIN DATE<a href="assets.html?active=~(gpv.active)&sortBy=indate" class="button">^</a></th>
 		<th>Print Tag</th>
 	</tr>
+	</thead>
+	<tbody>
+	    
+
 	~[tlist_sql;
 		SELECT
 		    id,
@@ -116,7 +130,7 @@
 		    <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
 			<td><font color="~(active)">~(SchoolName)</font></td>
 			<td><font color="~(active)">~(assignedto)</font></td>
-			<td><font color="~(active)">~(Asset_ID)</font></td>
+			<td><font color="~(active)"><barcode>~(Asset_ID)</barcode></font></td>
 			<td><font color="~(active)">~(Asset_SERIAL)</font></td>
 			<td><font color="~(active)">~(Asset_Type)</font></td>
 			<td><font color="~(active)">~(Asset_MANUFACTURE)</font></td>
@@ -131,6 +145,7 @@
 			<th><a href="assettag.html?assetid=~(id)" class="button">Tag</a></th>
 		</tr>
 	[/tlist_sql]
+	</tbody>
 </table>
 
 
@@ -148,6 +163,8 @@
         //name="CF-[u_assettable:58666]ASSET_CHECKOUTDATE$format=date"
         //name="EF-003~(sectionsdcid)-u_sections_extension.assessment_names"
     }); 
+    
+    
 </script>
 
 
@@ -165,3 +182,5 @@ $j(document).on(function() {
 	~[wc:admin_footer_css] 
 </body> 
 </html>
+
+

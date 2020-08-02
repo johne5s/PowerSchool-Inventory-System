@@ -1,0 +1,10 @@
+<script type="text/javascript">
+    $j('.box-round').append('<h2>Inventory System</h2>'+
+								'<table class="linkDescList" id="table_InventorySystem">'+
+									'<tr>'+
+										'<td><a href="/admin/district/assets/home.html">Inventory System Settings</a></td>'+
+										'<td>settings for customizing the Inventory System</td>'+
+									'</tr>'+
+								'</table>'
+							);
+</script>

@@ -1,0 +1,19 @@
+<!-- create new link on left nav menu for the Basic Inventory, John Scatena, jscatena@tbaisd.org -->
+
+<script>
+
+  $j(document).ready(function()
+    {
+		$j("ul#left_nav_functions").append("<li><a href='/admin/asset/assets.html?active=true'>Inventory System</a></li>");
+		 
+		$j("ul#left_nav_functions li").sort(function(a,b)
+			{
+				if($j(a).text() < $j(b).text()) return -1;
+				if($j(a).text() > $j(b).text()) return 1;
+				return 0;
+			}
+		).appendTo("ul#left_nav_functions");
+    }
+  );
+
+</script>

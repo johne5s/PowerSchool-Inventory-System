@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Asset Tag</title>
-	
+	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
 	<style>
 		.grid{
 			margin-top:20px;
@@ -16,6 +16,11 @@
 		padding: 20px;
 		text-align: center;
 	}
+	barcode
+    {
+        font-family: 'Libre Barcode 39 Text', cursive;
+        font-size: 40px;
+    }
 	</style>
 	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
 	<link href="/images/css/print.css" rel="stylesheet" media="print">
@@ -38,7 +43,7 @@
 
 
 		~[TLIST_SQL;
-		   SELECT id,
+		   SELECT asset_id,
 				 asset_serial,
 				 assignedto,
 				 asset_notes
@@ -61,7 +66,7 @@
 	<table>
 
 		<tr>
-			<td align=right><strong>Bar Code : </strong></td><td align=left>~(asset_id)</td>
+			<td align=right><strong>Bar Code : </strong></td><td align=left><barcode>~(asset_id)</barcode></td>
 		</tr>
 		<tr>
 			<td align=right><strong>Serial : </strong></td><td align=left>~(asset_serial)</td>

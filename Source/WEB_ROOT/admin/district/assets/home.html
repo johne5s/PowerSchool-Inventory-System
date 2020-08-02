@@ -1,0 +1,178 @@
+~[if#id.~(gpv.action)=complete]
+
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Inventory System Settings</title>
+~[wc:commonscripts]
+
+<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+<style>
+	.headerSection{
+		text-align:center;
+		font-weight:bold;
+		text-decoration:underline;
+	}
+</style>
+</head>
+<body>
+
+~[wc:admin_header_css]
+<a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; 
+Inventory System Settings
+~[wc:admin_navigation_css]
+
+
+
+<h1>Inventory System Settings</h1>
+
+<div class ="box-round">
+    Check the boxes of the fields you want to see on the Asset Management page
+    
+    ~[if#checkid.~(gpv.id)=-1]
+    <form action="home.html" method="POST" id="GetStarted">
+        ~[DirectTable.Select:u_assetsettings;id:~(gpv.id)]
+        <input type="hidden" name="[u_assetsettings]view_AssignedTo" value="1">
+        <input type="hidden" name="[u_assetsettings]view_Asset_Location" value="1">
+        <input type="hidden" name="[u_assetsettings]view_asset_id" value="1">
+        <input type="hidden" name="[u_assetsettings]view_Asset_Serial" value="1">
+        <input type="hidden" name="[u_assetsettings]view_Asset_Type" value="1">
+        <input type="hidden" name="[u_assetsettings]view_Asset_Manufacture" value="1">
+        <input type="hidden" name="[u_assetsettings]view_Asset_Model" value="1">
+        <input type="hidden" name="ac" value="prim" />
+        ~[submitbutton]
+    </form>
+    
+    <script>
+        document.querySelectorAll('#btnSubmit')[0].innerText = "Get Started";
+    </script>
+    [else#checkid]
+    
+    <form action="home.html" method="POST" id="settings">
+    ~[DirectTable.Select:u_assetsettings;id:~(gpv.id)]
+        <table class="grid">
+            <tr>
+                <td width="10%">Asset ID</td>
+                <td><input type="hidden" name="[u_assetsettings]view_asset_id" value="1"></td>
+            </tr>
+            <tr>
+                <td width="10%">Assigned To</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_AssignedTo" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">School Name</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_SchoolName" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Bar Code</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_BarCode" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Type</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Type" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Manufacture</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Manufacture" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Model</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Model" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Serial</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Serial" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset MacAddress</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_MacAddress" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Purchase Date</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_PurchaseDate" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Purchase Purchase Price</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_PurchasePrice" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Checkout Date</td>
+                <td><input type="hidden" name="[u_assetsettings]view_Asset_CheckoutDate" value="1"></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset CheckIn Date</td>
+                <td><input type="hidden" name="[u_assetsettings]view_Asset_CheckInDate" value="1"></td>
+            </tr>
+            <tr>
+                <td width="10%">Device Username</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Device_Username" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Device Password</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Device_Password" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Location</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Location" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Notes</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Notes" value=""></td>
+            </tr>
+            
+            
+        </table>
+    
+        <div class="button-row">
+            <input type="hidden" name="ac" value="prim" />
+    
+            ~[submitbutton]
+        </div>
+    </form>
+	[/if#checkid]
+
+
+</div>
+</body>
+</html>
+
+
+[/if#id]
+
+~[if#pageaction.~(gpv.action)=]
+~[wc:commonscripts]
+<script type="text/javascript" language="JavaScript">
+//console.log("load id from ajax");
+
+$j.ajax("ajaxGet.html",
+			{
+				"dataType": "text",
+				"success": function(response)
+					{
+					    //console.log(response.trim());
+					    response = response.trim();
+					    if(response.length > 0)
+					    {
+					        myid = response;
+					    }else
+					    {
+					        myid = -1;
+					    }
+					    console.log(myid);
+					    
+					    var baseurl = document.URL; 
+                        if (baseurl.indexOf('?') > -1) { baseurl = baseurl.substring( 0,baseurl.indexOf('?') ); }
+                        var reloadPage = baseurl+'?action=complete&id='+myid;
+                        //console.log("reload the page : " + reloadPage);
+                        window.location = reloadPage;
+					}
+			}
+		);	
+
+</script>
+
+[/if#pageaction]
+
+

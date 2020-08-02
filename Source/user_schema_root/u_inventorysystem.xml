@@ -15,6 +15,25 @@
         <field name="CHECKOUT_DATE" type="Date"/>
         <field name="RETURN_DATE" type="Date"/>
     </extendedTable>
+    <extendedTable type="standalone" dbTableName="U_ASSETSETTINGS" childName="U_ASSETSETTINGS" comment="">
+        <field name="view_Asset_CheckInDate" type="Boolean" defaultValue="1"/>
+        <field name="view_asset_id" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_Notes" type="Boolean" defaultValue="1"/>
+        <field name="view_AssignedTo" type="Boolean" defaultValue="1"/>
+        <field name="view_PurchasePrice" type="Boolean" defaultValue="1"/>
+        <field name="view_SchoolName" type="Boolean" defaultValue="1"/>
+        <field name="View_Asset_BarCode" type="Boolean"/>
+        <field name="view_Asset_Model" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_Serial" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_PurchaseDate" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_Type" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_MacAddress" type="Boolean" defaultValue="1"/>
+        <field name="view_Device_Username" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_CheckoutDate" type="Boolean" defaultValue="1"/>
+        <field name="view_Device_Password" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_Location" type="Boolean" defaultValue="1"/>
+        <field name="view_Asset_Manufacture" type="Boolean" defaultValue="1"/>
+    </extendedTable>
     <extendedTable type="standalone" dbTableName="U_AssetVendor" childName="U_AssetVendor" comment="Vendor database">
         <field name="Vendor_Phone" type="String" length="128"/>
         <field name="Vendor_Fax" type="String" length="128"/>
@@ -47,11 +66,11 @@
         <field name="Device_Username" type="String" length="200"/>
         <field name="PurchasePrice" type="Double"/>
         <field name="SchoolName" type="String" length="200"/>
+        <field name="Asset_MacAddress" type="String" length="17" comment="xx:xx:xx:xx:xx:xx"/>
         <field name="Device_Password" type="String" length="200"/>
         <field name="Schoolid" type="Integer"/>
         <field name="Asset_Type" type="String" length="128"/>
         <field name="Asset_Notes" type="String" length="2000"/>
         <field name="Asset_PurchaseDate" type="Date"/>
-		<field name="Asset_MacAddress" type="String" length="17"/>
     </extendedTable>
 </psExtension>
