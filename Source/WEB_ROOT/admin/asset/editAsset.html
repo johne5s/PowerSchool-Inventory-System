@@ -35,10 +35,10 @@ $j(document).ready(function(){
 
 <form action="assets.html" method="POST" id="assetform">
 ~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
-	<div class="box-round"> 
+	<div class="box-round">
 		<table class="grid">
 			<tr>
-				<td class="bold" width="10%">Active Status</td>
+				<td class="bold" width="15%">Active Status</td>
 				<td>
 					<select name="[u_assettable]active">
 						~[if.~(gpv.assetid)=-1]
@@ -57,9 +57,34 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
+				<td class="bold">School Name</td>
+				<td>
+					<select name="[u_assettable]schoolname">
+					~[if.~(gpv.assetid)=-1]
+						<option value="~[schoolname]">~[schoolname]</option>
+					[else]
+						~[tlist_sql;
+							SELECT schoolname
+							FROM u_assettable
+							WHERE id = ~(gpv.assetid)
+						;]
+							<option value="~(schoolname)">~(schoolname)</option>
+						[/tlist_sql]
+					[/if]
+					~[tlist_sql;
+							SELECT 
+								name
+							FROM schools
+						;]
+							<option value="~(schoolname)">~(schoolname)</option>
+						[/tlist_sql]
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<td class="bold">Assigned To</td>
 				<td>
-					<select name="[u_assettable]assignedTo">
+					<select name="[u_assettable]assignedTo" id="assignedToDropdown">
 						~[if.~(gpv.assetid)=-1]
 							<option value="UnAssigned">UnAssigned</option>
 						[else]
@@ -104,32 +129,25 @@ $j(document).ready(function(){
 						
 						[/if#distCheck]
 					</select>
-
+                    <input type="text" id="AssignedTo_dcid" name="[u_assettable]AssignedTo_dcid" value="" readonly />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">School Name</td>
+				<td class="bold">Purchase Date</td>
 				<td>
-					<select name="[u_assettable]schoolname">
-					~[if.~(gpv.assetid)=-1]
-						<option value="~[schoolname]">~[schoolname]</option>
-					[else]
-						~[tlist_sql;
-							SELECT schoolname
-							FROM u_assettable
-							WHERE id = ~(gpv.assetid)
-						;]
-							<option value="~(schoolname)">~(schoolname)</option>
-						[/tlist_sql]
-					[/if]
-					~[tlist_sql;
-							SELECT 
-								name
-							FROM schools
-						;]
-							<option value="~(schoolname)">~(schoolname)</option>
-						[/tlist_sql]
-					</select>
+					<input type="text" name="[u_assettable]asset_purchasedate" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Purchase Price</td>
+				<td>
+					<input type="text" name="[u_assettable]purchaseprice" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">PO Number</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_PO_Number" value="" />
 				</td>
 			</tr>
 			<tr>
@@ -159,7 +177,7 @@ $j(document).ready(function(){
 			<tr>
 				<td class="bold">Serial</td>
 				<td>
-					<input type="text" name="[u_assettable]asset_serial" value="" />
+					<input type="text" name="[u_assettable]asset_serial" value="" id="serialInput" onkeyup="checkForDup()" /><div id="serialDupWarning" style="display:none"><font size="1" color=red>Duplicate Serial Number Found!</font></div>
 				</td>
 			</tr>
 			<tr>
@@ -169,27 +187,27 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Purchase Date</td>
+				<td class="bold">Location</td>
 				<td>
-					<input type="text" name="[u_assettable]asset_purchasedate" value="" />
+					<input type="text" name="[u_assettable]Asset_Location" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Purchase Price</td>
+				<td class="bold">Accessory 1</td>
 				<td>
-					<input type="text" name="[u_assettable]purchaseprice" value="" />
+					<input type="text" name="[u_assettable]Asset_Accessory_1" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">CheckOut Date</td>
+				<td class="bold">Accessory 2</td>
 				<td>
-					<input type="text" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
+					<input type="text" name="[u_assettable]Asset_Accessory_2" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">CheckIn Date</td>
+				<td class="bold">Accessory 3</td>
 				<td>
-					<input type="text" name="[u_assettable]ASSET_CHECKINDATE" value="" />
+					<input type="text" name="[u_assettable]Asset_Accessory_3" value="" />
 				</td>
 			</tr>
 			<tr>
@@ -205,15 +223,21 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Location</td>
+				<td class="bold">Notes</td>
 				<td>
-					<input type="text" name="[u_assettable]Asset_Location" value="" />
+					<textarea type="textarea" form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="10" cols="35" wrap="soft"></textarea>
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Notes</td>
+				<td class="bold">CheckOut Date</td>
 				<td>
-					<textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="10" cols="35" wrap="soft"></textarea>
+					<input type="text" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">CheckIn Date</td>
+				<td>
+					<input type="text" name="[u_assettable]ASSET_CHECKINDATE" value="" />
 				</td>
 			</tr>
 		</table>
@@ -240,3 +264,59 @@ $j(document).ready(function(){
 	~[wc:admin_footer_css] 
 </body> 
 </html>
+
+<script>
+$j('#assignedToDropdown').change(function(){
+	    //run Ajax to get the dcid
+	    var url = "getDCID.html?name=" + $j('#assignedToDropdown :selected').val() + "&schoolid=~(curschoolid)";
+	    $j.ajax(
+	{
+		url: url, 
+		dataType: "text",
+		success: function(result)
+		{
+		    //result.trim();
+		    document.getElementById("AssignedTo_dcid").value = result.trim();
+		}
+	});
+});
+
+
+function checkForDup()
+{
+    var serial = document.getElementById("serialInput").value
+
+
+    $j.ajax(
+	{
+		url: "checkDupSerial.html?serial=" + serial + "&assetid=" + ~(gpv.assetid), 
+		dataType: "text",
+		success: function(result)
+		{
+            
+            var warning = document.getElementById("serialDupWarning");
+            
+			if(result.length > 0)
+			{
+				warning.style.display = "block";
+			}else
+			{
+				warning.style.display = "none";
+			}
+		}
+	});
+}
+
+
+var check = function(){
+        if($j('.serialInput')){
+            // run when condition is met
+            checkForDup();
+        }
+        else {
+            setTimeout(check, 100); // check again in a second
+        }
+    }
+
+check();//run once at load time
+</script>

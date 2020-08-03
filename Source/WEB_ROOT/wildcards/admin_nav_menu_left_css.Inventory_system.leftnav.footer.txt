@@ -4,7 +4,7 @@
 
   $j(document).ready(function()
     {
-		$j("ul#left_nav_functions").append("<li><a href='/admin/asset/assets.html?active=true'>Inventory System</a></li>");
+		$j("ul#left_nav_functions").append("<li><a href='/admin/asset/assets.html?showInactive=false'>Inventory System</a></li>");
 		 
 		$j("ul#left_nav_functions li").sort(function(a,b)
 			{

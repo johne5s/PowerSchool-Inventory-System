@@ -1,0 +1,18 @@
+~[if#nameCheck.~(gpv.name)=]
+0
+[else#nameCheck]
+~[tlist_sql;
+Select 
+dcid
+FROM Teachers teacher
+where teacher.lastfirst = '~(gpv.name)'
+AND teacher.schoolid = '~(gpv.schoolid)'
+;]~(dcid)[/tlist_sql]
+~[tlist_sql;
+Select 
+dcid
+FROM students stu
+where stu.lastfirst = '~(gpv.name)'
+AND stu.schoolid = '~(gpv.schoolid)'
+;]~(dcid)[/tlist_sql]
+[/if#nameCheck]

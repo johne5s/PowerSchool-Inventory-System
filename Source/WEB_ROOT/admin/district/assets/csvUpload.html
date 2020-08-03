@@ -1,0 +1,355 @@
+<html>
+<head>
+    <title>Inventory System Importer</title>
+    ~[wc:commonscripts]
+    
+    <link href="/images/css/screen.css" rel="stylesheet" media="screen">
+    <link href="/images/css/print.css" rel="stylesheet" media="print">
+</head>
+<script src="psQuery/psQuery.js"></script>
+<script type="text/javascript">
+
+var importRows;
+
+    function handleFiles(files) 
+    {
+        // Check for the various File API support.
+        if (window.FileReader) {
+            // FileReader are supported.
+            getAsText(files[0]);
+        } else {
+            alert('FileReader are not supported in this browser.');
+        }
+    }
+
+    function getAsText(fileToRead) 
+    {
+        var reader = new FileReader();
+        // Read file into memory as UTF-8      
+        reader.readAsText(fileToRead);
+        // Handle errors load
+        reader.onload = loadHandler;
+        reader.onerror = errorHandler;
+    }
+
+    function loadHandler(event) 
+    {
+        var csv = event.target.result;
+        processData(csv);
+    }
+
+    function processData(csv) 
+    {
+        var allTextLines = csv.split(/\r\n|\n/);
+        var lines = [];
+        
+        for (var i=0; i<allTextLines.length; i++) {
+            var data = allTextLines[i].split(/\t/);
+                var tarr = [];
+                for (var j=0; j<data.length; j++) {
+                    tarr.push(data[j]);
+                }
+                lines.push(tarr);
+        }
+        //console.log(lines.length);
+        
+        //store the lines to import once the button is clicked
+        importRows = lines;
+      
+        createHeaderRow(lines[0]); //create the header row
+        for (var i=1; i<lines.length; i++) // i starts at 1 to ignor the header
+        {
+          //every line needs to but pushed to the form
+          addRow(lines[i]);
+        }
+
+        //document.forms["assetform"].submit();
+        showImportBtn();
+    }
+
+    function errorHandler(evt) 
+    {
+        if(evt.target.error.name == "NotReadableError") {
+          alert("Canno't read file !");
+        }
+    }
+    
+    function addRow(asset) 
+    {
+        // Get a reference to the table
+        let tableRef = document.getElementById('assetTable');
+        
+        // Insert a row at the end of the table
+        let newRow = tableRef.insertRow(-1);
+        var cellID = 0;
+        
+        // Insert a cell in the row at index 0
+        $j.each(asset, function(fieldName, value)
+        {
+        //console.log(fieldName + " : " + value);
+        
+             //console.log(value[i]);
+             let newCell = newRow.insertCell(cellID);
+             newCell.innerHTML = value;
+             cellID++;
+        
+        });
+    }
+
+    function createHeaderRow(asset)
+    {
+        var table = document.getElementById("assetTable");
+        var tr = document.createElement("tr");
+        var cell =0;
+        //put this in a loop
+        //console.log(asset.length);
+        $j.each(asset, function(fieldName, value)
+        {
+            //console.log("switch : " + value);
+            switch (cell) 
+            {
+    			case 0 :
+                    value = "ID";
+                    break;
+    			case 1 :
+                    value = "Active";
+                    break;
+                case 2 :
+                    value = "SchoolName";
+                    break;
+                case 3 :
+                    value = "SchoolId";
+                    break;
+                case 4 :
+                    value = "AssignedTo";
+                    break;
+                case 5 :
+                    value = "AssignedTo_dcid";
+                    break;
+    			case 6 :
+                    value = "PurchaseDate";
+                    break;
+                case 7 :
+                    value = "PurchasePrice";
+                    break;
+    			case 8 :
+                    value = "PO_Number";
+                    break;
+                case 9 :
+                    value = "BarCode";
+                    break;
+                case 10 :
+                    value = "Asset_Type";
+                    break;
+                case 11 :
+                    value = "Asset_Manufacture";
+                    break;
+                case 12 :
+                    value = "Asset_Model";
+                    break;
+                case 13 :
+                    value = "Asset_Serial";
+                    break;
+                case 14 :
+                    value = "Asset_MacAddress";
+                    break;
+                case 15 :
+                    value = "Asset_Location";
+                    break;
+                case 16 :
+                    value = "Asset_Accessory_1";
+                    break;
+                case 17 :
+                    value = "Asset_Accessory_2";
+                    break;
+                case 18 :
+                    value = "Asset_Accessory_3";
+                    break;
+    			case 19 :
+                    value = "DeviceUsername";
+                    break;
+                case 20 :
+                    value = "DevicePassword";
+                    break;
+                case 21 :
+                    value = "Asset_Notes";
+                    break;
+                case 22 :
+                    value = "Asset_CheckOutDate";
+                    break;
+                case 23 :
+                    value = "Asset_CheckInDate";
+                    break;
+                default :
+                    value = "not found";
+                    break;
+            }
+            cell++;
+            
+    
+            var th = document.createElement("th");
+            th.innerText = value;
+            tr.appendChild(th);
+        });
+    
+        table.appendChild(tr); 
+    }
+        
+</script>
+    
+    
+
+<body>
+    ~[wc:admin_header_css]
+    <a href="/admin/home.html" target="_top">~[text:psx.html.admin_reports.runreports.start_page]</a> &gt; 
+    Inventory System Settings
+    ~[wc:admin_navigation_css]
+    
+    <h1>Inventory System Uploader</h1>
+    <h1>Currently under development, <font color="red">Testing with Users</font></h1>
+    ~[x:insertfile;tabs.html]
+    
+    <div class ="box-round">
+
+        <input type="file" class="button" id="csvFileInput" onchange="handleFiles(this.files)" accept=".csv">
+        <br><br>
+        <a class="button" href="BIS_Import_Sample.csv"> - Sample File -</a>
+        <br><br>
+        <div id="confirmBtn" style="display: none;"><center><input type="button" onclick="importTheRecords()" value="Click here to import these records!"><br>Review the data below.</center></div>
+        <table id="assetTable" class='grid'>
+        
+        </table>
+    
+    </div>
+
+    <div class ="box-round">
+        <ul>
+          <li>File type is csv</li>
+          <li>File must be tab delimited</li>
+          <li>If the ID field has a number grater then 0, the importer will Update an exsisting record or create a new record with that number</li>
+          <li>If the ID field is blank or a 0, the importer will create a new record</li>
+          <li>Remove all quotes,  they mess up the json</li>
+          <li>Dates must be in this format : YYYY/MM/DD</li>
+        </ul>
+        I have created an export plugin,  This way you can make a backup of the data befor you do an import. <a class="button" href="https://support.powerschool.com/exchange/view.action?download.id=986">Download Here</a>
+    </div>
+</body>
+</html>
+
+<script>
+    function showImportBtn() 
+    {
+        var x = document.getElementById("confirmBtn");
+        x.style.display = "block";
+    }
+    
+    function hideImportBtn() 
+    {
+        var x = document.getElementById("confirmBtn");
+        x.style.display = "none";
+    }
+    
+    function importTheRecords()
+    {
+        console.log("Import! are you sure, It's to late, you clicked the button!!!");
+        for (var i=1; i<importRows.length; i++) // i starts at 1 to ignor the header
+        {
+          //every line needs to be pushed to the database
+          addRecordToDB(importRows[i]);
+          //console.log(importRows[i]);
+        }
+    }
+    
+    function addRecordToDB(record)
+    {
+        //console.log(record[6] + " : " + record[22] + " : " + record[23]);
+        var purchaseDate = record[6];
+        var checkoutDate = record[22];
+        var checkinDate = record[23];
+
+        if(record[0] > 0)
+        {
+            //console.log("Update : " + record[0] + " :: " + record.length);
+            $psq('u_assettable').update(record[0], 
+                {
+                    Asset_CheckoutDate: checkoutDate,
+                    Asset_CheckInDate: checkinDate,
+                    Active: record[1], 
+                    SchoolName: record[2], 
+                    SchoolId: record[3],
+                    AssignedTo: record[4],
+                    AssignedTo_dcid: record[5],
+                    Asset_PurchaseDate: purchaseDate,
+                    PurchasePrice: record[7],
+                    Asset_PO_Number: record[8],
+                    Asset_ID: record[9],
+                    Asset_Type: record[10],
+                    Asset_Manufacture: record[11],
+                    Asset_Model: record[12],
+                    Asset_Serial: record[13],
+                    Asset_MacAddress: record[14],
+                    Asset_Location: record[15],
+                    Asset_Accessory_1: record[16],
+                    Asset_Accessory_2: record[17],
+                    Asset_Accessory_3: record[18],
+                    Device_Username: record[19],
+                    Device_Password: record[20],
+                    Asset_Notes: record[21]
+                });
+        }else
+        {
+            console.log("Add new");
+            $psq('u_assettable').insert(
+                {
+                    Asset_CheckoutDate: checkoutDate,
+                    Asset_CheckInDate: checkinDate,
+                    Active: record[1], 
+                    SchoolName: record[2], 
+                    SchoolId: record[3],
+                    AssignedTo: record[4],
+                    AssignedTo_dcid: record[5],
+                    Asset_PurchaseDate: purchaseDate,
+                    PurchasePrice: record[7],
+                    Asset_PO_Number: record[8],
+                    Asset_ID: record[9],
+                    Asset_Type: record[10],
+                    Asset_Manufacture: record[11],
+                    Asset_Model: record[12],
+                    Asset_Serial: record[13],
+                    Asset_MacAddress: record[14],
+                    Asset_Location: record[15],
+                    Asset_Accessory_1: record[16],
+                    Asset_Accessory_2: record[17],
+                    Asset_Accessory_3: record[18],
+                    Device_Username: record[19],
+                    Device_Password: record[20],
+                    Asset_Notes: record[21]
+                });
+        }
+        
+        //clear the table
+        var tableSize = $j('#assetTable tr').length;
+        for(var i = 0; i < tableSize; i++)
+        {
+            document.getElementById("assetTable").deleteRow(0);
+        }
+        
+        hideImportBtn();
+
+    }
+    
+    function convertDates(date)
+    {
+        //not used anymore,  dates must be submitted with /
+        var res;
+        if(date == "")
+        {
+            res = "";
+        }else
+        {
+            res = date.split("-");
+            res = res[1]+"/"+res[2]+"/"+res[0];
+        }
+        return res;
+    }
+</script>

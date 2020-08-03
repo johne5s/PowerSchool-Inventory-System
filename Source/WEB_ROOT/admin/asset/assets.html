@@ -37,150 +37,222 @@
  	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
  </div>
 
-<table class="grid" data-pstablefilter="">
-~[if.~(gpv.active)=false]
-<a class="button" href="assets.html?active=true&sortBy=~(gpv.sortBy)">Show Only Active</a>
-[else]
-<a class="button" href="assets.html?active=false&sortBy=~(gpv.sortBy)">Show Not Active</a>
-[/if]
+<table id="assetTable" class="grid" data-pstablefilter="">
+    ~[if.~(gpv.showInactive)=true]
+    <a class="button" href="assets.html?showInactive=false&sortBy=~(gpv.sortBy)">Show Only Active</a>
+    [else]
+    <a class="button" href="assets.html?showInactive=true&sortBy=~(gpv.sortBy)">Show Not Active</a>
+    [/if]
+    <a class="button" href="../district/assets/home.html">Settings</a>
 
-<a class="button" href="assetsv2.html">Experimental</a>
-    <thead>
-	<tr>
-	    <th>Edit</th>
-		<th>Location<a href="assets.html?active=~(gpv.active)&sortBy=location" class="button">^</a></th>
-		<th>Assigned To<a href="assets.html?active=~(gpv.active)&sortBy=assigned" class="button">^</a></th>
-		<th>Bar Code<a href="assets.html?active=~(gpv.active)&sortBy=assetid" class="button">^</a></th>
-		<th>SERIAL<a href="assets.html?active=~(gpv.active)&sortBy=serial" class="button">^</a></th>
-		<th>TYPE<a href="assets.html?active=~(gpv.active)&sortBy=type" class="button">^</a></th>
-		<th>MANUFACTURE<a href="assets.html?active=~(gpv.active)&sortBy=manufacture" class="button">^</a></th>
-		<th>MODEL<a href="assets.html?active=~(gpv.active)&sortBy=model" class="button">^</a></th>
-		<th>CHECKOUT DATE<a href="assets.html?active=~(gpv.active)&sortBy=outdate" class="button">^</a></th>
-		<th>CHECKIN DATE<a href="assets.html?active=~(gpv.active)&sortBy=indate" class="button">^</a></th>
-		<th>Print Tag</th>
-	</tr>
-	</thead>
-	<tbody>
-	    
-
-	~[tlist_sql;
-		SELECT
-		    id,
-		    CASE
-                WHEN active = '1' THEN '#444'
-                ELSE '#FFADAD'
-            END AS active,
-			SchoolName,
-			AssignedTo,
-			Asset_ID,
-			Asset_SERIAL,
-			Asset_Type,
-			Asset_MANUFACTURE,
-			Asset_MODEL,
-			To_char(ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
-			To_char(ASSET_CHECKINDATE, 'mm/dd/yyyy')
-		FROM u_assettable
-		WHERE ~[if#schoolCheck.is.a.school]SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
-		~[if#notactive.~(gpv.active)=false]
-		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
-		[else#notactive]
-		AND active = '1'
-		[/if#notactive]
-		ORDER BY
-		~[if#schoolname.~(gpv.sortBy)=location]
-		SchoolName
-		[else#schoolname]
-			~[if#assigned.~(gpv.sortBy)=assigned]
-			AssignedTo
-			[else#assigned]
-				~[if#assetid.~(gpv.sortBy)=assetid]
-				Asset_Type
-				[else#assetid]
-					~[if#type.~(gpv.sortBy)=type]
-					Asset_Type
-					[else#type]
-						~[if#manufacture.~(gpv.sortBy)=manufacture]
-						Asset_MANUFACTURE
-						[else#manufacture]
-							~[if#model.~(gpv.sortBy)=model]
-							Asset_MODEL
-							[else#model]
-								~[if#serial.~(gpv.sortBy)=serial]
-								Asset_SERIAL
-								[else#serial]
-									~[if#outdate.~(gpv.sortBy)=outdate]
-									ASSET_CHECKOUTDATE
-									[else#outdate]
-										~[if#indate.~(gpv.sortBy)=indate]
-										ASSET_CHECKINDATE
-										[else#indate]
-										Id
-										[/if#indate]
-									[/if#outdate]
-								[/if#serial]
-							[/if#model]
-						[/if#manufacture]
-					[/if#type]
-				[/if#assetid]
-			[/if#assigned]
-		[/if#schoolname]
-
-	;]
-		<tr>
-		    <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
-			<td><font color="~(active)">~(SchoolName)</font></td>
-			<td><font color="~(active)">~(assignedto)</font></td>
-			<td><font color="~(active)"><barcode>~(Asset_ID)</barcode></font></td>
-			<td><font color="~(active)">~(Asset_SERIAL)</font></td>
-			<td><font color="~(active)">~(Asset_Type)</font></td>
-			<td><font color="~(active)">~(Asset_MANUFACTURE)</font></td>
-			<td><font color="~(active)">~(Asset_MODEL)</font></td>
-			<th>~(ASSET_CHECKOUTDATE;t;if.blank.then=<form action="assets.html" method="POST" class="checkoutBtnForm">
-			    <input type="hidden" class="CheckOutDateBtn" id="CheckOutDate" name="CF-[u_assettable:~(id)]ASSET_CHECKOUTDATE$format=date" value="">
-			    <input type="hidden"  name="CF-[u_assettable:~(id)]ASSET_CHECKINDATE$format=date" value=" ">
-			    <input type="hidden" name="ac" value="prim" />
-			    ~[submitbutton]
-			    </form>;else=~(ASSET_CHECKOUTDATE))</th>
-			<th>~(ASSET_CHECKOUTDATE;t;if.blank.then=~(ASSET_CHECKINDATE);else=<a href="return.html?assetid=~(id)" class="button">Check In</a>)</th>
-			<th><a href="assettag.html?assetid=~(id)" class="button">Tag</a></th>
-		</tr>
-	[/tlist_sql]
-	</tbody>
 </table>
+~[wc:admin_footer_css] 
+</body>
+</html>
 
 
 <script> 
+
+    var check = function(){
+        if($j('.CheckOutDateBtn').length > 0){
+            // run when condition is met
+
+            var d = new Date();
+            var year = d.getFullYear();
+            var month = d.getMonth()+1;
+            var day = d.getDate();
+            var currentDate = month + "/" + day + "/" + year;
+            $j('.CheckOutDateBtn').val(currentDate); 
+        }
+        else {
+            setTimeout(check, 200); // check again in a second
+        }
+    }
+    
+    check();
+
+
+
+
     $j(document).ready(function() 
     { 
-        var d = new Date();
-        var year = d.getFullYear();
-        var month = d.getMonth()+1;
-        var day = d.getDate();
-        var currentDate = month + "/" + day + "/" + year;
-        $j('.CheckOutDateBtn').val(currentDate); 
-        //$j('.CheckOutDateBtn').attr('name', 'CF-[u_assettable:12345]ASSET_CHECKOUTDATE$format=date');
-        
-        //name="CF-[u_assettable:58666]ASSET_CHECKOUTDATE$format=date"
-        //name="EF-003~(sectionsdcid)-u_sections_extension.assessment_names"
+        //run this when the page is ready
     }); 
     
     
-</script>
+//get the POST data
+    var $_GET = {},
+    args = location.search.substr(1).split(/&/);
+    for (var i=0; i<args.length; ++i) {
+        var tmp = args[i].split(/=/);
+        if (tmp[0] != "") {
+            $_GET[decodeURIComponent(tmp[0])] = decodeURIComponent(tmp.slice(1).join("").replace("+", " "));
+        }
+    }
 
 
+$j.ajax(
+	{
+		url: "getAssets.html", 
+		dataType: "json",
+		success: function(result)
+		{
+		    console.log(result.assets);
+		    //console.log(result);
 
+			$j.each(result.assets, function(asset_key, asset)
+			{
+				//loop to check for which fields are flagged to view or not to view
+				//
+				//i wish i could get .length to work here
+				for(var i = 0; i < 23; i++) 
+				{
+                    var name = Object.keys(result.settings)[i];
 
-<script>
-$j(document).on(function() {
-    var currentid = $j('#assetform input').attr('id');
-    alert(currentid);
-    //$j('#mytest form input').attr('id') = "setdate";
+                    if(result.settings[name] == "") //if the field is blank then we should not view it
+				    {
+				        delete asset[name]; //remove the field from the json
+				    }else
+				    {
+				        //console.log("Add to table : " + name);
+				    }
+                }
+                
+                if(asset.Asset_ACTIVE == "1" || $_GET.showInactive == "true")
+                {
+                            if(asset.ID == "ID")
+                            {
+                                //console.log("create the header row");
+                                createHeaderRow(asset);
+                                return; //Create the Header row
+                            }
+                    addRow(asset);
+                }
+			});
+		}
+	});
+	
+function addRow(asset) 
+{
     
-}); 
+      // Get a reference to the table
+      let tableRef = document.getElementById('assetTable');
+    
+      // Insert a row at the end of the table
+      let newRow = tableRef.insertRow(-1);
+      var cellID = 0;
+      
+      // Insert a cell in the row at index 0
+      $j.each(asset, function(fieldName, value)
+      {
+          //console.log(fieldName + " : " + value);
+          
+        if(fieldName == "Asset_ACTIVE")
+        {
+            return; //don't create a cell for the Asset_ACTIVE field
+        }
+        if(fieldName == "Asset_SCHOOL_ID")
+        {
+            return; //don't create a cell for the Asset_ACTIVE field
+        }
+        
+        //create a new cell
+          let newCell = newRow.insertCell(cellID);
+    
+          if(asset.Asset_ACTIVE == "1")
+          {
+              if(cellID == 0)
+              {
+                    //i'm the first cell, i need to be the edit button
+                    newCell.innerHTML = '<a href="editAsset.html?assetid='+ asset.ID + '" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a><a href="assettag.html?assetid=' + asset.ID +'" class="button">Tag</a>';
+              }else
+              {
+                  if(fieldName == "Asset_BARCODE")
+                  {
+                        //i'm the cell with the bar card, so add the css to change the font
+                        newCell.innerHTML = "<font color='#444'><barcode>"+value+"</barcode></font>"
+                      
+                  }else if(fieldName == "Asset_CHECKOUTDATE")
+                  {
+                        if(value == "")
+                        {
+                            newCell.innerHTML ='<form action="assets.html" method="POST" class="checkoutBtnForm"><input type="hidden" class="CheckOutDateBtn" id="CheckOutDate" name="CF-[u_assettable:' + asset.ID + ']ASSET_CHECKOUTDATE$format=date" value=""><input type="hidden"  name="CF-[u_assettable:' + asset.ID + ']ASSET_CHECKINDATE$format=date" value=" "><input type="hidden" name="ac" value="prim" /><button type="submit" id="btnSubmit" name="btnSubmit">Check Out</button></form>'
+                        }else
+                        {
+                            newCell.innerHTML = "<font color='#444'>"+ value+"</font>";
+                        }
+                        //newCell.innerHTML = "<font color='#444'><barcode>"+value+"</barcode></font>"
+                      
+                  }else if(fieldName == "Asset_CHECKINDATE")
+                  {
+                        if(asset.Asset_CHECKOUTDATE == "")
+                        {
+                            newCell.innerHTML = "<font color='#444'>"+ value+"</font>";
+                        }else
+                        {
+                            newCell.innerHTML ='<a href="return.html?assetid=' + asset.ID + '" class="button">Check In</a>'
+                        }
+                        //newCell.innerHTML = "<font color='#444'><barcode>"+value+"</barcode></font>"
+                      
+                  }else
+                  {
+                        newCell.innerHTML = "<font color='#444'>"+ value+"</font>";
+                  }
+                  
+                  
+              }
+          }
+          else
+          {
+              if(cellID == 0)
+              {
+                    //i'm the first cell, i need to be the edit button
+                    newCell.innerHTML = '<a href="editAsset.html?assetid='+ asset.ID + '" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a><a href="assettag.html?assetid=' + asset.ID +'" class="button">Tag</a>';
+              }else
+              {
+                  if(fieldName == "Asset_BARCODE")
+                  {
+                        //i'm the cell with the bar card, so add the css to change the font
+                        newCell.innerHTML = "<font color='#FFADAD'><barcode>"+value+"</barcode></font>"
+                      
+                  }else
+                  {
+                        newCell.innerHTML = "<font color='#FFADAD'>"+value+"</font>";
+                  }
+              }
+          }
+          
+        cellID++;
+      });
+}
+
+function createHeaderRow(asset)
+{
+    var table = document.getElementById("assetTable");
+    var tr = document.createElement("tr");
+    
+    //put this in a loop
+    $j.each(asset, function(fieldName, value)
+    {
+        if(fieldName == "Asset_ACTIVE")
+        {
+            return; //don't create a cell for the Asset_ACTIVE field
+        }
+        if(fieldName == "Asset_SCHOOL_ID")
+        {
+            return; //don't create a cell for the Asset_ACTIVE field
+        }
+        if(fieldName == "ID")
+        {
+            value = "Edit";
+        }
+        var th = document.createElement("th");
+        th.innerText = value;
+        tr.appendChild(th);
+    });
+
+    table.appendChild(tr); 
+}
+
 </script>
-
-	~[wc:admin_footer_css] 
-</body> 
-</html>
-
 

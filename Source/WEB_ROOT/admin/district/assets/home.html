@@ -28,8 +28,10 @@ Inventory System Settings
 
 <h1>Inventory System Settings</h1>
 
+~[x:insertfile;tabs.html]
+<a class="button" href="../../asset/assets.html">GoTo Inventory page</a>
 <div class ="box-round">
-    Check the boxes of the fields you want to see on the Asset Management page
+    
     
     ~[if#checkid.~(gpv.id)=-1]
     <form action="home.html" method="POST" id="GetStarted">
@@ -41,6 +43,8 @@ Inventory System Settings
         <input type="hidden" name="[u_assetsettings]view_Asset_Type" value="1">
         <input type="hidden" name="[u_assetsettings]view_Asset_Manufacture" value="1">
         <input type="hidden" name="[u_assetsettings]view_Asset_Model" value="1">
+		<input type="hidden" name="[u_assetsettings]view_Asset_CheckoutDate" value="1">
+		<input type="hidden" name="[u_assetsettings]view_Asset_CheckInDate" value="1">
         <input type="hidden" name="ac" value="prim" />
         ~[submitbutton]
     </form>
@@ -51,22 +55,44 @@ Inventory System Settings
     [else#checkid]
     
     <form action="home.html" method="POST" id="settings">
+        <table class="grid">
+            <tr>
+                <td width="25%">Allow duplicate Serial Numbers</td>
+                <td><input type="checkbox" name="[u_assetsettings]Allow_Duplicate_Serial" value=""></td>
+            </tr>
+        </table>
+        
+        <br>
+        Check the boxes of the fields you want to see on the Asset Management page
+        
     ~[DirectTable.Select:u_assetsettings;id:~(gpv.id)]
         <table class="grid">
             <tr>
-                <td width="10%">Asset ID</td>
-                <td><input type="hidden" name="[u_assetsettings]view_asset_id" value="1"></td>
-            </tr>
-            <tr>
-                <td width="10%">Assigned To</td>
-                <td><input type="checkbox" name="[u_assetsettings]view_AssignedTo" value=""></td>
+                <td width="25%">Asset ID</td>
+                <td>&#9745;<input type="hidden" name="[u_assetsettings]view_asset_id" value="1"></td>
             </tr>
             <tr>
                 <td width="10%">School Name</td>
                 <td><input type="checkbox" name="[u_assetsettings]view_SchoolName" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Bar Code</td>
+                <td width="10%">Assigned To</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_AssignedTo" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Purchase Date</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_PurchaseDate" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Purchase Purchase Price</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_PurchasePrice" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset PO Number</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_PO_Number" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset Bar Code</td>
                 <td><input type="checkbox" name="[u_assetsettings]view_Asset_BarCode" value=""></td>
             </tr>
             <tr>
@@ -90,20 +116,20 @@ Inventory System Settings
                 <td><input type="checkbox" name="[u_assetsettings]view_Asset_MacAddress" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Asset Purchase Date</td>
-                <td><input type="checkbox" name="[u_assetsettings]view_Asset_PurchaseDate" value=""></td>
+                <td width="10%">Asset Location</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Location" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Purchase Purchase Price</td>
-                <td><input type="checkbox" name="[u_assetsettings]view_PurchasePrice" value=""></td>
+                <td width="10%">Asset Accessory 1</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_asset_accessory_1" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Asset Checkout Date</td>
-                <td><input type="hidden" name="[u_assetsettings]view_Asset_CheckoutDate" value="1"></td>
+                <td width="10%">Asset Accessory 2</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_asset_accessory_2" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Asset CheckIn Date</td>
-                <td><input type="hidden" name="[u_assetsettings]view_Asset_CheckInDate" value="1"></td>
+                <td width="10%">Asset Accessory 3</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_asset_accessory_3" value=""></td>
             </tr>
             <tr>
                 <td width="10%">Device Username</td>
@@ -114,14 +140,17 @@ Inventory System Settings
                 <td><input type="checkbox" name="[u_assetsettings]view_Device_Password" value=""></td>
             </tr>
             <tr>
-                <td width="10%">Asset Location</td>
-                <td><input type="checkbox" name="[u_assetsettings]view_Asset_Location" value=""></td>
-            </tr>
-            <tr>
                 <td width="10%">Asset Notes</td>
                 <td><input type="checkbox" name="[u_assetsettings]view_Asset_Notes" value=""></td>
             </tr>
-            
+            <tr>
+                <td width="10%">Asset Checkout Date</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_CheckoutDate" value=""></td>
+            </tr>
+            <tr>
+                <td width="10%">Asset CheckIn Date</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_CheckInDate" value=""></td>
+            </tr>
             
         </table>
     
@@ -174,5 +203,3 @@ $j.ajax("ajaxGet.html",
 </script>
 
 [/if#pageaction]
-
-

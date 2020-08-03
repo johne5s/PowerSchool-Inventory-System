@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> >
+	Asset Management
+	~[wc:admin_navigation_css] 
+
+	<h1>Asset Management</h1> 
+
+	<ul class="tabs">
+		<li class="selected"><a href="assets.html">Asset Management</a></li>
+		<li><a href="editAsset.html?assetid=~(gpv.assetid)">Edit Asset</a></li>
+	</ul>
+	
+~[if.~(gpv.assetid)>0]<h1>Edit Asset Notes</h1>
+<form action="assets.html" method="POST" id="assetform">
+	~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
+		<div class="box-round"> 
+			<table class="grid">
+			<tr>
+				<td></td>
+			</tr>
+			</table>
+			
+			<div class="button-row">
+				<input type="hidden" name="[u_assettable]schoolid" value="~(curschoolid)" />
+				<input type="hidden" name="ac" value="prim" />
+				<a href="assets.html" class="button">Cancel</a>
+				~[submitbutton]
+			</div>
+	</div>
+</form>
+[else]<H1>No Asset Selected</H1>[/if]
+~[wc:admin_footer_css] 
+</body>
+</html>
+
+	
