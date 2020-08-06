@@ -1,4 +1,15 @@
-ID	Active	SchoolName	SchoolID	AssignedTo	AssignedTo_dcid	Asset_PurchaseDate	PurchasePrice	Asset_PO_Number	BarCode	Asset_Type	Asset_Manufacture	Asset_Model	Asset_Serial	Asset_MacAddress	Asset_Location	Asset_Accessory_1	Asset_Accessory_2	Asset_Accessory_3	Device_Username	Device_Password	Asset_Notes	Asset_CheckOutDate	Asset_CheckInDate
-30531	1	Apple Grove High School	100	Smith, John	592	2019/04/01	650.99	001122	10043	Laptop	apple	A1	s1002	B8-8A-60-E6-79-B1	Main Office	Cover	Wireless Mouse	Accessory 3	admin	password	has charger. display port no longer works with projector adapters.	2019/04/18	
-30532	0	Apple Grove High School	100	Smith, Mark	4149	2019/04/01	650.99	001122	10044	Laptop	apple	A1	s1003	B8-8A-60-E6-79-B2	Main Office	Accessory 1	Accessory 2	Accessory 3	admin	password	these are the notes	2019/04/05	2019/04/12
-0	2	Apple Grove High School	100	UnAssigned		2018/05/01			1055nn	Laptop	Dell	insperon									notes1		2019/04/10
+ID	Active	SchoolName	SchoolID	AssignedTo	AssignedTo_dcid	Asset_PurchaseDate	PurchasePrice	Asset_PO_Number	Asset_FundedBy	BarCode	Asset_Type	Asset_Manufacture	Asset_Model	Asset_Serial	Asset_MacAddress	Asset_Location	Asset_Accessory_1	Asset_Accessory_2	Asset_Accessory_3	Device_Username	Device_Password	Asset_Notes	Asset_CheckOutDate	Asset_CheckInDate
+4372	1	Apple Grove High School	287	Smith, Jim	592	2019/01/01	650.99	1001	Title I	10043	Laptop	apple	A1	s1002	B8-8A-60-E6-79-B1	Main Office	Cover	Wireless Mouse	Accessory 3	admin	password	Updates asset in the database	2019/04/18	
+4373	1	Apple Grove High School	287	Smith, Don	4149	2019/01/01	650.99	1001	Title I	10044	Laptop	apple	A1	s1003	B8-8A-60-E6-79-B2	Main Office	Accessory 1	Accessory 2	Accessory 3	admin	password	Updates asset in the database	2019/04/05	2019/04/12
+	1	Apple Grove High School	287	UnAssigned		2019/01/01	200	1002	General Funds	1055nn	Laptop	Dell	insperon	dell-8844sh22	23-AB-0D-11-22-33	HS Lib				admin	password	Creates a new asset in the database		
+	
+NOTES:
+Remove all Quotes
+Date format is YYY/MM/DD
+Tab Delimited
+
+active field
+"0" = Inactive
+"1" = Active
+"2" = Lost
+"3” = Recycled

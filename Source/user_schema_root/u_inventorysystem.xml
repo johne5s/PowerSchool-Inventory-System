@@ -1,73 +1,75 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <psExtension xmlns="http://www.powerschool.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.powerschool.com psextension.xsd">
     <extensionname>U_InventorySystem</extensionname>
-    <extendedTable type="standalone" dbTableName="U_ASSETREPAIRLOG" childName="U_ASSETREPAIRLOG" comment="">
+    <extendedTable type="standalone" dbTableName="U_AssetRepairLog" childName="U_AssetRepairLog" comment="">
         <field name="Notes" type="String" length="2000"/>
-        <field name="Vendor_Id" type="Integer"/>
         <field name="DamagedPart" type="String" length="128"/>
-        <field name="Asset_ID" type="String" length="40" defaultValue="128"/>
+        <field name="Vendor_ID" type="Integer"/>
+        <field name="Asset_ID" type="String" length="40"/>
         <field name="RepairCost" type="Double"/>
         <field name="RepairDate" type="Date"/>
     </extendedTable>
     <extendedTable type="standalone" dbTableName="U_ASSETSETTINGS" childName="U_ASSETSETTINGS" comment="">
-        <field name="view_Asset_CheckInDate" type="Boolean" defaultValue="1"/>
-		<field name="view_asset_id" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_Notes" type="Boolean" defaultValue="1"/>
-		<field name="view_AssignedTo" type="Boolean" defaultValue="1"/>
-		<field name="view_PurchasePrice" type="Boolean" defaultValue="1"/>
-		<field name="view_SchoolName" type="Boolean" defaultValue="1"/>
-		<field name="View_Asset_BarCode" type="Boolean"/>
-		<field name="view_Asset_Model" type="Boolean" defaultValue="1"/>
-		<field name="Allow_Duplicate_Serial" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_Serial" type="Boolean" defaultValue="1"/>
-		<field name="View_Asset_Accessory_1" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_PurchaseDate" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_Type" type="Boolean" defaultValue="1"/>
-		<field name="View_Asset_Accessory_2" type="Boolean" defaultValue="1"/>
-		<field name="View_Asset_Accessory_3" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_PO_Number" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_MacAddress" type="Boolean" defaultValue="1"/>
-		<field name="view_Device_Username" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_CheckoutDate" type="Boolean" defaultValue="1"/>
-		<field name="view_Device_Password" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_Location" type="Boolean" defaultValue="1"/>
-		<field name="view_Asset_Manufacture" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_CHECKINDATE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_ID" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_NOTES" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSIGNEDTO" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_PURCHASEPRICE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_SCHOOLNAME" type="Boolean" defaultValue="1"/>
+        <field name="View_Asset_FundedBy" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_BARCODE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_MODEL" type="Boolean" defaultValue="1"/>
+        <field name="ALLOW_DUPLICATE_SERIAL" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_SERIAL" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_ACCESSORY_1" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_PURCHASEDATE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_TYPE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_ACCESSORY_2" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_ACCESSORY_3" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_PO_NUMBER" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_MACADDRESS" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_DEVICE_USERNAME" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_CHECKOUTDATE" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_DEVICE_PASSWORD" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_LOCATION" type="Boolean" defaultValue="1"/>
+        <field name="VIEW_ASSET_MANUFACTURE" type="Boolean" defaultValue="1"/>
     </extendedTable>
-    <extendedTable type="standalone" dbTableName="U_AssetVendor" childName="U_AssetVendor" comment="Vendor database">
-        <field name="Vendor_Phone" type="String" length="128"/>
-        <field name="Vendor_Fax" type="String" length="128"/>
-        <field name="Vendor_City" type="String" length="128"/>
-        <field name="Vendor_Notes" type="String" length="2000"/>
-        <field name="Vendor_ContactName" type="String" length="128"/>
-        <field name="Vendor_Name" type="String" length="128"/>
-        <field name="Vendor_Email" type="String" length="128"/>
-        <field name="Vendor_State" type="String" length="2"/>
-        <field name="Vendor_Address" type="String" length="128"/>
-        <field name="Vendor_Zip" type="Integer"/>
+    <extendedTable type="standalone" dbTableName="U_AssetVendor" childName="U_AssetVendor" comment="List of Vendors for the Repair Log">
+        <field name="VENDOR_PHONE" type="String" length="128"/>
+        <field name="VENDOR_FAX" type="String" length="128"/>
+        <field name="VENDOR_CITY" type="String" length="128"/>
+        <field name="VENDOR_CONTACTNAME" type="String" length="128"/>
+        <field name="VENDOR_NOTES" type="String" length="2000"/>
+        <field name="VENDOR_NAME" type="String" length="128"/>
+        <field name="VENDOR_EMAIL" type="String" length="128"/>
+        <field name="VENDOR_STATE" type="String" length="2"/>
+        <field name="VENDOR_ADDRESS" type="String" length="128"/>
+        <field name="VENDOR_ZIP" type="Integer"/>
     </extendedTable>
-    <extendedTable type="standalone" dbTableName="U_ASSETTABLE" childName="U_ASSETTABLE" comment="List of all Assets">
+    <extendedTable type="standalone" dbTableName="U_ASSETTABLE" childName="U_ASSETTABLE" comment="All the Assets">
         <field name="Asset_Serial" type="String" length="128"/>
-		<field name="Asset_CheckoutDate" type="Date"/>
-		<field name="Asset_Manufacture" type="String" length="128"/>
-		<field name="Asset_Model" type="String" length="128"/>
-		<field name="active" type="Integer" comment="0 = not active, 1 = active"/>
-		<field name="Asset_ID" type="String" length="128"/>
-		<field name="Asset_CheckInDate" type="Date"/>
-		<field name="Asset_Accessory_1" type="String" length="200"/>
-		<field name="Asset_Location" type="String" length="128"/>
-		<field name="Asset_Accessory_2" type="String" length="200"/>
-		<field name="AssignedTo" type="String" length="200"/>
-		<field name="Device_Username" type="String" length="200"/>
-		<field name="PurchasePrice" type="Double"/>
-		<field name="SchoolName" type="String" length="200"/>
-		<field name="Asset_PO_Number" type="String" length="200" comment="The PO number that was used to purchase the asset"/>
-		<field name="Asset_Accessory_3" type="String" length="200"/>
-		<field name="Asset_MacAddress" type="String" length="17" comment="xx:xx:xx:xx:xx:xx"/>
-		<field name="Device_Password" type="String" length="200"/>
-		<field name="Schoolid" type="Integer"/>
-		<field name="Asset_Type" type="String" length="128"/>
-		<field name="Asset_Notes" type="String" length="2000"/>
-		<field name="Asset_PurchaseDate" type="Date"/>
-		<field name="AssignedTo_dcid" type="Integer"/>
+        <field name="Asset_CheckOutDate" type="Date"/>
+        <field name="Asset_Manufacture" type="String" length="128"/>
+        <field name="Asset_Model" type="String" length="128"/>
+        <field name="Active" type="Integer" comment="&quot;0&quot; = Inactive&#xA;&quot;1&quot; = Active&#xA;&quot;2&quot; = Lost&#xA;&quot;3” = Recycled&#xA;"/>
+        <field name="Asset_ID" type="String" length="128" comment="AKA &quot;BarCode"/>
+        <field name="Asset_CheckInDate" type="Date"/>
+        <field name="Asset_Accessory_1" type="String" length="200"/>
+        <field name="Asset_Location" type="String" length="128"/>
+        <field name="Asset_Accessory_2" type="String" length="200"/>
+        <field name="Asset_PO_Number" type="String" length="200"/>
+        <field name="AssignedTo" type="String" length="200"/>
+        <field name="Device_UserName" type="String" length="200"/>
+        <field name="PurchasePrice" type="Double"/>
+        <field name="SchoolName" type="String" length="200"/>
+        <field name="Asset_Accessory_3" type="String" length="200"/>
+        <field name="Asset_MacAddress" type="String" length="17" comment="xx:xx:xx:xx:xx:xx"/>
+        <field name="Device_Password" type="String" length="200"/>
+        <field name="SchoolID" type="Integer"/>
+        <field name="Asset_Type" type="String" length="128"/>
+        <field name="Asset_Notes" type="String" length="2000"/>
+        <field name="Asset_PurchaseDate" type="Date"/>
+        <field name="Asset_FundedBy" type="String" length="200"/>
+        <field name="AssignedTo_DCID" type="Integer"/>
     </extendedTable>
 </psExtension>

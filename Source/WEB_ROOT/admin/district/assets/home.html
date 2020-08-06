@@ -92,6 +92,10 @@ Inventory System Settings
                 <td><input type="checkbox" name="[u_assetsettings]view_Asset_PO_Number" value=""></td>
             </tr>
             <tr>
+                <td width="10%">Asset FundedBy</td>
+                <td><input type="checkbox" name="[u_assetsettings]view_Asset_FundedBy" value=""></td>
+            </tr>
+            <tr>
                 <td width="10%">Asset Bar Code</td>
                 <td><input type="checkbox" name="[u_assetsettings]view_Asset_BarCode" value=""></td>
             </tr>
@@ -175,7 +179,7 @@ Inventory System Settings
 <script type="text/javascript" language="JavaScript">
 //console.log("load id from ajax");
 
-$j.ajax("ajaxGet.html",
+$j.ajax("getSettingsID.html",
 			{
 				"dataType": "text",
 				"success": function(response)

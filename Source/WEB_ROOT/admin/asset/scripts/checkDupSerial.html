@@ -1,0 +1,10 @@
+~[tlist_sql;
+        Select 
+            asset.asset_serial
+        FROM u_assettable asset
+        cross JOIN U_assetsettings s
+        WHERE 
+            asset.asset_serial = '~(gpv.serial)'
+            AND asset.id != '~(gpv.assetid)'
+            AND s.Allow_Duplicate_Serial is null
+;]~(results)[/tlist_sql]

@@ -3,44 +3,13 @@
 <head>
 	<title>Asset Tag</title>
 	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
-	<style>
-		.grid{
-			margin-top:20px;
-		}
-	
-	table {
-		max-width: 400px;
-		border: 2px solid black;
-		outline: #757575 solid 10px;
-		margin: auto;    
-		padding: 20px;
-		text-align: center;
-	}
-	barcode
-    {
-        font-family: 'Libre Barcode 39 Text', cursive;
-        font-size: 40px;
-    }
-	</style>
-	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
-	<link href="/images/css/print.css" rel="stylesheet" media="print">
+	<link rel="stylesheet" href="scripts/tag-style.css" type="text/css" media="all" />
 	~[wc:commonscripts] 
 </head> 
 <body> 
-	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> >
-	Asset Tag
-	~[wc:admin_navigation_css] 
-	
-	<h1>~[if.~(gpv.assetid)=-1]All Tags[else]Edit[/if] Asset Tag</h1> 
-	
-	<ul class="tabs">
-		<li><a href="assets.html">Asset Management</a></li>
-		<li class="selected"><a href="assettag.html?assetid=-1">All Tags</a></li>
-	</ul>
-	
-<div class="box-round">
 
+
+<div class="grid-container print">
 
 		~[TLIST_SQL;
 		   SELECT asset_id,
@@ -62,27 +31,14 @@
 
 				; 
 		]
-		
-	<table>
-
-		<tr>
-			<td align=right><strong>Bar Code : </strong></td><td align=left><barcode>~(asset_id)</barcode></td>
-		</tr>
-		<tr>
-			<td align=right><strong>Serial : </strong></td><td align=left>~(asset_serial)</td>
-		</tr>
-		<tr>
-			<td align=right><strong>Assigned To : </strong></td><td align=left>~(assignedto)</td>
-		</tr>
-		<tr>
-			<td width=100px; align=right><strong>Notes : </strong></td><td align=left>~(asset_notes)</td>
-		</tr>
-	</table>
+		<div class="grid-item">
+            <barcode>~(asset_id)</barcode><br>
+            <strong class="lable">Serial : </strong>~(asset_serial)<br>
+            <strong class="lable">Assigned To : </strong>~(assignedto)<br>
+            <strong class="lable">Notes : </strong>~(asset_notes)
+	    </div>
 		[/TLIST_SQL]
 </div>
 
-
-
-	~[wc:admin_footer_css] 
 </body> 
 </html>

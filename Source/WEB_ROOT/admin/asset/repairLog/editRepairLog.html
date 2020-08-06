@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> >
+	Asset Management
+	~[wc:admin_navigation_css] 
+
+	<h1>~[if.~(gpv.repairlogid)=-1]New[else]Edit[/if] Log</h1> 
+
+	<ul class="tabs">
+		<li><a href="../assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li><a href="../editAsset.html?assetid=~(gpv.assetid)">Edit Assest</a></li>
+		<li class="selected"><a href="repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
+		<li><a href="../vendors.html">Vendors</a></li>
+	</ul>
+	
+<form action="repairLog.html?assetid=~(gpv.assetid)" method="POST" id="repairLogform">
+~[DirectTable.Select:U_ASSETREPAIRLOG;id:~(gpv.repairlogid)]
+	<div class="box-round"> 
+		<table class="grid">
+		    <tr>
+				<td class="bold">Repair Date</td>
+				<td>
+					<input type="text" name="[U_ASSETREPAIRLOG]REPAIRDATE" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold" width="10%">Damaged Part</td>
+				<td>
+                    <input type="text" name="[U_ASSETREPAIRLOG]DamagedPart" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold" width="10%">Repair Cost</td>
+				<td>
+                    <input type="text" name="[U_ASSETREPAIRLOG]REPAIRCOST" value="" />
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Repair Vendor</td>
+				<td>
+
+					<select name="[U_ASSETREPAIRLOG]VENDOR_ID">
+						~[if.~(gpv.repairlogid)=-1]
+							<option value="UnAssigned">UnAssigned</option>
+						[else]
+							~[tlist_sql;
+								SELECT 
+                                    v.id, 
+                                    v.vendor_name
+                                FROM u_assetvendor v
+                                INNER JOIN U_ASSETREPAIRLOG log ON log.vendor_id = v.id
+                                INNER JOIN U_Assettable asset on asset.id = log.asset_id
+                                WHERE log.id = ~(gpv.repairlogid)
+							;]
+								<option value="~(VENDOR_ID)">~(vendor_name;t)</option>
+							[/tlist_sql]
+						[/if]
+						
+						~[tlist_sql;
+                        	SELECT 
+                        	    id, 
+                        	    vendor_name
+                        	FROM u_AssetVendor
+                        	order by vendor_name asc
+                        ;]
+                        	<option value="~(id)">~(vendor_name;t)</option>
+                        [/tlist_sql]
+
+					</select>&nbsp;&nbsp;<a href="vendors.html" class="button" id=editVendorBtn><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a>
+				</td>
+			</tr>
+			<tr>
+				<td class="bold">Notes</td>
+				<td>
+					<textarea form ="repairLogform" name="[U_ASSETREPAIRLOG]NOTES" rows="10" cols="35" wrap="soft"></textarea>
+				</td>
+			</tr>
+			
+		</table>
+		
+		
+		<div class="button-row">
+		    <input type="hidden" name="[U_ASSETREPAIRLOG]asset_id" value="~(gpv.assetid)" />
+			<input type="hidden" name="ac" value="prim" />
+			~[if.~(gpv.repairlogid)>0]
+				<button id="deleteButton">Delete</button>
+			[/if]
+			<a href="repairlog.html?assetid=~(gpv.assetid)" class="button">Cancel</a>
+			~[submitbutton]
+		</div>
+	</div> 
+</form>
+	
+	~[wc:admin_footer_css] 
+</body> 
+</html>

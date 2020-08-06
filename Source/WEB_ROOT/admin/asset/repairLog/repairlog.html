@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+	~[wc:commonscripts] 
+	<style>
+		.grid{
+			margin-top:20px;
+		}
+	</style>
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> >
+	Asset Management
+	~[wc:admin_navigation_css] 
+
+	<h1>Repair Log</h1> 
+
+	<ul class="tabs">
+		<li><a href="../assets.html">Asset Management</a></li>
+		<li><a href="../editAsset.html?assetid=~(gpv.assetid)">Edit Assest</a></li>
+		<li class="selected"><a href="repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
+		<li><a href="../vendors.html">Vendors</a></li>
+	</ul>
+	
+	 <div class="center">
+     ~[if.~(gpv.assetid)>-1]<a class="button" href="editRepairLog.html?assetid=~(gpv.assetid)&repairlogid=-1">New Repair Log Entry</a><br><br>[/if]
+ 	
+ </div>
+
+	<div class="box-round"> 
+    ~[if.~(gpv.assetid)>-1]
+		<table class="grid">
+            <tr>
+                <th class="bold" width="5%">Log #</th> <th>Repair Date</th> <th>Damaged Part</th> <th>Repair Cost</th> <th>Vendor</th> <th>NOTES</th>
+            </tr>
+            ~[tlist_sql;
+                    SELECT 
+                        log.ASSET_ID,
+                        log.ID,
+                        To_char(log.REPAIRDATE, 'mm/dd/yyyy'),
+                        log.DAMAGEDPART,
+                        log.REPAIRCOST,
+                        v.vendor_name,
+                        log.NOTES
+                    FROM U_ASSETREPAIRLOG log
+                    INNER JOIN u_assetvendor v ON v.id = log.vendor_id
+                    INNER JOIN u_assettable asset on asset.id = log.asset_id
+                    
+                    ~[if#asset.~(gpv.assetid)>0]
+            		    WHERE log.ASSET_ID = ~(gpv.assetid)
+            		[/if#asset]
+                    ;
+                ]
+                <tr>
+                    <td><center><a href="editRepairLog.html?assetid=~(ASSET_ID)&repairlogid=~(ID)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></center>  </td>
+                    <td><center>~(REPAIRDATE)</center></td>
+                    <td><center>~(DAMAGEDPART)</center></td>
+                    <td><center>~(REPAIRCOST)</center></td>
+                    <td><center>~(VENDOR_NAME)</center></td> 
+                    <td>~(NOTES)</td> 
+                </tr>
+            [/tlist_sql]
+        </table>
+	[/if]	
+		
+	</div> 
+</form>
+	
+	~[wc:admin_footer_css] 
+</body> 
+</html>

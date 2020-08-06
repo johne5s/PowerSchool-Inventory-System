@@ -93,11 +93,11 @@
 
 $j.ajax(
 	{
-		url: "getAssets.html", 
+		url: "scripts/getAssets.json", 
 		dataType: "json",
 		success: function(result)
 		{
-		    console.log(result.assets);
+		    //console.log(result.assets);
 		    //console.log(result);
 
 			$j.each(result.assets, function(asset_key, asset)
@@ -105,7 +105,7 @@ $j.ajax(
 				//loop to check for which fields are flagged to view or not to view
 				//
 				//i wish i could get .length to work here
-				for(var i = 0; i < 23; i++) 
+				for(var i = 0; i < 24; i++) 
 				{
                     var name = Object.keys(result.settings)[i];
 

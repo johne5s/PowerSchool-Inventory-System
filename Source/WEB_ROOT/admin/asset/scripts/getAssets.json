@@ -1,0 +1,146 @@
+{
+"settings":
+    ~[tlist_sql;
+        select
+            id,
+            view_schoolname,
+            view_assignedto,
+            view_asset_barcode,
+            view_asset_serial,
+            view_asset_type,
+            view_asset_manufacture,
+            view_asset_model,
+            view_asset_macaddress,
+            view_asset_location,
+            view_asset_checkoutdate,
+            view_asset_checkindate,
+            view_device_username,
+            view_device_password,
+            view_purchaseprice,
+            view_asset_purchasedate,
+            view_asset_notes,
+            view_asset_accessory_1,
+            view_asset_accessory_2,
+            view_asset_accessory_3,
+            view_Asset_PO_Number,
+            view_Asset_FundedBy
+            
+        From u_assetsettings
+    ;]
+            {
+	            "ID": "~(id;t)",
+	            "Asset_SCHOOLNAME": "~(SchoolName;t)",
+	            "Asset_ASSIGNEDTO": "~(assignedto;t)",
+	            "Asset_BARCODE": "~(Asset_ID;t)",
+	            "Asset_SERIAL": "~(Asset_SERIAL;t)",
+	            "Asset_Type": "~(Asset_Type;t)",
+	            "Asset_MANUFACTURE": "~(Asset_MANUFACTURE;t)",
+	            "Asset_MODEL": "~(Asset_MODEL;t)",
+	            "Asset_MAC_ADDRESS": "~(Asset_MacAddress;t)",
+	            "Asset_Location": "~(Asset_Location;t)",
+	            "Asset_CHECKOUTDATE": "~(ASSET_CHECKOUTDATE;t)",
+	            "Asset_CHECKINDATE": "~(ASSET_CHECKINDATE;t)",
+	            "Asset_Device_Username": "~(Device_Username;t)",
+	            "Asset_Device_Password": "~(Device_Password;t)",
+	            "Asset_PURCHASE_PRICE": "~(PurchasePrice;t)",
+	            "Asset_PURCHASE_DATE": "~(Asset_PurchaseDate;t)",
+	            "Asset_NOTES": "~(Asset_Notes;p)",
+	            "Asset_Accessory_1": "~(asset_accessory_1;p)",
+	            "Asset_Accessory_2": "~(asset_accessory_2;p)",
+	            "Asset_Accessory_3": "~(asset_accessory_3;p)",
+	            "Asset_PO_Number": "~(view_Asset_PO_Number;p)",
+	            "Asset_FundedBy": "~(view_Asset_FundedBy;t)",
+	            "Asset_SCHOOL_ID": ""
+	            },
+
+	[/tlist_sql]
+"assets": {
+    ~[tlist_sql;
+		SELECT
+		    id,
+		    active,
+            Schoolid,
+			SchoolName,
+			AssignedTo,
+			Asset_ID,
+			Asset_SERIAL,
+			Asset_Type,
+			Asset_MANUFACTURE,
+			Asset_MODEL,
+			Asset_MacAddress,
+			Asset_Location,
+			Device_Username,
+			Device_Password,
+			Asset_PO_Number,
+			Asset_FundedBy,
+			PurchasePrice,
+			To_char(Asset_PurchaseDate, 'mm/dd/yyyy'),
+			asset_accessory_1,
+			asset_accessory_2,
+			asset_accessory_3,
+			REPLACE(asset_notes, CHR(13) || CHR(10), ', '),
+			To_char(ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
+			To_char(ASSET_CHECKINDATE, 'mm/dd/yyyy')
+		FROM u_assettable
+		WHERE ~[if#schoolCheck.is.a.school]SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
+		~[if#notactive.~(gpv.active)=false]
+		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
+		[else#notactive]
+		--AND active = '1'
+		[/if#notactive]
+
+	;]
+	"~(id;t)": {
+	            "ID": "~(id;t)",
+	            "Asset_ACTIVE": "~(active;t)",
+	            "Asset_SCHOOL_ID": "~(Schoolid;t)",
+	            "Asset_SCHOOLNAME": "~(SchoolName;t)",
+	            "Asset_ASSIGNEDTO": "~(assignedto;t)",
+	            "Asset_BARCODE": "~(Asset_ID;t)",
+	            "Asset_SERIAL": "~(Asset_SERIAL;t)",
+	            "Asset_Type": "~(Asset_Type;t)",
+	            "Asset_MANUFACTURE": "~(Asset_MANUFACTURE;t)",
+	            "Asset_MODEL": "~(Asset_MODEL;t)",
+	            "Asset_MAC_ADDRESS": "~(Asset_MacAddress;t)",
+	            "Asset_Location": "~(Asset_Location;t)",
+	            "Asset_Device_Username": "~(Device_Username;t)",
+	            "Asset_Device_Password": "~(Device_Password;t)",
+	            "Asset_PO_Number": "~(Asset_PO_Number;t)",
+	            "Asset_FundedBy": "~(Asset_FundedBy;t)",
+	            "Asset_PURCHASE_PRICE": "~(PurchasePrice;t)",
+	            "Asset_PURCHASE_DATE": "~(Asset_PurchaseDate;t)",
+	            "Asset_Accessory_1": "~(asset_accessory_1;t)",
+	            "Asset_Accessory_2": "~(asset_accessory_2;t)",
+	            "Asset_Accessory_3": "~(asset_accessory_3;t)",
+	            "Asset_NOTES": "~(Asset_Notes;p)",
+	            "Asset_CHECKOUTDATE": "~(ASSET_CHECKOUTDATE;t)",
+	            "Asset_CHECKINDATE": "~(ASSET_CHECKINDATE;t)"
+	            },
+
+	[/tlist_sql]"0": {
+	            "ID": "ID",
+	            "Asset_ACTIVE": "1",
+	            "Asset_SCHOOL_ID": "School ID",
+	            "Asset_SCHOOLNAME": "School Name",
+	            "Asset_ASSIGNEDTO": "Assigned To",
+	            "Asset_BARCODE": "Bar Code",
+	            "Asset_SERIAL": "Serial Number",
+	            "Asset_Type": "Type",
+	            "Asset_MANUFACTURE": "Manfacture",
+	            "Asset_MODEL": "Model",
+	            "Asset_MAC_ADDRESS": "Mac Address",
+	            "Asset_Location": "Location",
+	            "Asset_Device_Username": "Username",
+	            "Asset_Device_Password": "Password",
+	            "Asset_PO_Number": "PO Number",
+	            "Asset_FundedBy": "Funded By",
+	            "Asset_PURCHASE_PRICE": "Purchase Price",
+	            "Asset_PURCHASE_DATE": "Purchase Date",
+	            "Asset_Accessory_1": "Accessory_1",
+	            "Asset_Accessory_2": "Accessory_2",
+	            "Asset_Accessory_3": "Accessory_3",
+	            "Asset_NOTES": "Notes",
+	            "Asset_CHECKOUTDATE": "CheckOut Date",
+	            "Asset_CHECKINDATE": "CheckIn Date"
+	            }
+}}

@@ -29,7 +29,7 @@ $j(document).ready(function(){
 <ul class="tabs">
 	<li class="selected"><a href="assets.html">Asset Management</a></li>
 	<li><a href="return.html?assetid=~(gpv.assetid)">Checkin this assest</a></li>
-	<li><a href="repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
+	<li><a href="repairlog/repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
 	<li><a href="assettag.html?assetid=~(gpv.assetid)">Print Tag</a></li>
 </ul>
 
@@ -151,6 +151,12 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
+				<td class="bold">Funded By</td>
+				<td>
+					<input type="text" name="[u_assettable]asset_FundedBy" value="" />
+				</td>
+			</tr>
+			<tr>
 				<td class="bold">Bar Code</td>
 				<td>
 					<input type="text" name="[u_assettable]asset_id" value="" />
@@ -268,7 +274,7 @@ $j(document).ready(function(){
 <script>
 $j('#assignedToDropdown').change(function(){
 	    //run Ajax to get the dcid
-	    var url = "getDCID.html?name=" + $j('#assignedToDropdown :selected').val() + "&schoolid=~(curschoolid)";
+	    var url = "scripts/getDCID.html?name=" + $j('#assignedToDropdown :selected').val() + "&schoolid=~(curschoolid)";
 	    $j.ajax(
 	{
 		url: url, 
@@ -289,7 +295,7 @@ function checkForDup()
 
     $j.ajax(
 	{
-		url: "checkDupSerial.html?serial=" + serial + "&assetid=" + ~(gpv.assetid), 
+		url: "scripts/checkDupSerial.html?serial=" + serial + "&assetid=" + ~(gpv.assetid), 
 		dataType: "text",
 		success: function(result)
 		{
