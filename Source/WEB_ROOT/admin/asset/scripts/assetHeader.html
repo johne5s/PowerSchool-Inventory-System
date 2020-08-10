@@ -1,0 +1,216 @@
+<thead>
+	<tr>
+	    <th>Edit</th>
+	    <th>Tag</th>
+	    ~[tlist_sql;
+	        Select view_schoolname
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>School<a href="assets.html?active=~(gpv.active)&sortBy=school" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_assignedto
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Assigned To<a href="assets.html?active=~(gpv.active)&sortBy=assigned" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_purchasedate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Purchased Date</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_purchaseprice
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Purchase Price</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_PO_Number
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>PO Number</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_fundedby
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>FundedBy</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_barcode
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Bar Code<a href="assets.html?active=~(gpv.active)&sortBy=assetid" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_type
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>TYPE<a href="assets.html?active=~(gpv.active)&sortBy=type" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_manufacture
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>MANUFACTURE<a href="assets.html?active=~(gpv.active)&sortBy=manufacture" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_model
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>MODEL<a href="assets.html?active=~(gpv.active)&sortBy=model" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_serial
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>SERIAL<a href="assets.html?active=~(gpv.active)&sortBy=serial" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_macaddress
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Mac</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_location
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Location<a href="assets.html?active=~(gpv.active)&sortBy=location" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_accessory_1
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Accessory_1</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_accessory_2
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Accessory_2</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_accessory_3
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Accessory_3</th>
+            )
+	    [/tlist_sql]
+	    
+        
+	    ~[tlist_sql;
+	        Select view_device_username
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>username</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_device_password
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>password</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_notes
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Notes</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_checkoutdate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>CHECKOUT DATE<a href="assets.html?active=~(gpv.active)&sortBy=outdate" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_checkindate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>CHECKIN DATE<a href="assets.html?active=~(gpv.active)&sortBy=indate" class="button">^</a></th>
+            )
+	    [/tlist_sql]
+	</tr>
+	</thead>
