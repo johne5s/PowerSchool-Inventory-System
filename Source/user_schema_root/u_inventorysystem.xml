@@ -33,6 +33,9 @@
         <field name="VIEW_DEVICE_PASSWORD" type="Boolean" defaultValue="1"/>
         <field name="VIEW_ASSET_LOCATION" type="Boolean" defaultValue="1"/>
         <field name="VIEW_ASSET_MANUFACTURE" type="Boolean" defaultValue="1"/>
+		<field name="Asset_Accessory_1_Name" type="String" length="128"/>
+		<field name="Asset_Accessory_2_Name" type="String" length="128"/>
+		<field name="Asset_Accessory_3_Name" type="String" length="128"/>
     </extendedTable>
     <extendedTable type="standalone" dbTableName="U_AssetVendor" childName="U_AssetVendor" comment="List of Vendors for the Repair Log">
         <field name="VENDOR_PHONE" type="String" length="128"/>

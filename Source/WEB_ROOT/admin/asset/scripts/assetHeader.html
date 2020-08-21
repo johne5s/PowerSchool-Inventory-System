@@ -133,32 +133,38 @@
 	    [/tlist_sql]
 	    
 	    ~[tlist_sql;
-	        Select view_asset_accessory_1
+	        Select 
+	            view_asset_accessory_1,
+	            Asset_Accessory_1_Name
             FROM U_assetsettings
 	    ;]
     	    ~(location;t;if.blank.then=
             ;else=
-            	<th>Accessory_1</th>
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_1;else=~(rename))</th>
             )
 	    [/tlist_sql]
 	    
 	    ~[tlist_sql;
-	        Select view_asset_accessory_2
+	        Select 
+	            view_asset_accessory_2,
+	            Asset_Accessory_2_Name
             FROM U_assetsettings
 	    ;]
     	    ~(location;t;if.blank.then=
             ;else=
-            	<th>Accessory_2</th>
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_2;else=~(rename))</th>
             )
 	    [/tlist_sql]
 	    
 	    ~[tlist_sql;
-	        Select view_asset_accessory_3
+	        Select 
+	            view_asset_accessory_3,
+	            Asset_Accessory_3_Name
             FROM U_assetsettings
 	    ;]
     	    ~(location;t;if.blank.then=
             ;else=
-            	<th>Accessory_3</th>
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_3;else=~(rename))</th>
             )
 	    [/tlist_sql]
 	    

@@ -199,19 +199,46 @@ $j(document).ready(function(){
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Accessory 1</td>
+			    ~[tlist_sql;
+        	        Select 
+        	            Asset_Accessory_1_Name
+                    FROM U_assetsettings
+        	    ;]
+            	    ~(rename;t;if.blank.then=<td class="bold">Accessory 1</td>
+                    ;else=
+                    	<td class="bold" id=~(location)>~(rename)</td>
+                    )
+        	    [/tlist_sql] 
 				<td>
 					<input type="text" name="[u_assettable]Asset_Accessory_1" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Accessory 2</td>
+			    ~[tlist_sql;
+        	        Select 
+        	            Asset_Accessory_2_Name
+                    FROM U_assetsettings
+        	    ;]
+            	    ~(rename;t;if.blank.then=<td class="bold">Accessory 2</td>
+                    ;else=
+                    	<td class="bold" id=~(location)>~(rename)</td>
+                    )
+        	    [/tlist_sql] 
 				<td>
 					<input type="text" name="[u_assettable]Asset_Accessory_2" value="" />
 				</td>
 			</tr>
 			<tr>
-				<td class="bold">Accessory 3</td>
+			    ~[tlist_sql;
+        	        Select 
+        	            Asset_Accessory_3_Name
+                    FROM U_assetsettings
+        	    ;]
+            	    ~(rename;t;if.blank.then=<td class="bold">Accessory 3</td>
+                    ;else=
+                    	<td class="bold" id=~(location)>~(rename)</td>
+                    )
+        	    [/tlist_sql] 
 				<td>
 					<input type="text" name="[u_assettable]Asset_Accessory_3" value="" />
 				</td>

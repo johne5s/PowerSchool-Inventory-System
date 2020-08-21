@@ -28,34 +28,85 @@
 	<form action="assets.html" method="POST" id="assetform">
 	~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
 		<div class="box-round"> 
-
 			<table class="grid">
+			    <thead>
+				<th>Field</th>
+				<th></th>
+				<th></th>
+			</thead>
 				<tr>
-				
-					<td class="bold">Active Status</td>
-					<td class="bold" width="80%">NOTES</td>
-					<td>Check In Date</td>
-					<td></td>
-				</tr>
-				<tr>
+					<td>Active Status</td>
 					<td>
     					<select name="[u_assettable]active">
-    						
-    		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
-                                <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
-                                <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
-                                <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
-    								
-    					
+		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
+                            <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
+                            <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
+                            <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
     					</select>
     				</td>
-					<td>
-						<textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="15" cols="100" wrap="soft"></textarea>
-					</td>
-					<td><input type="text" name="[u_assettable]ASSET_CHECKINDATE" value="" /><td>
+    				<td></td>
 				</tr>
-			</table>
-		
+				<tr>
+				    <td>Check In Date</td>
+					<td><input type="text" id="CheckInDate" name="[u_assettable]ASSET_CHECKINDATE" value="" /><td>
+			    </tr>
+				<tr>
+				    
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_1,
+            	            Asset_Accessory_1_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_1;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_1" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]    
+			        
+				    
+			    </tr>
+			    <tr>
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_2,
+            	            Asset_Accessory_2_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_2;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_2" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]   
+				    
+			    </tr>
+			    <tr>
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_3,
+            	            Asset_Accessory_3_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_3;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_3" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]   
+				    
+			    </tr>
+				<tr>
+    				<td>NOTES</td>
+					<td><textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="15" cols="100" wrap="soft"></textarea></td>
+					<td></td>
+				</tr>
+				
+		    </table>
 			
 			<div class="button-row">
 			    <input type="hidden" id="CheckOutDate" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
@@ -70,6 +121,10 @@
  
 
 	~[wc:admin_footer_css] 
+
+</body> 
+</html>
+
 <script> 
     $j(document).ready(function() 
     { 
@@ -79,11 +134,6 @@
         var day = d.getDate();
         var currentDate = month + "/" + day + "/" + year;
         $j('#CheckOutDate').val(" "); 
-        //$j('.CheckOutDateBtn').attr('name', 'CF-[u_assettable:12345]ASSET_CHECKOUTDATE$format=date');
-        
-        //name="CF-[u_assettable:58666]ASSET_CHECKOUTDATE$format=date"
-        //name="EF-003~(sectionsdcid)-u_sections_extension.assessment_names"
+        $j('#CheckInDate').val(currentDate); 
     }); 
 </script>
-</body> 
-</html>
