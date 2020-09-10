@@ -101,7 +101,7 @@
 		FROM u_assettable asset
 		cross join u_assetsettings s
 		WHERE ~[if#schoolCheck.is.a.school]SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
-		~[if#notactive.~(gpv.active)=false]
+		~[if#notactive.~(gpv.showInactive)=true]
 		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
 		[else#notactive]
 		AND active = '1'

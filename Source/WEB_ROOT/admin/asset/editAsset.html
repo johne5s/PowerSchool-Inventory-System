@@ -165,7 +165,20 @@ $j(document).ready(function(){
 			<tr>
 				<td class="bold">Type</td>
 				<td>
-					<input type="text" name="[u_assettable]asset_type" value="" />
+					<input type="text" id="storetype" name="[u_assettable]asset_type" value="" />
+					<select id="commontypes">
+					  <option value="">Common Types to select</option>
+					  <option value="Server">Server</option>
+					  <option value="Desktop Computer">Desktop Computer</option>
+					  <option value="Laptop Computer/Chromebook">Laptop Computer/Chromebook</option>
+					  <option value="Printer">Printer</option>
+					  <option value="Smartboard">Smartboard</option>
+					  <option value="Projector">Projector</option>
+					  <option value="Access Point">Access Point</option>
+					  <option value="iPad/Tablet">iPad/Tablet</option>
+					  <option value="CellPhone">CellPhone</option>
+					  <option value="Software<">Software</option>
+					</select>
 				</td>
 			</tr>
 			<tr>
@@ -279,11 +292,11 @@ $j(document).ready(function(){
 		<div class="button-row">
 			<input type="hidden" name="[u_assettable]schoolid" value="~(curschoolid)" />
 			<input type="hidden" name="ac" value="prim" />
+			~[submitbutton]
+			<a href="assets.html" class="button">Cancel</a>
 			~[if.~(gpv.assetid)>0]
 				<button id="deleteButton">Delete</button>
 			[/if]
-			<a href="assets.html" class="button">Cancel</a>
-			~[submitbutton]
 		</div>
 	</div> 
 </form>
@@ -299,6 +312,7 @@ $j(document).ready(function(){
 </html>
 
 <script>
+
 $j('#assignedToDropdown').change(function(){
 	    //run Ajax to get the dcid
 	    var url = "scripts/getDCID.html?name=" + $j('#assignedToDropdown :selected').val() + "&schoolid=~(curschoolid)";
@@ -341,10 +355,24 @@ function checkForDup()
 }
 
 
+function toggleIsStudent()
+{
+    //console.log(document.getElementById('isStudentCheckBox').checked);
+    //I need to verify that true = 1 and false = 0 or null in the database
+  if (document.getElementById('isStudentCheckBox').checked) 
+  {
+      document.getElementById('isStudentCheckBoxText').innerHTML = "Students"
+  } else {
+      document.getElementById('isStudentCheckBoxText').innerHTML = "Teachers"
+  }
+}
+
+
 var check = function(){
         if($j('.serialInput')){
             // run when condition is met
             checkForDup();
+            toggleIsStudent();
         }
         else {
             setTimeout(check, 100); // check again in a second
@@ -352,4 +380,13 @@ var check = function(){
     }
 
 check();//run once at load time
+
+$j('#commontypes').change(function(){
+	    TypeChanged();
+    });
+
+function TypeChanged()
+{
+	document.getElementById("storetype").value = $j('#commontypes :selected').val();
+}
 </script>
