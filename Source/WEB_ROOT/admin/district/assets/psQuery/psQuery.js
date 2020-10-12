@@ -45,7 +45,7 @@
         return new psQuery.init(table);
     }
     
-    var maxParams = 20;
+    var maxParams = 25;
     
     // is this Admin, Teacher or Guardian portal ?? (note: script breaks where URL contains "/guardian/" or "/teachers/" in Admin portal)
     var isGuardian = window.location.href.includes("/guardian/");

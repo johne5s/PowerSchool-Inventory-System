@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Asset Management</title>
+
+	~[wc:commonscripts] 
+
+<script type="text/javascript">
+
+$j(document).ready(function(){
+	$j('#deleteButton').click(function(e){
+		e.preventDefault();
+		$j('#deleteForm').submit();
+	});
+});
+function addHistory()
+{
+    addRecordToHistoryDB(~(gpv.assetid),document.getElementById("note_manual").value)
+    location.reload();
+}
+</script>
+
+	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+	<link href="/images/css/print.css" rel="stylesheet" media="print">
+</head> 
+<script src="../district/assets/psQuery/psQuery.js"></script>
+<script src="scripts/addHistory.js"></script>
+
+<body> 
+	~[wc:admin_header_css] 
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)" target="_top">Asset Management </a> >
+	Asset History
+	~[wc:admin_navigation_css] 
+
+<h1>Asset History</h1> 
+
+<ul class="tabs">
+	<li><a href="assets.html">Asset Management</a></li>
+	<li><a href="editAsset.html?assetid=~(gpv.assetid)">Edit Assest</a></li>
+	<li><a href="repairlog/repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
+	<li class="selected"><a href="assethistory.html?assetid=~(gpv.assetid)">History</a></li>
+	<li><a href="assettag.html?assetid=~(gpv.assetid)">Print Tag</a></li>
+</ul>
+<div class="box-round">
+    Notes: <input type=text name="note_manual" id="note_manual">
+    <input type="button" onclick="addHistory()" value="Manually add to History">
+    <br><br>
+    <table class="grid">
+        <tbody>
+            <tr>
+                <td width=10%><strong>Date</strong></td>
+                <td><strong>Notes</strong></td>
+            </tr>
+            
+            ~[tlist_sql;
+    		SELECT 
+    		    history_datetime,
+                notes
+            FROM u_assethistory
+            WHERE
+                asset_id = ~(gpv.assetid)
+                ORDER BY history_datetime desc
+    		;]
+    		<tr>
+                <td>~(date)</td>
+                <td>~(notes)</td>
+            </tr>
+    		
+    		[/tlist_sql]
+	    </tbody>
+    </table>
+</div>
+
+	~[wc:admin_footer_css] 
+</body> 
+</html>

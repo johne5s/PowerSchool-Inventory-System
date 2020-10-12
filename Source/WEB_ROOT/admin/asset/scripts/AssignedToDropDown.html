@@ -1,0 +1,30 @@
+<option value=""></option>
+<option value="-999">Unassigned</option>
+~[if#typeCheck.~(gpv.type)=1]
+    ~[tlist_sql;
+        Select 
+            dcid,
+            lastfirst
+        FROM students stu
+        where stu.schoolid = '~(gpv.schoolid)' order by lastfirst asc
+    ;]<option value="~(dcid)">~(lastfirst)</option>
+    [/tlist_sql]
+[else#typeCheck]
+    ~[tlist_sql;
+    	SELECT
+            ss.dcid
+            ,u.lastfirst
+            ,sch.abbreviation
+        FROM schoolstaff ss
+        INNER JOIN users u on u.dcid = ss.users_dcid
+        INNER JOIN schools sch on sch.school_number = ss.schoolid
+    	WHERE 
+        
+        (ss.Status = 1) 
+        and (ss.StaffStatus = 1 OR ss.StaffStatus = 2) 
+        --and (t.SchoolID = ~(gpv.schoolid)) 
+        and (u.homeschoolid = ~(gpv.schoolid) OR u.homeschoolid = 0) 
+        order by u.LastFirst asc
+    ;]<option value="~(dcid)">~(lastfirst) - ~(abb)</option>
+    [/tlist_sql]
+[/if#typeCheck]

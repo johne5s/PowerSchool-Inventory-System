@@ -13,7 +13,7 @@ body
   display: grid;
   grid-template-columns: auto auto auto;
   background-color: #2196F3;
-  padding-top: 0.4in;
+  padding-top: 0.5in;
   padding-bottom: 0.6in;
   width: 8.25in;
   height: 10.0in;
@@ -21,7 +21,7 @@ body
 .grid-item {
   background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);
-  padding-left: 5px;
+  padding-left: 20px; 
   font-size: 12px;
   text-align: left;
   height: 0.98in;

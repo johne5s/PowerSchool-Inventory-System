@@ -1,0 +1,223 @@
+<thead>
+	<tr>
+	    <th>Edit</th>
+	    <th>Repair</th>
+	    <th>Tag</th>
+	    ~[tlist_sql;
+	        Select view_schoolname
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>School</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_assignedto
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Assigned To</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_purchasedate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Purchased Date</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_purchaseprice
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Purchase Price</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_PO_Number
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>PO Number</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_fundedby
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>FundedBy</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_barcode
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Bar Code</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_type
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>TYPE</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_manufacture
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>MANUFACTURE</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_model
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>MODEL</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_serial
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>SERIAL</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_macaddress
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Mac</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_location
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Location</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select 
+	            view_asset_accessory_1,
+	            Asset_Accessory_1_Name
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_1;else=~(rename))</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select 
+	            view_asset_accessory_2,
+	            Asset_Accessory_2_Name
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_2;else=~(rename))</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select 
+	            view_asset_accessory_3,
+	            Asset_Accessory_3_Name
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th id=~(location)>~(rename;t;if.blank.then=Accessory_3;else=~(rename))</th>
+            )
+	    [/tlist_sql]
+	    
+        
+	    ~[tlist_sql;
+	        Select view_device_username
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>username</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_device_password
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>password</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_notes
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>Notes</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_checkoutdate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>CHECKOUT DATE</th>
+            )
+	    [/tlist_sql]
+	    
+	    ~[tlist_sql;
+	        Select view_asset_checkindate
+            FROM U_assetsettings
+	    ;]
+    	    ~(location;t;if.blank.then=
+            ;else=
+            	<th>CHECKIN DATE</th>
+            )
+	    [/tlist_sql]
+	</tr>
+	</thead>

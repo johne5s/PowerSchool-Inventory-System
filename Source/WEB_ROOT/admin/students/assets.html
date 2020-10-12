@@ -1,112 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Asset Management</title>
-	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
-	~[wc:commonscripts] 
-	<style>
-		.grid{
-			margin-top:20px;
-		}
-		barcode
-        {
-            font-family: 'Libre Barcode 39 Text', cursive;
-            font-size: 30px;
-        }
-	</style>
-	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
-	<link href="/images/css/print.css" rel="stylesheet" media="print">
-	
-	<script src="../district/assets/psQuery/psQuery.js"></script>
-    <script src="scripts/addHistory.js"></script>
+  <head>
+    <title>Student Devices</title>
+    ~[wc:commonscripts]
+    <script src='/scripts/tlistCustomization.js'></script>
+    <!-- Required style sheets: screen.css, and print.css -->
+    <link href='/images/css/screen.css' rel='stylesheet' media='screen'>
+    <link href='/images/css/print.css' rel='stylesheet' media='print'>
+    <!-- Add custom Col Widths here -->
+    <script src="../district/assets/psQuery/psQuery.js"></script>
+    <script src="../asset/scripts/addHistory.js"></script>
+  </head>
 
-</head> 
-	    
-<body> 
-	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> >
-	Asset Management
-	~[wc:admin_navigation_css] 
+  <body>
+    ~[wc:admin_header_frame_css]
+    <!-- breadcrumb start --><a href='/admin/home.html' target='_top'>~[text:psx.html.admin_students.emergency.start_page]</a> &gt; <a href='home.html?selectstudent=nosearch' target='_top'>~[text:psx.html.admin_students.emergency.student_selection]</a> &gt; Student Inventory<!-- breadcrumb end -->
+    ~[wc:admin_navigation_frame_css]
+    ~[wc:title_student_begin_css]Student Devices~[wc:title_student_end_css]
+    
 
-	<h1>Asset Management</h1> 
+    <table id="assetTable" class="grid" data-pstablefilter="">
 
-	<ul class="tabs">
-		<li class="selected"><a href="assets.html?sortBy=~(gpv.sortBy)">Asset Management</a></li>
-		<li><a href="assettag.html?assetid=-1">All Tags</a></li>
-		<li><a href="vendors.html">Vendors</a></li>
-	</ul>
-
-	
- <div class="center">
- 	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
- </div>
- 
- ~[tlist_sql;
-SELECT NVL(Show_Hidden_Assets, 0)
-FROM u_assetsettings 
-where rownum=1
-;]
- <script>
-	 if(~(value))
-	 {
-		showHidden = ~(value);
-	 }else
-	 {
-		showHidden = "0";
-	 }
- </script>
-[/tlist_sql]
-
-
-~[tlist_sql;
-SELECT id
-FROM u_assetsettings 
-where rownum=1
-;]
-<form action="assets.html" method="POST" class="showAll">
-    <input type="hidden" class="showAllBtn" name="CF-[u_assetsettings:~(id)]Show_Hidden_Assets" value="">
-	<input type="hidden" name="ac" value="prim" />
-	~[submitbutton]
-</form>
-
-[/tlist_sql]
-<script>
-    if(showHidden == 1)
-    {
-        $j('.showAll #btnSubmit')[0].innerHTML = "Show Only Active";
-		$j('.showAllBtn').val(0);
-    }else
-    {
-		$j('.showAll #btnSubmit')[0].innerHTML = "Show All";
-        $j('.showAllBtn').val(1);
-    }
-</script>
-
-<table id="assetTable" class="grid" data-pstablefilter="">
-    <a class="button" href="../district/assets/home.html">Settings</a>
-	
-	<br>
-    ~[tlist_sql;
-    SELECT
-    COUNT(asset.AssignedTo) AS Count
-    FROM u_assettable asset
-    cross join u_assetsettings s
-    WHERE lower(asset.AssignedTo) <> 'unassigned'
-    ;]
-    Assigned ~(Count)
-    [/tlist_sql]
-    -
-    ~[tlist_sql;
-    SELECT
-    COUNT(asset.AssignedTo) AS Count
-    FROM u_assettable asset
-    cross join u_assetsettings s
-    WHERE lower(asset.AssignedTo) = 'unassigned'
-    ;]
-    UnAssigned ~(Count)
-    [/tlist_sql]
-
-    ~[x:insertfile;scripts/assetHeader.html]
+    ~[x:insertfile;asset/assetStudentHeader.html]
     <tbody>
 	    
 	~[tlist_sql;
@@ -119,11 +34,6 @@ where rownum=1
             END AS active,
 			asset.SchoolName,
 			s.VIEW_ASSIGNEDTO,
-			CASE
-			    WHEN asset.IsStudent_DCID = '1' THEN '1'
-			    ELSE ''
-			END AS isStudent,
-			asset.AssignedTo_DCID,
 			asset.AssignedTo,
 			s.VIEW_ASSET_PURCHASEDATE,
 			To_char(asset.Asset_PurchaseDate, 'mm/dd/yyyy'),
@@ -165,27 +75,8 @@ where rownum=1
 			To_char(asset.ASSET_CHECKINDATE, 'mm/dd/yyyy')
 		FROM u_assettable asset
 		cross join u_assetsettings s
-		WHERE ~[if#schoolCheck.is.a.school]asset.SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
-		--~[if#notactive.~(gpv.showInactive)=true]
-		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
-		--[else#notactive]
-		--AND active = '1'
-		--[/if#notactive]
-		and (asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '0'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '2'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '3'
-                END)
-		or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '4'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '1'
-                END))
+		WHERE 
+		    asset.ASSIGNEDTO_DCID = ~(rn)
 		ORDER BY
 		~[if#schoolname.~(gpv.sortBy)=location]
 		SchoolName
@@ -227,19 +118,16 @@ where rownum=1
 
 	;]
 	    <tr>
-	        <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
-	        <td><a href="assettag.html?assetid=~(id)" class="button">Tag</a></td>
+	        <td><a href="asset/editAsset.html?assetid=~(id)" class="button dialogM" title="Edit Asset" style="visibility: visible;"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
+	        <td><a href="/admin/asset/repairlog/repairlog.html?assetid=~(id)" class="button" title="Repair Log" target="_blank"><em class="ui-icon-white ui-icon-wrench ui-icon"></em></a></td>
+	        <td><a href="../asset/assettag.html?assetid=~(id)" class="button">Tag</a></td>
 	        ~(view1;t;if.blank.then=
             ;else=
         	<td id="~(view1;t)"><font color="~(color)">~(Data1)</font></td>
             )
             ~(view2;t;if.blank.then=
             ;else=
-                ~(isStudent;t;if.blank.then=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="teacher_1.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
-                ;else=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="student_2.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
-                )
+            <td id="~(view2;t)"><font color="~(color)">~(Data2)</font></td>
             )
             ~(view3;t;if.blank.then=
             ;else=
@@ -312,13 +200,12 @@ where rownum=1
             ~(view20;t;if.blank.then=
             ;else=
 
-            <th>~(Data20;t;if.blank.then=<a href="checkoutDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check Out</a>;else=~(Data20))</th>
-
+            <th>~(Data20;t;if.blank.then=<a href="asset/checkoutDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check Out</a>;else=~(Data20))</th>
             )
             ~(view21;t;if.blank.then=
             ;else=
 
-            <th>~(Data20;t;if.blank.then=~(Data21);else=<a href="checkinDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check In</a>)</th>
+            <th>~(Data20;t;if.blank.then=~(Data21);else=<a href="asset/checkinDialogM.html?assetid=~(id)" class="button dialogM" title="Check In Asset" >Check In</a>)</th>
             )
 
 
@@ -326,13 +213,13 @@ where rownum=1
 	[/tlist_sql]
 	</tbody>
 </table>
-~[wc:admin_footer_css] 
-</body>
-</html>
-
-
+    
+    ~[wc:admin_footer_css] 
+  </body>
+  </html>
+  
 <script> 
-    $j(document).ready(function() 
+$j(document).ready(function() 
     { 
         var d = new Date();
         var year = d.getFullYear();
@@ -341,7 +228,4 @@ where rownum=1
         var currentDate = month + "/" + day + "/" + year;
         $j('.CheckOutDateBtn').val(currentDate); 
     }); 
-    
-    
 </script>
-

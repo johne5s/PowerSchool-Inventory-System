@@ -1,3 +1,16 @@
+~[if#typeCheck.~(gpv.type)=1]
+~[tlist_sql;
+Select 
+dcid
+FROM students stu
+where stu.lastfirst = '~(gpv.name)'
+AND stu.schoolid = '~(gpv.schoolid)'
+;]~(dcid)[/tlist_sql]
+[else#typeCheck]
+
+[/if#typeCheck]
+
+
 ~[if#nameCheck.~(gpv.name)=]
 0
 [else#nameCheck]

@@ -1,0 +1,161 @@
+<div style="width:800px;">
+
+ ~[tlist_sql;
+SELECT NVL(AutoClearAssignedTo, 0)
+FROM u_assetsettings 
+where rownum=1
+;]
+ <script>
+	 if(~(value))
+	 {
+		AutoClear = ~(value);
+	 }else
+	 {
+		AutoClear = "0";
+	 }
+ </script>
+[/tlist_sql]
+
+    
+<form action="" method="POST" id="assetform">
+	~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
+		<div class="box-round"> 
+			<table class="grid">
+			    <thead>
+				<th>Field</th>
+				<th></th>
+				<th></th>
+			</thead>
+				<tr>
+					<td>Active Status</td>
+					<td>
+    					<select name="[u_assettable]active">
+		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
+                            <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
+                            <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
+                            <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
+							<option value="4" ~[if#sel.~([u_assettable]active)4]selected[/if#sel]>Buyout</option>
+    					</select>
+    				</td>
+    				<td></td>
+				</tr>
+				<tr>
+				    <td>Check In Date</td>
+					<td><input type="text" id="dCheckInDate" name="[u_assettable]ASSET_CHECKINDATE" value="" /><td>
+			    </tr>
+				<tr>
+				    
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_1,
+            	            Asset_Accessory_1_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_1;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_1" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]    
+			        
+				    
+			    </tr>
+			    <tr>
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_2,
+            	            Asset_Accessory_2_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_2;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_2" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]   
+				    
+			    </tr>
+			    <tr>
+			        ~[tlist_sql;
+            	        Select 
+            	            view_asset_accessory_3,
+            	            Asset_Accessory_3_Name
+                        FROM U_assetsettings
+            	    ;]
+                	    ~(location;t;if.blank.then=
+                        ;else=
+                        	<td id=~(location)>~(rename;t;if.blank.then=Accessory_3;else=~(rename))</td>
+                        	<td><input type="text" name="[u_assettable]Asset_Accessory_3" value="" /></td>
+				            <td></td>
+                        )
+            	    [/tlist_sql]   
+				    
+			    </tr>
+				<tr>
+    				<td>NOTES</td>
+					<td><textarea form ="assetform" name="[u_assettable]ASSET_NOTES" id="taid" rows="5" cols="50" wrap="soft"></textarea></td>
+					<td></td>
+				</tr>
+				<tr>
+				    <td><input type="text" id="AssignedTo_name" name="[u_assettable]assignedTo" value="" readonly /></td>
+				    <td><input type="hidden" id="AssignedTo_dcid" name="[u_assettable]AssignedTo_dcid" value="" readonly /></td>
+				    <td><input type="checkbox" id="clearAssignedTo" onclick="clear(this)" /><label for="clearAssignedTo">Unassign</label></td>
+				</tr>
+                
+                
+		    </table>
+			
+			
+			<div class="button-row">
+			    
+			    <input type="hidden" id="dCheckOutDate" name="[u_assettable]ASSET_CHECKOUTDATE" value="" />
+				<input type="hidden" name="ac" value="prim" />
+				<a href="" class="button">Cancel</a>
+				~[submitbutton]
+			</div>
+		</div> 
+	</form>
+	
+	
+</div>
+
+<script>
+
+$j(document).ready(function() 
+{ 
+    var name = document.getElementById('AssignedTo_name').value;
+    var sdcid = document.getElementById('AssignedTo_dcid').value;
+    const checkbox = document.getElementById('clearAssignedTo')
+
+    checkbox.addEventListener('change', (event) => {
+      if (event.target.checked) {
+        $j('#AssignedTo_name').val("UnAssigned");
+        $j('#AssignedTo_dcid').val("");
+      } else {
+        $j('#AssignedTo_name').val(name);
+        $j('#AssignedTo_dcid').val(sdcid);
+      }
+    })
+    
+    if($j('.psDialog .button-row #btnSubmit'))
+    {
+        $j(document).on('click','#btnSubmit',function()
+        {
+            addRecordToHistoryDB(~(gpv.assetid),"Checked In to <strong>" + document.getElementById('AssignedTo_name').value + "</strong> by <strong>~[x:username]</strong>");
+        });
+        
+    }
+    
+    //set the date fields
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth()+1;
+    var day = d.getDate();
+    var currentDate = month + "/" + day + "/" + year;
+    $j('#dCheckOutDate').val(" "); 
+    $j('#dCheckInDate').val(currentDate); 
+}); 
+
+</script>

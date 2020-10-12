@@ -3,42 +3,988 @@
 <head>
 	<title>Asset Tag</title>
 	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
-	<link rel="stylesheet" href="scripts/tag-style.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="scripts/tag-style.css" type="text/css" media="all" />
+    <link href="/images/css/print.css" rel="stylesheet" media="print">
 	~[wc:commonscripts] 
+	
+	<style>
+
+	@media all{
+		.page-break { display:block;page-break-after:always;}
+	}
+	@media print{
+		.page-break { display:block;page-break-after:always;}
+		.noprint { display: none; }
+	}
+	</style>
 </head> 
 <body> 
 
-
-<div class="grid-container print">
+<div id="grandParent">
+<div class="grid-container print" id="parent">
 
 		~[TLIST_SQL;
-		   SELECT asset_id,
-				 asset_serial,
-				 assignedto,
-				 asset_notes
-				 FROM u_assettable
+		   SELECT  *
+FROM
 
-				~[if#CheckID.~(gpv.assetid)=-1]
-    				~[if#schoolCheck.is.a.school]
-    				    WHERE SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
-    				[else#schoolCheck]
-    				    WHERE active = '1'
-    				[/if#schoolCheck] 
-				    --SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
-				[else#CheckID]
-				    WHERE id = ~(gpv.assetid)
-				[/if#CheckID]
+( 
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( id) as pos1
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_asset_id = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( SchoolName)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_SchoolName = 1 )
+            
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( AssignedTo)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_AssignedTo = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_PurchaseDate)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PurchaseDate = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( PurchasePrice)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_PurchasePrice = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_PO_Number)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PO_Number = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_FundedBy)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_FundedBy = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1
+            , TO_CHAR(CONCAT( CONCAT( '<barcode>', asset_id ), '</barcode>' ))
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_BarCode = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_Type)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Type = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR(  Asset_MANUFACTURE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MANUFACTURE = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_MODEL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MODEL = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_SERIAL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_SERIAL = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_MacAddress)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MacAddress = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_Location)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Location = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_Accessory_1)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_1 = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_Accessory_2)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_2 = 1 )
+            
+            UNION
+            SELECT 
+             TO_CHAR(id) as id1, TO_CHAR( Asset_Accessory_3)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_3 = 1 )
+            
+            UNION
+            SELECT 
+             TO_CHAR(id) as id1, TO_CHAR( Device_Username)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Username = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Device_Password)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Password = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( Asset_Notes)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Notes = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( ASSET_CHECKOUTDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKOUTDATE = 1 )
+            
+            UNION
+            SELECT 
+            TO_CHAR(id) as id1, TO_CHAR( ASSET_CHECKINDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKINDATE = 1 )
+
+        ) t1
+        
+--///////////////////////////////////
+
+FULL OUTER JOIN     ( 
+            
+            SELECT 
+                TO_CHAR(id) as id2
+                
+                ,TO_CHAR(id) as pos2
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_asset_id = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(SchoolName)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_SchoolName = 2 )
+            
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(AssignedTo)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_AssignedTo = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PurchaseDate)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PurchaseDate = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(PurchasePrice)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_PurchasePrice = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PO_Number)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PO_Number = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_FundedBy)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_FundedBy = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                , TO_CHAR(CONCAT( CONCAT( '<barcode>', asset_id ), '</barcode>' ))
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_BarCode = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Type)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Type = 2 )
+            
+            UNION
+            SELECT 
+               TO_CHAR(id)
+               
+                ,TO_CHAR( Asset_MANUFACTURE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MANUFACTURE = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MODEL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MODEL = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_SERIAL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_SERIAL = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MacAddress)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MacAddress = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Location)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Location = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_1)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_1 = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_2)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_2 = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_3)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_3 = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Username)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Username = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Password)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Password = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Notes)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Notes = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKOUTDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKOUTDATE = 2 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKINDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKINDATE = 2 )
+        ) t2 ON t2.ID2 = t1.ID1
+        
+--//////////////////////////////
+
+
+
+FULL OUTER JOIN     ( 
+
+            SELECT 
+                TO_CHAR(id) as id3
+                
+                ,TO_CHAR(id) as pos3
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_asset_id = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(SchoolName)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_SchoolName = 3 )
+            
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(AssignedTo)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_AssignedTo = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PurchaseDate)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PurchaseDate = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(PurchasePrice)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_PurchasePrice = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PO_Number)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PO_Number = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_FundedBy)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_FundedBy = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                , TO_CHAR(CONCAT( CONCAT( '<barcode>', asset_id ), '</barcode>' ))
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_BarCode = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Type)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Type = 3 )
+            
+            UNION
+            SELECT 
+               TO_CHAR(id)
+               
+                ,TO_CHAR( Asset_MANUFACTURE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MANUFACTURE = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MODEL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MODEL = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_SERIAL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_SERIAL = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MacAddress)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MacAddress = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Location)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Location = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_1)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_1 = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_2)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_2 = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_3)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_3 = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Username)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Username = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Password)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Password = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Notes)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Notes = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKOUTDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKOUTDATE = 3 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKINDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKINDATE = 3 )
+        ) t3 ON t3.ID3 = t1.ID1
+        
+        
+--////////////////
+
+FULL OUTER JOIN     ( 
+
+            SELECT 
+                TO_CHAR(id) as id4
+                
+                ,TO_CHAR(id) as pos4
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_asset_id = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(SchoolName)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_SchoolName = 4 )
+            
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(AssignedTo)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_AssignedTo = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PurchaseDate)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PurchaseDate = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(PurchasePrice)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_PurchasePrice = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PO_Number)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PO_Number = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_FundedBy)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_FundedBy = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                , TO_CHAR(CONCAT( CONCAT( '<barcode>', asset_id ), '</barcode>' ))
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_BarCode = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Type)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Type = 4 )
+            
+            UNION
+            SELECT 
+               TO_CHAR(id)
+               
+                ,TO_CHAR( Asset_MANUFACTURE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MANUFACTURE = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MODEL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MODEL = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_SERIAL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_SERIAL = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MacAddress)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MacAddress = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Location)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Location = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_1)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_1 = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_2)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_2 = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_3)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_3 = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Username)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Username = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Password)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Password = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Notes)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Notes = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKOUTDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKOUTDATE = 4 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKINDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKINDATE = 4 )
+
+        ) t4 ON t4.ID4 = t1.ID1
+        
+--////////////////
+
+FULL OUTER JOIN     ( 
+
+            SELECT 
+                TO_CHAR(id) as id5
+                
+                ,TO_CHAR(id) as pos5
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_asset_id = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(SchoolName)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_SchoolName = 5 )
+            
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(AssignedTo)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_AssignedTo = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PurchaseDate)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PurchaseDate = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(PurchasePrice)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_PurchasePrice = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_PO_Number)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_PO_Number = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_FundedBy)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_FundedBy = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                , TO_CHAR(CONCAT( CONCAT( '<barcode>', asset_id ), '</barcode>' ))
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_BarCode = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Type)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Type = 5 )
+            
+            UNION
+            SELECT 
+               TO_CHAR(id)
+               
+                ,TO_CHAR( Asset_MANUFACTURE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MANUFACTURE = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MODEL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MODEL = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_SERIAL)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_SERIAL = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_MacAddress)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_MacAddress = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Location)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Location = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_1)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_1 = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_2)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_2 = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Accessory_3)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Accessory_3 = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Username)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Username = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Device_Password)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Device_Password = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(Asset_Notes)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_Asset_Notes = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKOUTDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKOUTDATE = 5 )
+            
+            UNION
+            SELECT 
+                TO_CHAR(id)
+                
+                ,TO_CHAR(ASSET_CHECKINDATE)
+            FROM u_assettable
+            WHERE EXISTS (SELECT id FROM u_assetsettings WHERE tagpos_ASSET_CHECKINDATE = 5 )
+        ) t5 ON t5.ID5 = t1.ID1
+        
+--////////////////
+INNER JOIN 
+(
+    SELECT 
+        id as id
+        , active
+        , schoolname
+        
+    FROM u_assettable 
+    
+    
+    ~[if#CheckID.~(gpv.assetid)=-1]
+        ~[if#schoolCheck.is.a.school]
+            WHERE SchoolName = '~(schoolname)' AND active = '1' OR active IS NULL
+        [else#schoolCheck]
+            WHERE active = '1'
+        [/if#schoolCheck] 
+    [else#CheckID]
+        WHERE id = ~(gpv.assetid)
+    [/if#CheckID]
+
+) aaa ON aaa.id = t1.ID1
+
+
+
 
 				; 
 		]
-		<div class="grid-item">
-            <barcode>~(asset_id)</barcode><br>
-            <strong class="lable">Serial : </strong>~(asset_serial)<br>
-            <strong class="lable">Assigned To : </strong>~(assignedto)<br>
-            <strong class="lable">Notes : </strong>~(asset_notes)
-	    </div>
+<div class="grid-item">
+
+<div id=~(row1a)> ~(row1b)</div>
+
+<div id=~(row2a)> ~(row2b)</div>
+
+<div id=~(row3a)> ~(row3b)</div>
+
+<div id=~(row4a)> ~(row4b)</div>
+
+<div id=~(row5a)> ~(row5b)</div>
+
+</div>
 		[/TLIST_SQL]
 </div>
-
+</div>
 </body> 
 </html>
+
+
+
+<script>
+
+    
+addSpacers();
+
+
+function addSpacers() {
+    if (document.getElementsByClassName("grid-item").length < 29){
+        return;
+        }
+    //var pagebreakdiv = '<div class="grid-item spacer" id="cloneme"></div><div class="grid-item spacer" id="cloneme"></div><div class="grid-item spacer" id="cloneme"></div><page-break></page-break>';
+    var pagebreakdiv = '<div class="add-page-break"></div>';
+    var outerIndx = 29;
+    $j('.grid-item').each(function (indx, elem) {
+        if(indx == outerIndx){
+            if (!$j(elem).next().hasClass('spacer')) {
+                $j(elem).after(pagebreakdiv);
+                
+            }
+            outerIndx+=30;
+        }
+    });
+    
+
+        var bound = document.getElementById("grandParent");
+    $j( ".add-page-break" ).each(function( index, elem ) {
+      //console.log( index + ": " + $j( this ).text() + ": " + this);
+      splitOn(bound,this);
+    });
+
+}
+
+
+
+
+function splitOn(bound, cutElement) {
+    // will divide the DOM tree rooted at bound to the left and right of cutElement
+    // cutElement must be a descendant of bound
+    for (var parent = cutElement.parentNode; bound != parent; parent = grandparent) 
+    {
+        var right = parent.cloneNode(false);
+        console.log(right);
+        while (cutElement.nextSibling)
+            right.appendChild(cutElement.nextSibling);
+        var grandparent = parent.parentNode;
+        grandparent.insertBefore(right, parent.nextSibling);
+        grandparent.insertBefore(cutElement, right);
+    }
+}
+
+
+</script>

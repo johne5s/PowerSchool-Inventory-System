@@ -3,7 +3,7 @@
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 description="Basic Inventory System" 
 name="Basic Inventory System" 
-version="2.0.10" 
+version="2.1.18" 
 xsi:schemaLocation="http://plugin.powerschool.pearson.com plugin.xsd">
 <publisher name="John Scatena">
 <contact email="pssupport@tbaisd.org"/>

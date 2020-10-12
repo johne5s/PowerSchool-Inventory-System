@@ -1,43 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Asset Management</title>
-
-	~[wc:commonscripts] 
-
-<script type="text/javascript">
-
-$j(document).ready(function(){
-	$j('#deleteButton').click(function(e){
-		e.preventDefault();
-		$j('#deleteForm').submit();
-	});
-	$j('#btnSubmit').click(function(e){
-	    addRecordToHistoryDB("~(gpv.assetid)","Asset was Edited from the Edit Asset page by ~[x:username]");
-	});
-});
-</script>
-<script src="../district/assets/psQuery/psQuery.js"></script>
-<script src="scripts/addHistory.js"></script>
-	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
-	<link href="/images/css/print.css" rel="stylesheet" media="print">
-</head> 
-<body> 
-	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)" target="_top">Asset Management </a> >
-	Asset
-	~[wc:admin_navigation_css] 
-
-<h1>~[if.~(gpv.assetid)=-1]New[else]Edit[/if] Asset</h1> 
-
-<ul class="tabs">
-	<li class="selected"><a href="assets.html">Asset Management</a></li>
-	<li><a href="repairlog/repairlog.html?assetid=~(gpv.assetid)">Repair Log</a></li>
-	<li><a href="assethistory.html?assetid=~(gpv.assetid)">History</a></li>
-	<li><a href="assettag.html?assetid=~(gpv.assetid)">Print Tag</a></li>
-</ul>
-
-<form action="assets.html" method="POST" id="assetform">
+<form action="" method="POST" id="assetform">
 ~[DirectTable.Select:u_assettable;id:~(gpv.assetid)]
 	<div class="box-round">
 		<table class="grid">
@@ -50,13 +11,12 @@ $j(document).ready(function(){
 							<option value="1" selected>Active</option>
 							<option value="2">Lost</option>
 							<option value="3">Recycled</option>
-							<option value="4">Buyout</option>
 						[else]
 		                    <option value="0" ~[if#sel.~([u_assettable]active)0]selected[/if#sel]>Inactive</option>
                             <option value="1" ~[if#sel.~([u_assettable]active)1]selected[/if#sel]>Active</option>
                             <option value="2" ~[if#sel.~([u_assettable]active)2]selected[/if#sel]>Lost</option>
                             <option value="3" ~[if#sel.~([u_assettable]active)3]selected[/if#sel]>Recycled</option>
-							<option value="4" ~[if#sel.~([u_assettable]active)4]selected[/if#sel]>Buyout</option>	
+								
 						[/if]
 					</select>
 				</td>
@@ -280,24 +240,11 @@ $j(document).ready(function(){
 		
 		<div class="button-row formElement">
 			<input type="hidden" name="ac" value="prim" />
-			~[if.~(gpv.assetid)>0]
-				<button type="button" id="deleteButton" class="confirmationReq">Delete</button> 
-			[/if]
-			<a href="assets.html" class="button">Cancel</a>
+			<a href="" class="button">Cancel</a>
 			~[submitbutton]
         </div>
 	</div> 
 </form>
-
-<form id="deleteForm" action="assets.html">
-	<input type="hidden" name="DD-u_assettable.id:~(gpv.assetid)" value="1">
-	<input type="hidden" name="ac" value="prim" />
-</form>
-
-
-	~[wc:admin_footer_css] 
-</body> 
-</html>
 
 <script>
 
@@ -360,7 +307,7 @@ function SetDropDowns(){
 		assignedType = 0;
 	};
 
-	var url = "scripts/AssignedToDropDown.html?type=" + assignedType +"&id=" + "&schoolid=" + $j('#schoolDropDown :selected').val();
+	var url = "../asset/scripts/AssignedToDropDown.html?type=" + assignedType +"&id=" + "&schoolid=" + $j('#schoolDropDown :selected').val();
 	//console.log(url);
 	$j.ajax(
 	{
@@ -390,7 +337,7 @@ function checkForDup()
 
     $j.ajax(
 	{
-		url: "scripts/checkDupSerial.html?serial=" + serial + "&assetid=" + ~(gpv.assetid), 
+		url: "../asset/scripts/checkDupSerial.html?serial=" + serial + "&assetid=" + ~(gpv.assetid), 
 		dataType: "text",
 		success: function(result)
 		{
@@ -418,7 +365,7 @@ function toggleIsStudent()
       showHideFormElements("studentDropDownElement", true);
       showHideFormElements("teacherDropDownElement", false);
   } else {
-	  document.getElementById('isStudentCheckBoxText').innerHTML = "<font color=blue>Teacher - </font>";
+	  document.getElementById('isStudentCheckBoxText').innerHTML = "<font color=blue>Staff - </font>";
 	  document.getElementById('isStudent_dcid').value = "0";
       showHideFormElements("studentDropDownElement", false);
       showHideFormElements("teacherDropDownElement", true);
@@ -479,6 +426,20 @@ function toggleIsStudent()
             }
             else {
                 setTimeout(check, 100); // check again in a second if class serialInput was not found
+            }
+            
+            if($j('.psDialog .button-row #btnSubmit'))
+            {
+                $j(document).on('click','#btnSubmit',function()
+                {
+                    addRecordToHistoryDB(~(gpv.assetid),"Asset was edited by <strong>~[x:username]</strong> via Teacher dialog box");
+                });
+                
+            }
+            else
+            {
+                console.log("try again");
+                setTimeout(check, 100);
             }
         }
 

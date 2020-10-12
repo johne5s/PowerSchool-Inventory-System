@@ -1,0 +1,7 @@
+<!-- create new teacher link on left nav menu for the Basic Inventory, John Scatena, jscatena@tbaisd.org -->
+
+<h3>Inventory</h3>
+<ul id="staff_inventory">
+<li><a href="/admin/faculty/assets.html?frn=~(frn)">Staff Inventory</a></li>
+</ul>
+<br>

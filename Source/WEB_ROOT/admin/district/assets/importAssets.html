@@ -58,14 +58,14 @@ var okToShowImportBtn = true;
                 var tarr = [];
                 //console.log("row cell count : " + data.length);
                 //error checking - check for 25 cells in each row
-                if(data.length != 25)
+                if(data.length != 26 && data.length != 1)
                 {
                     okToShowImportBtn = false;
-                    alert("Invalid total number of collums, looking for 25" + "\n" + data.length + "\n" + "DO NOT IMPORT THIS FILE");
+                    alert("Invalid total number of columns, looking for 26 colums" + "\n" + "Only found " + data.length + " on row " + i + "\n" + "DO NOT IMPORT THIS FILE");
                 }
                 
                 for (var j=0; j<data.length; j++) {
-                    if(j === 6 && i != 0 || j === 23 && i != 0 || j === 24 && i != 0)
+                    if(j === 7 && i != 0 || j === 24 && i != 0 || j === 25 && i != 0)
                     {
                         //error checking - check the date format
                         if (validatedate(data[j]) == false) {
@@ -75,7 +75,10 @@ var okToShowImportBtn = true;
                     }
                     tarr.push(data[j]);
                 }
-                lines.push(tarr);
+                if(tarr.length > 1)
+                {
+                    lines.push(tarr);
+                }
         }
         //console.log(lines.length);
         
@@ -147,66 +150,69 @@ var okToShowImportBtn = true;
                     value = "SchoolId";
                     break;
                 case 4 :
-                    value = "AssignedTo";
+                    value = "IsStudent_dcid";
                     break;
                 case 5 :
+                    value = "AssignedTo";
+                    break;
+                case 6 :
                     value = "AssignedTo_dcid";
                     break;
-    			case 6 :
+    			case 7 :
                     value = "PurchaseDate";
                     break;
-                case 7 :
+                case 8 :
                     value = "PurchasePrice";
                     break;
-    			case 8 :
+    			case 9 :
                     value = "PO_Number";
                     break;
-                case 9 :
+                case 10 :
                     value = "Asset_FundedBy";
                     break;
-                case 10 :
+                case 11 :
                     value = "BarCode";
                     break;
-                case 11 :
+                case 12 :
                     value = "Asset_Type";
                     break;
-                case 12 :
+                case 13 :
                     value = "Asset_Manufacture";
                     break;
-                case 13 :
+                case 14 :
                     value = "Asset_Model";
                     break;
-                case 14 :
+                case 15 :
                     value = "Asset_Serial";
                     break;
-                case 15 :
+                case 16 :
                     value = "Asset_MacAddress";
                     break;
-                case 16 :
+                case 17 :
                     value = "Asset_Location";
                     break;
-                case 17 :
+                case 18 :
                     value = "Asset_Accessory_1";
                     break;
-                case 18 :
+                case 19 :
                     value = "Asset_Accessory_2";
                     break;
-                case 19 :
+                case 20 :
                     value = "Asset_Accessory_3";
                     break;
-    			case 20 :
+    			case 21 :
                     value = "DeviceUsername";
                     break;
-                case 21 :
+                case 22 :
                     value = "DevicePassword";
                     break;
-                case 22 :
+                case 23 :
                     value = "Asset_Notes";
                     break;
-                case 23 :
+                case 24 :
                     value = "Asset_CheckOutDate";
                     break;
-                case 24 :
+                case 25 :
                     value = "Asset_CheckInDate";
                     break;
                 default :
@@ -245,7 +251,7 @@ var okToShowImportBtn = true;
         <br><br>
         <a class="button" href="BIS_Import_Sample.txt"> - Sample File -</a>
         <br><br>
-        <div id="confirmBtn" style="display: none;"><center><input type="button" onclick="importTheRecords()" value="Click here to import these records!"><br>Review the data below.</center></div>
+        <div id="confirmBtn" style="display: none;"><input type="button" onclick="importTheRecords()" value="Click here to complete the import of these records!"><br>Review the data below.</div>
         <table id="assetTable" class='grid'>
         
         </table>
@@ -264,9 +270,12 @@ var okToShowImportBtn = true;
             "0" = Inactive<br>
             "1" = Active<br>
             "2" = Lost<br>
-            "3” = Recycled
+            "3” = Recycled<br>
+			"4" = Buyout
           </li>
+		  <li>Some reports of assets not showing up on the main page when no school_id or no school name has been provided.<br>I suggest school_id of 0 and the name of District instead of them being blank.</li>
         </ul>
+		There have been reports the importer is only importing 25 assets at a time.  I have not been able to duplicate this.
         To backup your data I have created an export plugin <a class="button" href="https://support.powerschool.com/exchange/view.action?download.id=986">Download Here</a>
     </div>
 </body>
@@ -304,9 +313,10 @@ var okToShowImportBtn = true;
     {
         //console.log(record);
         //console.log(record[6] + " : " + record[22] + " : " + record[23]);
-        var purchaseDate = convertDates(record[6]);
-        var checkoutDate = convertDates(record[23]);
-        var checkinDate = convertDates(record[24]);
+        //console.log(record[18] + " : " + record[19] + " : " + record[20]);
+        var purchaseDate = convertDates(record[7]);
+        var checkoutDate = convertDates(record[24]);
+        var checkinDate = convertDates(record[25]);
 
         if(record[0] > 0)
         {
@@ -318,25 +328,26 @@ var okToShowImportBtn = true;
                     Active: record[1], 
                     SchoolName: record[2], 
                     SchoolId: record[3],
-                    AssignedTo: record[4],
-                    AssignedTo_dcid: record[5],
+                    IsStudent_dcid: record[4],
+                    AssignedTo: record[5],
+                    AssignedTo_dcid: record[6],
                     Asset_PurchaseDate: purchaseDate,
-                    PurchasePrice: record[7],
-                    Asset_PO_Number: record[8],
-                    Asset_FundedBy: record[9],
-                    Asset_ID: record[10],
-                    Asset_Type: record[11],
-                    Asset_Manufacture: record[12],
-                    Asset_Model: record[13],
-                    Asset_Serial: record[14],
-                    Asset_MacAddress: record[15],
-                    Asset_Location: record[16],
-                    Asset_Accessory_1: record[17],
-                    Asset_Accessory_2: record[18],
-                    Asset_Accessory_3: record[19],
-                    Device_Username: record[20],
-                    Device_Password: record[21],
-                    Asset_Notes: record[22]
+                    PurchasePrice: record[8],
+                    Asset_PO_Number: record[9],
+                    Asset_FundedBy: record[10],
+                    Asset_ID: record[11],
+                    Asset_Type: record[12],
+                    Asset_Manufacture: record[13],
+                    Asset_Model: record[14],
+                    Asset_Serial: record[15],
+                    Asset_MacAddress: record[16],
+                    Asset_Location: record[17],
+                    Asset_Accessory_1: record[18],
+                    Asset_Accessory_2: record[19],
+                    Asset_Accessory_3: record[20],
+                    Device_Username: record[21],
+                    Device_Password: record[22],
+                    Asset_Notes: record[23]
                 });
         }else
         {
@@ -348,25 +359,26 @@ var okToShowImportBtn = true;
                     Active: record[1], 
                     SchoolName: record[2], 
                     SchoolId: record[3],
-                    AssignedTo: record[4],
-                    AssignedTo_dcid: record[5],
+                    IsStudent_dcid: record[4],
+                    AssignedTo: record[5],
+                    AssignedTo_dcid: record[6],
                     Asset_PurchaseDate: purchaseDate,
-                    PurchasePrice: record[7],
-                    Asset_PO_Number: record[8],
-                    Asset_FundedBy: record[9],
-                    Asset_ID: record[10],
-                    Asset_Type: record[11],
-                    Asset_Manufacture: record[12],
-                    Asset_Model: record[13],
-                    Asset_Serial: record[14],
-                    Asset_MacAddress: record[15],
-                    Asset_Location: record[16],
-                    Asset_Accessory_1: record[17],
-                    Asset_Accessory_2: record[18],
-                    Asset_Accessory_3: record[19],
-                    Device_Username: record[20],
-                    Device_Password: record[21],
-                    Asset_Notes: record[22]
+                    PurchasePrice: record[8],
+                    Asset_PO_Number: record[9],
+                    Asset_FundedBy: record[10],
+                    Asset_ID: record[11],
+                    Asset_Type: record[12],
+                    Asset_Manufacture: record[13],
+                    Asset_Model: record[14],
+                    Asset_Serial: record[15],
+                    Asset_MacAddress: record[16],
+                    Asset_Location: record[17],
+                    Asset_Accessory_1: record[18],
+                    Asset_Accessory_2: record[19],
+                    Asset_Accessory_3: record[20],
+                    Device_Username: record[21],
+                    Device_Password: record[22],
+                    Asset_Notes: record[23]
                 });
         }
         

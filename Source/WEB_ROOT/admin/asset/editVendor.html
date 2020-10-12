@@ -10,22 +10,32 @@
 	</style>
 	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
 	<link href="/images/css/print.css" rel="stylesheet" media="print">
+	
+	<script type="text/javascript">
+
+    $j(document).ready(function(){
+    	$j('#deleteButton').click(function(e){
+    		e.preventDefault();
+    		$j('#deleteForm').submit();
+    	});
+    });
+    </script>
 </head> 
 <body> 
 	~[wc:admin_header_css] 
-	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html?active=&sortBy=" target="_top">Asset Management </a> >
+	<a href="/admin/home.html" target="_top">Start Page </a> > <a href="/admin/asset/assets.html" target="_top">Asset Management </a> >
 	Vendor Management
 	~[wc:admin_navigation_css] 
 
 	<h1>~[if.~(gpv.vendorid)=-1]New[else]Edit[/if] Vendor</h1> 
 
 	<ul class="tabs">
-		<li><a href="assets.html?active=~(gpv.active)&sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li><a href="assets.html">Asset Management</a></li>
 		<li class="selected"><a href="vendors.html">Vendors</a></li>
 	</ul>
 	
 	<div class="box-round"> 
-	<form action="vendors.html" method="POST" id="assetform">
+	<form action="vendors.html" method="POST" id="venderform">
         ~[DirectTable.Select:u_assetvendor;id:~(gpv.vendorid)]
     	
     		<table class="grid">
@@ -85,16 +95,22 @@
     		<div class="button-row">
 			<input type="hidden" name="ac" value="prim" />
 			~[if.~(gpv.vendorid)>0]
-				<button id="deleteButton">Delete</button>
+				<button type="button" id="deleteButton" class="confirmationReq">Delete</button> 
 			[/if]
 			<a href="vendors.html" class="button">Cancel</a>
 			~[submitbutton]
 		</div>
-    		
-    	
 	</form>
+	
+
 </div>
+
+<form id="deleteForm" action="vendors.html">
+	<input type="hidden" name="DD-u_assetvendor.id:~(gpv.vendorid)" value="1">
+	<input type="hidden" name="ac" value="prim" />
+</form>
 	
 	~[wc:admin_footer_css] 
 </body> 
 </html>
+

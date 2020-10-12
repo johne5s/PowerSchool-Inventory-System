@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<!-- start right frame -->
+<head>
+<title>Staff Inventory - ~(lastfirst) &nbsp; ~(teachernumber)</title>
+~[wc:commonscripts]
+<link href="/images/css/screen.css" rel="stylesheet" media="screen">
+<link href="/images/css/print.css" rel="stylesheet" media="print">
+<script src="../district/assets/psQuery/psQuery.js"></script>
+<script src="../asset/scripts/addHistory.js"></script>
+</head>
+
+<body>
+
+~[wc:admin_header_frame_css]<!-- breadcrumb start --><a href="/admin/home.html" target="_top">~[text:psx.html.admin_faculty.customscreentemplate.start_page]</a> &gt; <a href="/admin/faculty/search.html" target="_top">~[text:psx.html.admin_faculty.customscreentemplate.staff]</a> &gt; <a href="/admin/faculty/home.html?selectteacher=nosearch" target="_top">~[text:psx.html.admin_faculty.customscreentemplate.select_a_staff_member]</a> &gt; Staff Inventory - ~(lastfirst) &nbsp; ~(teachernumber)<!-- breadcrumb end -->~[wc:admin_navigation_frame_css]
+
+<!-- Beginning of title of page -->
+<span class="account-photo">~[facultytitlephoto]</span>
+<h1>Staff Inventory - ~(lastfirst) &nbsp; ~(teachernumber)</h1>
+
+<!-- Ending of title of page -->
+
+
+<!-- start of content and bounding box -->
+<div class="box-round">
+   
+    <table id="assetTable" class="grid" data-pstablefilter="">
+    ~[x:insertfile;asset/assetStaffHeader.html]
+        <tbody>
+            
+        ~[tlist_sql;
+            SELECT
+                asset.id,
+                s.VIEW_SCHOOLNAME,
+                CASE
+                    WHEN asset.active = '1' THEN '#444'
+                    ELSE '#FFADAD'
+                END AS active,
+                asset.SchoolName,
+                s.VIEW_ASSIGNEDTO,
+                asset.AssignedTo,
+                s.VIEW_ASSET_PURCHASEDATE,
+                To_char(asset.Asset_PurchaseDate, 'mm/dd/yyyy'),
+                s.view_purchaseprice,
+                asset.PurchasePrice,
+                s.view_asset_po_number,
+                asset.Asset_PO_Number,
+                s.view_asset_fundedby,
+                asset.Asset_FundedBy,
+                s.view_asset_barcode,
+                asset.Asset_ID,
+                s.view_asset_type,
+                asset.Asset_Type,
+                s.view_asset_manufacture,
+                asset.Asset_MANUFACTURE,
+                s.view_asset_model,
+                asset.Asset_MODEL,
+                s.view_asset_serial,
+                asset.Asset_SERIAL,
+                s.view_asset_macaddress,
+                asset.Asset_MacAddress,
+                s.view_asset_location,
+                asset.Asset_Location,
+                s.view_asset_accessory_1,
+                asset.Asset_Accessory_1,
+                s.view_asset_accessory_2,
+                asset.Asset_Accessory_2,
+                s.view_asset_accessory_3,
+                asset.Asset_Accessory_3,
+                s.view_device_username,
+                asset.Device_Username,
+                s.view_device_password,
+                asset.Device_Password,
+                s.view_asset_notes,
+                asset.Asset_Notes,
+                s.view_asset_checkoutdate,
+                To_char(asset.ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
+                s.view_asset_checkindate,
+                To_char(asset.ASSET_CHECKINDATE, 'mm/dd/yyyy')
+            FROM u_assettable asset
+            cross join u_assetsettings s
+            WHERE 
+                asset.ASSIGNEDTO_DCID = ~(rn)
+            ORDER BY
+            ~[if#schoolname.~(gpv.sortBy)=location]
+            SchoolName
+            [else#schoolname]
+                ~[if#assigned.~(gpv.sortBy)=assigned]
+                AssignedTo
+                [else#assigned]
+                    ~[if#assetid.~(gpv.sortBy)=assetid]
+                    Asset_Type
+                    [else#assetid]
+                        ~[if#type.~(gpv.sortBy)=type]
+                        Asset_Type
+                        [else#type]
+                            ~[if#manufacture.~(gpv.sortBy)=manufacture]
+                            Asset_MANUFACTURE
+                            [else#manufacture]
+                                ~[if#model.~(gpv.sortBy)=model]
+                                Asset_MODEL
+                                [else#model]
+                                    ~[if#serial.~(gpv.sortBy)=serial]
+                                    Asset_SERIAL
+                                    [else#serial]
+                                        ~[if#outdate.~(gpv.sortBy)=outdate]
+                                        ASSET_CHECKOUTDATE
+                                        [else#outdate]
+                                            ~[if#indate.~(gpv.sortBy)=indate]
+                                            ASSET_CHECKINDATE
+                                            [else#indate]
+                                            Id
+                                            [/if#indate]
+                                        [/if#outdate]
+                                    [/if#serial]
+                                [/if#model]
+                            [/if#manufacture]
+                        [/if#type]
+                    [/if#assetid]
+                [/if#assigned]
+            [/if#schoolname]
+    
+        ;]
+            <tr>
+                <td><a href="asset/editAsset.html?assetid=~(id)" class="button dialogM" title="Edit Asset" style="visibility: visible;"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
+                <td><a href="/admin/asset/repairlog/repairlog.html?assetid=~(id)" class="button" title="Repair Log" target="_blank"><em class="ui-icon-white ui-icon-wrench ui-icon"></em></a></td>
+                <td><a href="../asset/assettag.html?assetid=~(id)" class="button">Tag</a></td>
+                ~(view1;t;if.blank.then=
+                ;else=
+                <td id="~(view1;t)"><font color="~(color)">~(Data1)</font></td>
+                )
+                ~(view2;t;if.blank.then=
+                ;else=
+                <td id="~(view2;t)"><font color="~(color)">~(Data2)</font></td>
+                )
+                ~(view3;t;if.blank.then=
+                ;else=
+                <td id="~(view3;t)"><font color="~(color)">~(Data3)</font></td>
+                )
+                ~(view4;t;if.blank.then=
+                ;else=
+                <td id="~(view4;t)"><font color="~(color)">~(Data4)</font></td>
+                )
+                ~(view5;t;if.blank.then=
+                ;else=
+                <td id="~(view5;t)"><font color="~(color)">~(Data5)</font></td>
+                )
+                ~(view6;t;if.blank.then=
+                ;else=
+                <td id="~(view6;t)"><font color="~(color)">~(Data6)</font></td>
+                )
+                ~(view7;t;if.blank.then=
+                ;else=
+                <td id="~(view7;t)"><font color="~(color)"><barcode>~(Data7)</barcode></font></td>
+                )
+                ~(view8;t;if.blank.then=
+                ;else=
+                <td id="~(view8;t)"><font color="~(color)">~(Data8)</font></td>
+                )
+                ~(view9;t;if.blank.then=
+                ;else=
+                <td id="~(view9;t)"><font color="~(color)">~(Data9)</font></td>
+                )
+                ~(view10;t;if.blank.then=
+                ;else=
+                <td id="~(view10;t)"><font color="~(color)">~(Data10)</font></td>
+                )
+                ~(view11;t;if.blank.then=
+                ;else=
+                <td id="~(view11;t)"><font color="~(color)">~(Data11)</font></td>
+                )
+                ~(view12;t;if.blank.then=
+                ;else=
+                <td id="~(view12;t)"><font color="~(color)">~(Data12)</font></td>
+                )
+                ~(view13;t;if.blank.then=
+                ;else=
+                <td id="~(view13;t)"><font color="~(color)">~(Data13)</font></td>
+                )
+                ~(view14;t;if.blank.then=
+                ;else=
+                <td id="~(view14;t)"><font color="~(color)">~(Data14)</font></td>
+                )
+                ~(view15;t;if.blank.then=
+                ;else=
+                <td id="~(view15;t)"><font color="~(color)">~(Data15)</font></td>
+                )
+                ~(view16;t;if.blank.then=
+                ;else=
+                <td id="~(view16;t)"><font color="~(color)">~(Data16)</font></td>
+                )
+                ~(view17;t;if.blank.then=
+                ;else=
+                <td id="~(view17;t)"><font color="~(color)">~(Data17)</font></td>
+                )
+                ~(view18;t;if.blank.then=
+                ;else=
+                <td id="~(view18;t)"><font color="~(color)">~(Data18)</font></td>
+                )
+                ~(view19;t;if.blank.then=
+                ;else=
+                <td id="~(view19;t)"><font color="~(color)">~(Data19)</font></td>
+                )
+                ~(view20;t;if.blank.then=
+                ;else=
+                <th>~(Data20;t;if.blank.then=<a href="asset/checkoutDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check Out</a>;else=~(Data20))</th>
+                )
+                ~(view21;t;if.blank.then=
+                ;else=
+    
+                <th>~(Data20;t;if.blank.then=~(Data21);else=<a href="asset/checkinDialogM.html?assetid=~(id)" class="button dialogM" title="Check In Asset" >Check In</a>)</th>
+                )
+    
+    
+            </tr>
+        [/tlist_sql]
+        </tbody>
+    </table>
+</div>
+<br>
+<!-- end of content of bounding box -->
+
+~[wc:admin_footer_frame_css]
+
+</body>
+</html><!-- end right frame -->
+
+<script> 
+$j(document).ready(function() 
+    { 
+        var d = new Date();
+        var year = d.getFullYear();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var currentDate = month + "/" + day + "/" + year;
+        $j('.CheckOutDateBtn').val(currentDate); 
+    }); 
+</script>

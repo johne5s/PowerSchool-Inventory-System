@@ -1,0 +1,19 @@
+<!-- create new Student link on left nav menu for the Basic Inventory, John Scatena, jscatena@tbaisd.org -->
+
+<script type="text/javascript">
+
+  $j(document).ready(function()
+    {
+		$j("ul#std_administration").append("<li><a href='/admin/students/assets.html?frn=~(studentfrn)'>Student Inventory</a></li>");
+		 
+		$j("ul#std_administration li").sort(function(a,b)
+			{
+				if($j(a).text() < $j(b).text()) return -1;
+				if($j(a).text() > $j(b).text()) return 1;
+				return 0;
+			}
+		).appendTo("ul#std_administration");
+    }
+  );
+
+</script>
