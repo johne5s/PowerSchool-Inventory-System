@@ -1,0 +1,14 @@
+.grid{
+	margin-top:20px;
+}
+
+barcode{
+	font-family: 'Libre Barcode 39 Text', cursive;
+	font-size: 30px;
+}
+
+.headerSection{
+	text-align:center;
+	font-weight:bold;
+	text-decoration:underline;
+}

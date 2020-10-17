@@ -2,23 +2,14 @@
 <html>
 <head>
 	<title>Asset Management</title>
-	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
 	~[wc:commonscripts] 
-	<style>
-		.grid{
-			margin-top:20px;
-		}
-		barcode
-        {
-            font-family: 'Libre Barcode 39 Text', cursive;
-            font-size: 30px;
-        }
-	</style>
+	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
+	<link href="css/inventory_style.css" rel="stylesheet">
 	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
 	<link href="/images/css/print.css" rel="stylesheet" media="print">
 	
 	<script src="../district/assets/psQuery/psQuery.js"></script>
-    <script src="scripts/addHistory.js"></script>
+    <script src="js/addHistory.js"></script>
 
 </head> 
 	    
@@ -32,7 +23,6 @@
 
 	<ul class="tabs">
 		<li class="selected"><a href="assets.html?sortBy=~(gpv.sortBy)">Asset Management</a></li>
-		<li><a href="assettag.html?assetid=-1">All Tags</a></li>
 		<li><a href="vendors.html">Vendors</a></li>
 	</ul>
 
@@ -228,7 +218,6 @@ where rownum=1
 	;]
 	    <tr>
 	        <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
-	        <td><a href="assettag.html?assetid=~(id)" class="button">Tag</a></td>
 	        ~(view1;t;if.blank.then=
             ;else=
         	<td id="~(view1;t)"><font color="~(color)">~(Data1)</font></td>
@@ -236,9 +225,9 @@ where rownum=1
             ~(view2;t;if.blank.then=
             ;else=
                 ~(isStudent;t;if.blank.then=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="teacher_1.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
+                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="images/teacher_icon.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
                 ;else=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="student_2.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
+                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="images/student_icon.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
                 )
             )
             ~(view3;t;if.blank.then=
