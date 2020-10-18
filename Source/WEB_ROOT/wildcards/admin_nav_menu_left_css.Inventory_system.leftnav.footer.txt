@@ -1,41 +1,5 @@
 <!-- create new link on left nav menu for the Basic Inventory, John Scatena, jscatena@tbaisd.org -->
 
 <script>
-
-  $j(document).ready(function()
-    {
-		var myEle = document.getElementById("left_nav_functions");
-		if(myEle)
-		{
-		    console.log("left_nav_functions was found");
-			$j("ul#left_nav_functions").append("<li><a href='/admin/asset/assets.html'>Inventory System</a></li>");
-			 
-			$j("ul#left_nav_functions li").sort(function(a,b)
-				{
-					if($j(a).text() < $j(b).text()) return -1;
-					if($j(a).text() > $j(b).text()) return 1;
-					return 0;
-				}
-			).appendTo("ul#left_nav_functions");
-		}else
-		{
-            var myEle = document.getElementById('nav-main-menu').getElementsByTagName('ul')[0];
-            //console.log(myEle);
-            var a = document.createElement("a");
-            var link = document.createTextNode("Inventory System");
-            a.appendChild(link); 
-            a.title = "Inventory System";
-            a.href = "/admin/asset/assets.html";
-            
-            var li = document.createElement("li");
-            
-            li.appendChild(a);
-            
-            myEle.appendChild(li);
-           
-          
-		}
-    }
-  );
-
+$j("ul#left_nav_functions").append("<li><a href='/admin/asset/assets.html'>Inventory System</a></li>");
 </script>
