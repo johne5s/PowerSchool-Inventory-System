@@ -4,12 +4,12 @@
 	<title>Asset Management</title>
 	~[wc:commonscripts] 
 	<link href="https://fonts.googleapis.com/css?family=Libre+Barcode+39+Text" rel="stylesheet">
-	<link href="css/inventory_style.css" rel="stylesheet">
+	<link href="../../Inventory/css/inventory_style.css" rel="stylesheet">
 	<link href="/images/css/screen.css" rel="stylesheet" media="screen">
 	<link href="/images/css/print.css" rel="stylesheet" media="print">
 	
-	<script src="../district/assets/psQuery/psQuery.js"></script>
-    <script src="js/addHistory.js"></script>
+	<script src="../../Inventory/psQuery/psQuery.js"></script>
+    <script src="../../Inventory/js/addHistory.js"></script>
 
 </head> 
 	    
@@ -225,9 +225,9 @@ where rownum=1
             ~(view2;t;if.blank.then=
             ;else=
                 ~(isStudent;t;if.blank.then=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="images/teacher_icon.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
+                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="../../Inventory/images/teacher_icon.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
                 ;else=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="images/student_icon.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
+                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="../../Inventory/images/student_icon.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
                 )
             )
             ~(view3;t;if.blank.then=
@@ -318,19 +318,3 @@ where rownum=1
 ~[wc:admin_footer_css] 
 </body>
 </html>
-
-
-<script> 
-    $j(document).ready(function() 
-    { 
-        var d = new Date();
-        var year = d.getFullYear();
-        var month = d.getMonth()+1;
-        var day = d.getDate();
-        var currentDate = month + "/" + day + "/" + year;
-        $j('.CheckOutDateBtn').val(currentDate); 
-    }); 
-    
-    
-</script>
-

@@ -1,0 +1,9 @@
+.headerSection{
+		text-align:center;
+		font-weight:bold;
+		text-decoration:underline;
+	}
+	
+ul.tabs li a{
+        padding:8px !important;
+    }
