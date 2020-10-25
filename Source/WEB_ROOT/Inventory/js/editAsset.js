@@ -1,4 +1,34 @@
 
+// One time page load checks
+function init(assetid)
+{
+    if($j('.serialInput')){
+		checkForDup(assetid);
+		if(document.getElementById('isStudent_dcid').value == "0")
+		{
+			document.getElementById('isStudentCheckBox').checked = false;
+		}else{
+			document.getElementById('isStudentCheckBox').checked = true;
+		}
+		
+        if(assetid == -1)
+		{
+			showHideFormElements("formElement", false);
+			showHideFormElements("assignedToElement", false);
+		}
+		else
+		{
+			showHideFormElements("formElement", true);
+			showHideFormElements("assignedToElement", true);
+		}
+        toggleIsStudent();
+    }
+    else {
+        setTimeout(check, 100); // check again in a second if class serialInput was not found
+    }
+}
+// End
+
 $j(document).ready(function(){
 	$j('#deleteButton').click(function(e){
 		e.preventDefault();
@@ -77,7 +107,6 @@ function SetDropDowns(){
 		dataType: "text",
 		success: function(result)
 		{
-			
 			if (assignedType == 1) 
 			{
 				//push students to the dropdown
@@ -126,7 +155,7 @@ function toggleIsStudent()
 	  document.getElementById('isStudent_dcid').value = "1";
       showHideFormElements("studentDropDownElement", true);
       showHideFormElements("teacherDropDownElement", false);
-  } else {
+  }else {
 	  document.getElementById('isStudentCheckBoxText').innerHTML = "<font color=blue>Teacher - </font>";
 	  document.getElementById('isStudent_dcid').value = "0";
       showHideFormElements("studentDropDownElement", false);
@@ -163,35 +192,6 @@ function toggleIsStudent()
     }
 // End
 
-// One time page load checks
-function init(assetid)
-{
-    if($j('.serialInput')){
-		checkForDup(assetid);
-		if(document.getElementById('isStudent_dcid').value == "0")
-		{
-			document.getElementById('isStudentCheckBox').checked = false;
-		}else{
-			document.getElementById('isStudentCheckBox').checked = true;
-		}
-		
-        if(assetid == -1)
-            {
-                showHideFormElements("formElement", false);
-                showHideFormElements("assignedToElement", false);
-            }
-            else
-            {
-                showHideFormElements("formElement", true);
-                showHideFormElements("assignedToElement", true);
-            }
-        toggleIsStudent();
-    }
-    else {
-        setTimeout(check, 100); // check again in a second if class serialInput was not found
-    }
-}
-// End
 
 function toggleAssetElements(value)
 {
@@ -199,8 +199,7 @@ function toggleAssetElements(value)
 	{
 		showHideFormElements("formElement", false);
 	}
-	else
-	{
+	else{
 		showHideFormElements("formElement", true);
 	}
 }

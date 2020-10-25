@@ -1,14 +1,14 @@
 function addRecordToHistoryDB(assetid,note)
-    {
-        //console.log("Add new - " + assetid);
-        $psq('u_assethistory').insert(
-            {
-                Asset_ID: assetid,
-                History_DateTime: curDate(),
-                Notes: note
-            });
+{
+	//console.log("Add new - " + assetid);
+	$psq('u_assethistory').insert(
+		{
+			Asset_ID: assetid,
+			History_DateTime: curDate(),
+			Notes: note
+		});
 
-    }
+}
 
 function curDate()
 {
