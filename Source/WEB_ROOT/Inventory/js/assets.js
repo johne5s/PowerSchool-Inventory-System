@@ -8,3 +8,12 @@ function CheckOutDateBtn()
 	var currentDate = month + "/" + day + "/" + year;
 	$j('.CheckOutDateBtn').val(currentDate); 
 }
+
+$j(document).ready(function(){
+    $j('#searchBoxBtn').click(function(){
+	    //The Search button was clicked
+		console.log("Search was clicked : " + $j('#searchBox').val());
+		MakeRequest($j('#searchBox').val());
+
+	});
+});

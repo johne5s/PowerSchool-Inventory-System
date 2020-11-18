@@ -1,0 +1,15 @@
+{
+	"asset": [
+~[tlist_sql;
+Select 
+*
+FROM u_assettable
+WHERE id LIKE '%~(gpv.searchFor)%'
+Order By id
+
+;]{"id" : "~(data)",
+    "d1" : "~(data1)"
+    },
+[/tlist_sql]
+{"id" : "0"}
+]}
