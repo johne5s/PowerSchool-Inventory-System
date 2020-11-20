@@ -12,3 +12,7 @@ barcode{
 	font-weight:bold;
 	text-decoration:underline;
 }
+
+.marg20 {
+  margin-left: 20px;
+}

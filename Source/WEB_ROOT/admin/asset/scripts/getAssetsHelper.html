@@ -1,59 +1,90 @@
 {
+    "view":{
+    ~[tlist_sql;
+		SELECT
+		    s.VIEW_SCHOOLNAME,
+		    s.VIEW_ASSIGNEDTO,
+		    s.VIEW_ASSET_PURCHASEDATE,
+		    s.view_purchaseprice,
+		    s.view_asset_po_number,
+		    s.view_asset_fundedby,
+		    s.view_asset_barcode,
+		    s.view_asset_type,
+		    s.view_asset_manufacture,
+		    s.view_asset_model,
+		    s.view_asset_serial,
+		    s.view_asset_macaddress,
+		    s.view_asset_location,
+		    s.view_asset_accessory_1,
+		    s.view_asset_accessory_2,
+		    s.view_asset_accessory_3,
+		    s.view_device_username,
+		    s.view_device_password,
+		    s.view_asset_notes,
+		    s.view_asset_checkoutdate,
+		    s.view_asset_checkindate
+
+		FROM u_assetsettings s
+	;]
+        "School" : "~(VIEW_SCHOOLNAME)",
+        "Assigned_To" : "~(VIEW_ASSIGNEDTO)",
+        "Purchase_Date" : "~(VIEW_ASSET_PURCHASEDATE)",
+        "Purchase_Price" : "~(view_purchaseprice)",
+        "Po_Number" : "~(view_asset_po_number)",
+        "FundedBy" : "~(view_asset_fundedby)",
+        "Barcode" : "~(view_asset_barcode)",
+        "Asset_Type" : "~(view_asset_type)",
+        "Manufacture" : "~(view_asset_manufacture)",
+        "Model" : "~(view_asset_model)",
+        "Serial" : "~(view_asset_serial)",
+        "MacAddress" : "~(view_asset_macaddress)",
+        "Location" : "~(view_asset_location)",
+        "Accessory_1" : "~(view_asset_accessory_1)",
+        "Accessory_2" : "~(view_asset_accessory_2)",
+        "Accessory_3" : "~(view_asset_accessory_3)",
+        "Device_Username" : "~(view_device_username)",
+        "Device_Password" : "~(view_device_password)",
+        "Notes" : "~(view_asset_notes)",
+        "Checkout_Date" : "~(view_asset_checkoutdate)",
+        "Checkin_Date" : "~(view_asset_checkindate)"
+    
+    [/tlist_sql]
+    },
 	"asset": [
 ~[tlist_sql;
 		SELECT
 		    asset.id,
-            s.VIEW_SCHOOLNAME,
             CASE
                 WHEN asset.active = '1' THEN '#444'
                 ELSE '#FFADAD'
             END AS active,
 			asset.SchoolName,
-			s.VIEW_ASSIGNEDTO,
 			CASE
 			    WHEN asset.IsStudent_DCID = '1' THEN '1'
 			    ELSE ''
 			END AS isStudent,
 			asset.AssignedTo_DCID,
 			asset.AssignedTo,
-			s.VIEW_ASSET_PURCHASEDATE,
 			To_char(asset.Asset_PurchaseDate, 'mm/dd/yyyy'),
-			s.view_purchaseprice,
 			asset.PurchasePrice,
-			s.view_asset_po_number,
 			asset.Asset_PO_Number,
-			s.view_asset_fundedby,
 			asset.Asset_FundedBy,
-			s.view_asset_barcode,
 			asset.Asset_ID,
-			s.view_asset_type,
 			asset.Asset_Type,
-			s.view_asset_manufacture,
 			asset.Asset_MANUFACTURE,
-			s.view_asset_model,
 			asset.Asset_MODEL,
-			s.view_asset_serial,
 			asset.Asset_SERIAL,
-			s.view_asset_macaddress,
 			asset.Asset_MacAddress,
-			s.view_asset_location,
 			asset.Asset_Location,
-			s.view_asset_accessory_1,
 			asset.Asset_Accessory_1,
-			s.view_asset_accessory_2,
 			asset.Asset_Accessory_2,
-			s.view_asset_accessory_3,
 			asset.Asset_Accessory_3,
-			s.view_device_username,
 			asset.Device_Username,
-			s.view_device_password,
 			asset.Device_Password,
-			s.view_asset_notes,
 			asset.Asset_Notes,
-			s.view_asset_checkoutdate,
 			To_char(asset.ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
-			s.view_asset_checkindate,
 			To_char(asset.ASSET_CHECKINDATE, 'mm/dd/yyyy')
+			
 		FROM u_assettable asset
 		cross join u_assetsettings s
 		WHERE ~[if#schoolCheck.is.a.school]asset.SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
@@ -100,11 +131,33 @@ AND --asset.id LIKE '%~(gpv.searchFor)%'
 
 Order By asset.id
 
-;]{"id" : "~(data)",
-    "d1" : "~(data1)",
-    "d2" : "~(data2)",
-    "d3" : "~(data3)",
-    "d4" : "~(data4)"
+;]{"id" : "~(id)",
+    
+    "Active" : "~(active)",
+    "SchoolName" : "~(SchoolName)",
+    "isStudent" : "~(isStudent)",
+    "AssignedTo_DCID" : "~(AssignedTo_DCID)",
+    "AssignedToName" : "~(AssignedTo)",
+    "Asset_PurchaseDate" : "~(Asset_PurchaseDate)",
+    "PurchasePrice" : "~(PurchasePrice)",
+    "Asset_PO_Number" : "~(Asset_PO_Number)",
+    "Asset_FundedBy" : "~(Asset_FundedBy)",
+    "Barcode" : "~(Asset_ID)",
+    "Asset_Type" : "~(Asset_Type)",
+    "Asset_Manufacture" : "~(Asset_MANUFACTURE)",
+    "Asset_Model" : "~(Asset_MODEL)",
+    "Asset_Serial" : "~(Asset_SERIAL)",
+    "Asset_MacAddress" : "~(Asset_MacAddress)",
+    "Asset_Location" : "~(Asset_Location)",
+    "Asset_Accessory_1" : "~(Asset_Accessory_1)",
+    "Asset_Accessory_2" : "~(Asset_Accessory_2)",
+    "Asset_Accessory_3" : "~(Asset_Accessory_3)",
+    "Device_Username" : "~(Device_Username)",
+    "Device_Password" : "~(Device_Password)",
+    "Asset_Notes" : "~(Asset_Notes)",
+    "Asset_CheckoutDate" : "~(ASSET_CHECKOUTDATE)",
+    "Asset_CheckinDate" : "~(Asset_CheckinDate)"
+    
     },
 [/tlist_sql]
 {"id" : "0"}

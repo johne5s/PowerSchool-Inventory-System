@@ -20,14 +20,15 @@ $j(document).ready(function(){
 
 
 //This is not working,  Listen for the ENTER key
-input.addEventListener("keyup", function(event) {
+//
+//input.addEventListener("keyup", function(event) {
   // Number 13 is the "Enter" key on the keyboard
-  if (event.keyCode === 13) {
+//  if (event.keyCode === 13) {
     // Cancel the default action, if needed
-    event.preventDefault();
+//    event.preventDefault();
     // Trigger the button element with a click
-    $j('#searchBoxBtn').click(function(){
-		MakeRequest($j('#searchBox').val());
-	});
-  }
-});
+//    $j('#searchBoxBtn').click(function(){
+//		MakeRequest($j('#searchBox').val());
+//	});
+//  }
+//});
