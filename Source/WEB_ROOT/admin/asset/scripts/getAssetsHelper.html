@@ -1,0 +1,111 @@
+{
+	"asset": [
+~[tlist_sql;
+		SELECT
+		    asset.id,
+            s.VIEW_SCHOOLNAME,
+            CASE
+                WHEN asset.active = '1' THEN '#444'
+                ELSE '#FFADAD'
+            END AS active,
+			asset.SchoolName,
+			s.VIEW_ASSIGNEDTO,
+			CASE
+			    WHEN asset.IsStudent_DCID = '1' THEN '1'
+			    ELSE ''
+			END AS isStudent,
+			asset.AssignedTo_DCID,
+			asset.AssignedTo,
+			s.VIEW_ASSET_PURCHASEDATE,
+			To_char(asset.Asset_PurchaseDate, 'mm/dd/yyyy'),
+			s.view_purchaseprice,
+			asset.PurchasePrice,
+			s.view_asset_po_number,
+			asset.Asset_PO_Number,
+			s.view_asset_fundedby,
+			asset.Asset_FundedBy,
+			s.view_asset_barcode,
+			asset.Asset_ID,
+			s.view_asset_type,
+			asset.Asset_Type,
+			s.view_asset_manufacture,
+			asset.Asset_MANUFACTURE,
+			s.view_asset_model,
+			asset.Asset_MODEL,
+			s.view_asset_serial,
+			asset.Asset_SERIAL,
+			s.view_asset_macaddress,
+			asset.Asset_MacAddress,
+			s.view_asset_location,
+			asset.Asset_Location,
+			s.view_asset_accessory_1,
+			asset.Asset_Accessory_1,
+			s.view_asset_accessory_2,
+			asset.Asset_Accessory_2,
+			s.view_asset_accessory_3,
+			asset.Asset_Accessory_3,
+			s.view_device_username,
+			asset.Device_Username,
+			s.view_device_password,
+			asset.Device_Password,
+			s.view_asset_notes,
+			asset.Asset_Notes,
+			s.view_asset_checkoutdate,
+			To_char(asset.ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
+			s.view_asset_checkindate,
+			To_char(asset.ASSET_CHECKINDATE, 'mm/dd/yyyy')
+		FROM u_assettable asset
+		cross join u_assetsettings s
+		WHERE ~[if#schoolCheck.is.a.school]asset.SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
+		--~[if#notactive.~(gpv.showInactive)=true]
+		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
+		--[else#notactive]
+		--AND active = '1'
+		--[/if#notactive]
+		and (asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
+                when s.show_hidden_assets = 1 then '0'
+                END)
+        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
+                when s.show_hidden_assets = 1 then '2'
+                END)
+        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
+                when s.show_hidden_assets = 1 then '3'
+                END)
+		or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
+                when s.show_hidden_assets = 1 then '4'
+                END)
+        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
+                when s.show_hidden_assets = 1 then '1'
+                END))
+
+
+AND --asset.id LIKE '%~(gpv.searchFor)%'
+(
+    asset.id LIKE '%~(gpv.searchFor)%'
+    OR lower(asset.schoolname) LIKE lower('%~(gpv.searchFor)%')
+    OR asset.assignedto LIKE '%~(gpv.searchFor)%'
+    OR asset.asset_type LIKE '%~(gpv.searchFor)%'
+    OR lower(asset.asset_id) LIKE lower('%~(gpv.searchFor)%')
+    OR lower(asset.asset_manufacture) LIKE lower('%~(gpv.searchFor)%')
+    OR lower(asset.asset_model) LIKE lower('%~(gpv.searchFor)%')
+    OR asset.asset_serial LIKE '%~(gpv.searchFor)%'
+    OR asset.asset_macaddress LIKE '%~(gpv.searchFor)%'
+    OR lower(asset.asset_location) LIKE lower('%~(gpv.searchFor)%')
+    OR lower(asset.asset_accessory_1) LIKE lower('%~(gpv.searchFor)%')
+    OR lower(asset.asset_accessory_2) LIKE lower('%~(gpv.searchFor)%')
+    OR lower(asset.asset_accessory_3) LIKE lower('%~(gpv.searchFor)%')
+    )
+
+
+
+Order By asset.id
+
+;]{"id" : "~(data)",
+    "d1" : "~(data1)",
+    "d2" : "~(data2)",
+    "d3" : "~(data3)",
+    "d4" : "~(data4)"
+    },
+[/tlist_sql]
+{"id" : "0"}
+]}

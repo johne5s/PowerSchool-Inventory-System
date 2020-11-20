@@ -32,18 +32,17 @@
 <!-- This is the start of the main IF statement -->
 ~[if#pageaction.~(gpv.action)=]
 
-<script type="text/javascript" language="JavaScript">
-var baseurl = document.URL; 
-if (baseurl.indexOf('?') > -1) { baseurl = baseurl.substring( 0,baseurl.indexOf('?') ); }
+<table id="assetTablemain">
+    <tbody id="ajaxResults">
+        <th>H1</th><th>H2</th><th>H3</th>
+        <tr>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+        </tr>
 
-console.log(baseurl);
-console.log("Doc Ready Completed");
-</script>
-
-
-<div id="ajaxResults">
-    
-</div>
+	</tbody>
+</table>
 	
  <div class="center">
  	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
@@ -51,7 +50,7 @@ console.log("Doc Ready Completed");
  
  
  <!-- This will be removed once it's rebuild with Ajax -->
- 
+ <!-- this is old sql -->
  ~[tlist_sql;
 SELECT NVL(Show_Hidden_Assets, 0)
 FROM u_assetsettings 
