@@ -24,29 +24,50 @@
 		<li><a href="vendors.html">Vendors</a></li>
 	</ul>
 
-<div>
+
+<div class="marg20">
+    ~[tlist_sql;
+    SELECT
+    COUNT(asset.AssignedTo) AS Count
+    FROM u_assettable asset
+    cross join u_assetsettings s
+    WHERE lower(asset.AssignedTo) <> 'unassigned'
+    ;]
+    Assigned ~(Count)
+    [/tlist_sql]
+    -
+    ~[tlist_sql;
+    SELECT
+    COUNT(asset.AssignedTo) AS Count
+    FROM u_assettable asset
+    cross join u_assetsettings s
+    WHERE lower(asset.AssignedTo) = 'unassigned'
+    ;]
+    UnAssigned ~(Count)
+    [/tlist_sql]
+</div>
+<br>
+<div class="marg20">
 	<input type="text" id="searchBox" name="searchBox">
 	<button id="searchBoxBtn">Search</button>
 </div>
+<div class="center">
+ 	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
+</div>
+<div>
+    <a class="button" href="../district/assets/home.html">Settings</a>
+</div>
 
 <!-- This is the start of the main IF statement -->
-~[if#pageaction.~(gpv.action)=]
 
-<table id="assetTablemain">
+
+<table id="assetTablemain" class="grid">
     <tbody id="ajaxResults">
-        <th>H1</th><th>H2</th><th>H3</th>
-        <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-        </tr>
 
 	</tbody>
 </table>
 	
- <div class="center">
- 	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
- </div>
+
  
  
  <!-- This will be removed once it's rebuild with Ajax -->
@@ -96,25 +117,7 @@ where rownum=1
     <a class="button" href="../district/assets/home.html">Settings</a>
 	
 	<br>
-    ~[tlist_sql;
-    SELECT
-    COUNT(asset.AssignedTo) AS Count
-    FROM u_assettable asset
-    cross join u_assetsettings s
-    WHERE lower(asset.AssignedTo) <> 'unassigned'
-    ;]
-    Assigned ~(Count)
-    [/tlist_sql]
-    -
-    ~[tlist_sql;
-    SELECT
-    COUNT(asset.AssignedTo) AS Count
-    FROM u_assettable asset
-    cross join u_assetsettings s
-    WHERE lower(asset.AssignedTo) = 'unassigned'
-    ;]
-    UnAssigned ~(Count)
-    [/tlist_sql]
+    
 
     ~[x:insertfile;scripts/assetHeader.html]
     <tbody>
@@ -335,21 +338,20 @@ where rownum=1
 	[/tlist_sql]
 	</tbody>
 </table>
-~[wc:admin_footer_css] 
-</body>
-</html>
 
-[/if#pageaction]
 
-<!-- This is the start of the results IF statement -->
-~[if#loadresults.~(gpv.action)=loadresults]
+
+
+<!-- This is the END of the results IF statement -->
+<!--
 these are the results???<br>
 ~[x:insertfile;assetHelper.html]
+-->
 
 ~[wc:admin_footer_css] 
 </body>
 </html>
-[/if#loadresults]
+
 
 <script src="../../Inventory/psQuery/psQuery.js"></script>
 <script src="../../Inventory/js/addHistory.js"></script>
