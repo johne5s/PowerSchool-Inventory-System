@@ -20,7 +20,7 @@
 	<h1>Asset Management</h1> 
 
 	<ul class="tabs">
-		<li class="selected"><a href="assets.html?sortBy=~(gpv.sortBy)">Asset Management</a></li>
+		<li class="selected"><a href="assets.html">Asset Management</a></li>
 		<li><a href="vendors.html">Vendors</a></li>
 	</ul>
 
@@ -30,7 +30,6 @@
     SELECT
     COUNT(asset.AssignedTo) AS Count
     FROM u_assettable asset
-    cross join u_assetsettings s
     WHERE lower(asset.AssignedTo) <> 'unassigned'
     ;]
     Assigned ~(Count)
@@ -40,10 +39,17 @@
     SELECT
     COUNT(asset.AssignedTo) AS Count
     FROM u_assettable asset
-    cross join u_assetsettings s
     WHERE lower(asset.AssignedTo) = 'unassigned'
     ;]
     UnAssigned ~(Count)
+    [/tlist_sql]
+    -
+    ~[tlist_sql;
+    SELECT
+    COUNT(asset.id) AS Count
+    FROM u_assettable asset
+    ;]
+    Total ~(Count)
     [/tlist_sql]
 </div>
 <br>
@@ -52,26 +58,13 @@
 	<button id="searchBoxBtn">Search</button>
 </div>
 <div class="center">
- 	<a class="button" href="editAsset.html?assetid=-1">New Asset</a>
+ 	<a class="button" href="editAsset.html?assetid=-1">Add New Asset</a>
 </div>
 <div>
     <a class="button" href="../district/assets/home.html">Settings</a>
 </div>
 
-<!-- This is the start of the main IF statement -->
-
-
-<table id="assetTablemain" class="grid">
-    <tbody id="ajaxResults">
-
-	</tbody>
-</table>
-	
-
- 
- 
- <!-- This will be removed once it's rebuild with Ajax -->
- <!-- this is old sql -->
+<!--  Display the "Show All" button -->
  ~[tlist_sql;
 SELECT NVL(Show_Hidden_Assets, 0)
 FROM u_assetsettings 
@@ -88,13 +81,12 @@ where rownum=1
  </script>
 [/tlist_sql]
 
-
+<form action="assets.html" method="POST" class="showAll">
 ~[tlist_sql;
 SELECT id
 FROM u_assetsettings 
 where rownum=1
 ;]
-<form action="assets.html" method="POST" class="showAll">
     <input type="hidden" class="showAllBtn" name="CF-[u_assetsettings:~(id)]Show_Hidden_Assets" value="">
 	<input type="hidden" name="ac" value="prim" />
 	~[submitbutton]
@@ -112,241 +104,17 @@ where rownum=1
         $j('.showAllBtn').val(1);
     }
 </script>
+<!-- End "Show All" btn-->
 
-<table id="assetTable" class="grid" data-pstablefilter="">
-    <a class="button" href="../district/assets/home.html">Settings</a>
-	
-	<br>
-    
+<!-- This is the start of the main IF statement -->
+<table id="assetTablemain" class="grid">
+    <tbody id="ajaxResults">
 
-    ~[x:insertfile;scripts/assetHeader.html]
-    <tbody>
-	    
-	~[tlist_sql;
-		SELECT
-		    asset.id,
-            s.VIEW_SCHOOLNAME,
-            CASE
-                WHEN asset.active = '1' THEN '#444'
-                ELSE '#FFADAD'
-            END AS active,
-			asset.SchoolName,
-			s.VIEW_ASSIGNEDTO,
-			CASE
-			    WHEN asset.IsStudent_DCID = '1' THEN '1'
-			    ELSE ''
-			END AS isStudent,
-			asset.AssignedTo_DCID,
-			asset.AssignedTo,
-			s.VIEW_ASSET_PURCHASEDATE,
-			To_char(asset.Asset_PurchaseDate, 'mm/dd/yyyy'),
-			s.view_purchaseprice,
-			asset.PurchasePrice,
-			s.view_asset_po_number,
-			asset.Asset_PO_Number,
-			s.view_asset_fundedby,
-			asset.Asset_FundedBy,
-			s.view_asset_barcode,
-			asset.Asset_ID,
-			s.view_asset_type,
-			asset.Asset_Type,
-			s.view_asset_manufacture,
-			asset.Asset_MANUFACTURE,
-			s.view_asset_model,
-			asset.Asset_MODEL,
-			s.view_asset_serial,
-			asset.Asset_SERIAL,
-			s.view_asset_macaddress,
-			asset.Asset_MacAddress,
-			s.view_asset_location,
-			asset.Asset_Location,
-			s.view_asset_accessory_1,
-			asset.Asset_Accessory_1,
-			s.view_asset_accessory_2,
-			asset.Asset_Accessory_2,
-			s.view_asset_accessory_3,
-			asset.Asset_Accessory_3,
-			s.view_device_username,
-			asset.Device_Username,
-			s.view_device_password,
-			asset.Device_Password,
-			s.view_asset_notes,
-			asset.Asset_Notes,
-			s.view_asset_checkoutdate,
-			To_char(asset.ASSET_CHECKOUTDATE, 'mm/dd/yyyy'),
-			s.view_asset_checkindate,
-			To_char(asset.ASSET_CHECKINDATE, 'mm/dd/yyyy')
-		FROM u_assettable asset
-		cross join u_assetsettings s
-		WHERE ~[if#schoolCheck.is.a.school]asset.SchoolName = '~(schoolname)' [else#schoolCheck]SchoolName IS NOT null  [/if#schoolCheck] 
-		--~[if#notactive.~(gpv.showInactive)=true]
-		--AND active = '1' OR active = '0' OR active = '2' OR active = '3'
-		--[else#notactive]
-		--AND active = '1'
-		--[/if#notactive]
-		and (asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '0'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '2'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '3'
-                END)
-		or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '4'
-                END)
-        or asset.active = (CASE WHEN s.show_hidden_assets = 0 THEN '1'
-                when s.show_hidden_assets = 1 then '1'
-                END))
-		ORDER BY
-		~[if#schoolname.~(gpv.sortBy)=location]
-		SchoolName
-		[else#schoolname]
-			~[if#assigned.~(gpv.sortBy)=assigned]
-			AssignedTo
-			[else#assigned]
-				~[if#assetid.~(gpv.sortBy)=assetid]
-				Asset_Type
-				[else#assetid]
-					~[if#type.~(gpv.sortBy)=type]
-					Asset_Type
-					[else#type]
-						~[if#manufacture.~(gpv.sortBy)=manufacture]
-						Asset_MANUFACTURE
-						[else#manufacture]
-							~[if#model.~(gpv.sortBy)=model]
-							Asset_MODEL
-							[else#model]
-								~[if#serial.~(gpv.sortBy)=serial]
-								Asset_SERIAL
-								[else#serial]
-									~[if#outdate.~(gpv.sortBy)=outdate]
-									ASSET_CHECKOUTDATE
-									[else#outdate]
-										~[if#indate.~(gpv.sortBy)=indate]
-										ASSET_CHECKINDATE
-										[else#indate]
-										Id
-										[/if#indate]
-									[/if#outdate]
-								[/if#serial]
-							[/if#model]
-						[/if#manufacture]
-					[/if#type]
-				[/if#assetid]
-			[/if#assigned]
-		[/if#schoolname]
-
-	;]
-	    <tr>
-	        <td><a href="editAsset.html?assetid=~(id)" class="button"><em class="ui-icon-white ui-icon-pencil ui-icon"></em></a></td>
-	        ~(view1;t;if.blank.then=
-            ;else=
-        	<td id="~(view1;t)"><font color="~(color)">~(Data1)</font></td>
-            )
-            ~(view2;t;if.blank.then=
-            ;else=
-                ~(isStudent;t;if.blank.then=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="../../Inventory/images/teacher_icon.svg" alt="teacher" title="teacher" height="15"> <a href="../faculty/home.html?frn=005~(Data2_1)">~(Data2)</a></font></td>
-                ;else=
-                <td id="~(view2;t):~(isStudent;t)"><font color="~(color)"><img src="../../Inventory/images/student_icon.svg" alt="student" title="student" height="10"> <a href="../students/home.html?frn=001~(Data2_1)">~(Data2)</a></font></td>
-                )
-            )
-            ~(view3;t;if.blank.then=
-            ;else=
-            <td id="~(view3;t)"><font color="~(color)">~(Data3)</font></td>
-            )
-            ~(view4;t;if.blank.then=
-            ;else=
-            <td id="~(view4;t)"><font color="~(color)">~(Data4)</font></td>
-            )
-            ~(view5;t;if.blank.then=
-            ;else=
-            <td id="~(view5;t)"><font color="~(color)">~(Data5)</font></td>
-            )
-            ~(view6;t;if.blank.then=
-            ;else=
-            <td id="~(view6;t)"><font color="~(color)">~(Data6)</font></td>
-            )
-            ~(view7;t;if.blank.then=
-            ;else=
-            <td id="~(view7;t)"><font color="~(color)"><barcode>~(Data7)</barcode></font></td>
-            )
-            ~(view8;t;if.blank.then=
-            ;else=
-            <td id="~(view8;t)"><font color="~(color)">~(Data8)</font></td>
-            )
-            ~(view9;t;if.blank.then=
-            ;else=
-            <td id="~(view9;t)"><font color="~(color)">~(Data9)</font></td>
-            )
-            ~(view10;t;if.blank.then=
-            ;else=
-            <td id="~(view10;t)"><font color="~(color)">~(Data10)</font></td>
-            )
-            ~(view11;t;if.blank.then=
-            ;else=
-            <td id="~(view11;t)"><font color="~(color)">~(Data11)</font></td>
-            )
-            ~(view12;t;if.blank.then=
-            ;else=
-            <td id="~(view12;t)"><font color="~(color)">~(Data12)</font></td>
-            )
-            ~(view13;t;if.blank.then=
-            ;else=
-            <td id="~(view13;t)"><font color="~(color)">~(Data13)</font></td>
-            )
-            ~(view14;t;if.blank.then=
-            ;else=
-            <td id="~(view14;t)"><font color="~(color)">~(Data14)</font></td>
-            )
-            ~(view15;t;if.blank.then=
-            ;else=
-            <td id="~(view15;t)"><font color="~(color)">~(Data15)</font></td>
-            )
-            ~(view16;t;if.blank.then=
-            ;else=
-            <td id="~(view16;t)"><font color="~(color)">~(Data16)</font></td>
-            )
-            ~(view17;t;if.blank.then=
-            ;else=
-            <td id="~(view17;t)"><font color="~(color)">~(Data17)</font></td>
-            )
-            ~(view18;t;if.blank.then=
-            ;else=
-            <td id="~(view18;t)"><font color="~(color)">~(Data18)</font></td>
-            )
-            ~(view19;t;if.blank.then=
-            ;else=
-            <td id="~(view19;t)"><font color="~(color)">~(Data19)</font></td>
-            )
-            ~(view20;t;if.blank.then=
-            ;else=
-
-            <th>~(Data20;t;if.blank.then=<a href="checkoutDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check Out</a>;else=~(Data20))</th>
-
-            )
-            ~(view21;t;if.blank.then=
-            ;else=
-
-            <th>~(Data20;t;if.blank.then=~(Data21);else=<a href="checkinDialogM.html?assetid=~(id)" class="button dialogM" dialogcontent="">Check In</a>)</th>
-            )
-
-
-		</tr>
-	[/tlist_sql]
 	</tbody>
 </table>
 
+<!-- END of the results IF statement -->
 
-
-
-<!-- This is the END of the results IF statement -->
-<!--
-these are the results???<br>
-~[x:insertfile;assetHelper.html]
--->
 
 ~[wc:admin_footer_css] 
 </body>
@@ -357,3 +125,16 @@ these are the results???<br>
 <script src="../../Inventory/js/addHistory.js"></script>
 <script src="../../Inventory/js/assets.js"></script>
 <script src="../../Inventory/js/getAssetsAjax.js"></script>
+<script src="../../Inventory/js/cookies.js"></script>
+
+<script>
+//console.log("Start checkCookie : " + getCookie("searchFor"));
+if(getCookie("searchFor") != "return_ALL_assets")
+{
+    //console.log("on page load, search for the cookie");
+    MakeRequest(getCookie("searchFor"));
+}
+
+</script>
+
+
