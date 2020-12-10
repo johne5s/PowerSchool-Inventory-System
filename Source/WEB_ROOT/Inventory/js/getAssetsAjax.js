@@ -1,5 +1,12 @@
 function MakeRequest(searchFor)
 {
+    //set the searchFor cookie
+    setCookie("searchFor", searchFor, 1);
+    if(searchFor == "return_ALL_assets")
+    {
+        searchFor = " ";
+    }
+    
     url = 'scripts/getAssetsHelper.html' + '?searchFor=' + searchFor;
 			
    //console.log("url : " + url);
@@ -48,7 +55,7 @@ function loadData(data)
     $j.each(data.asset, function(asset_key, asset){
 		if(asset.id == 0){ return; } // id 0 is a dummy asset,  doen't build a row for it
 		
-        var tdData = "<tr>";
+        var tdData = "<tr  style='color:"+ asset.Active + "'>";
         //every asset needs an edit button
         tdData += "<td><a href='editAsset.html?assetid=" + asset.id +"' class='button'><em class='ui-icon-white ui-icon-pencil ui-icon'></em></a></td>"
 
@@ -60,7 +67,16 @@ function loadData(data)
 		
 		if(data.view.Assigned_To == 1)
 		{
-            tdData += "<td>" + asset.AssignedToName + "</td>";
+            if(asset.isStudent == 1)
+    		{
+    		    //student
+    		    tdData +=  "<td><svg width='20px' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path opacity='0.5' fill='#0066a5' d='M15 5A5 5 0 115 5a5 5 0 0110 0'></path><path fill='#0066a5' d='M0 20h20c0-6.338-4.476-9-10-9-5.522 0-10 2.662-10 9z'></path></svg> <a href='../students/home.html?frn=001'" + asset.AssignedTo_DCID + "'>" + asset.AssignedToName + "</a></td>";
+    	
+    		}else
+    		{
+    		    //Staff
+    		    tdData +=  "<td><svg width='20px' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path opacity='0.5' fill='#4c9c6c' d='M15 5A5 5 0 115 5a5 5 0 0110 0'></path><path fill='#4c9c6c' d='M0 20h20c0-6.338-4.476-9-10-9-5.522 0-10 2.662-10 9z'></path></svg> <a href='../faculty/home.html?frn=005'" + asset.AssignedTo_DCID + "'>" + asset.AssignedToName + "</a></td>";
+    		}
 		}
 		
 		if(data.view.Purchase_Date == 1)
@@ -150,12 +166,28 @@ function loadData(data)
 		
 		if(data.view.Checkout_Date == 1)
 		{
-            tdData += "<td>" + asset.Asset_CheckoutDate + "</td>";
+		    if(asset.Asset_CheckoutDate == "")
+		    {
+		        //no check in Date has been set,  so display the check out btn
+		        tdData +=  "<th><a href='checkoutDialogM.html?assetid=" + asset.id + "' class='button dialogM' dialogcontent=''>Check Out</a></th>";
+		    }else
+		    {
+		        tdData +=  "<th>" + asset.Asset_CheckoutDate + "</th>";
+		    }
+ 
 		}
 		
 		if(data.view.Checkin_Date == 1)
 		{
-            tdData += "<td>" + asset.Asset_CheckinDate + "</td>";
+		    if(asset.Asset_CheckoutDate == "")
+		    {
+		        tdData +=  "<th></th>";
+		        
+		    }else
+		    {
+		        tdData +=  "<th><a href='checkinDialogM.html?assetid=" + asset.id + "' class='button dialogM' dialogcontent=''>Check In</a></th>";
+		    }
+		    
 		}
 		
 		//take all the TD elements and push them into the Div
